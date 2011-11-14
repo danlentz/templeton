@@ -1,12 +1,13 @@
-;;; -*- mode: lisp; package: ASDF; Syntax: Common-lisp; Base: 10 -*-
+;;;;; -*- mode: common-lisp;   common-lisp-style: modern;    coding: utf-8; -*-
 
 ;;;
-;;;;  wilbur.asd
+;;;;  templeton.asd
 ;;;
+;;;
+;;;   based on:
 ;;;
 ;;; --------------------------------------------------------------------------------------
 ;;;
-;;;   The Original Software is 
 ;;;   WILBUR2: Nokia Semantic Web Toolkit for CLOS
 ;;;
 ;;;   Copyright (c) 2001-2009 Nokia Corp. and/or its subsidiaries. All Rights Reserved.
@@ -150,13 +151,17 @@
 ;;;   ASDF SYSTEM DEFINITION FOR WILBUR2
 ;;;
 
-(defsystem :de.setf.wilbur
-  :name "wilbur"
+(defsystem :templeton
+  :name "templeton"
   :author "Ora Lassila mailto:ora.lassila@nokia.com"
-  :version "2"
-  :licence "NOKOS 1.0a"
-  :description "WILBUR2: Nokia's Semantic Web Toolkit for CLOS"
-  :depends-on (#+mcl :de.setf.utility.bsd #+sbcl :usocket)
+  :author "Dan Lentz mailto:danlentz@gmail.com"
+  :version "3"
+  :licence "LLGPL21"
+  :description "Efficient, durable 'graph prevalence' for WILBUR2 and ELEPHANT"
+  :depends-on (#+mcl :de.setf.utility.bsd
+                #+sbcl :usocket
+                :elephant
+                )
   :components
   ((:module :src
      :components ((:file "packages")
@@ -183,7 +188,32 @@
                                    (:file "ivanhoe")
                                    (:file "db-additions")
                                    (:file "index-and-match"))
-                     :depends-on (:nox :core))))))
+                     :depends-on (:nox :core))))
+    (:module :contrib
+      :serial t
+      :components ((:module :db
+                     :serial t
+                     :components ((:file "db-protocol")
+                                   (:file "db-statistics")))
+                    (:module :owl
+                      :serial t
+                      :components ((:file "owl-parser")))
+                    (:module :tries
+                      :serial t
+                      :components ((:file "tries")))
+                    (:module :turtle
+                      :serial t
+                      :components ((:file "package")
+                                    (:file "utilities")
+                                    (:file "lexer")
+                                    (:file "ast")
+                                    (:file "target")
+                                    (:file "grammar")
+                                    (:file "turtle")
+                                    (:file "test")))
+                    
+                                      
+    ))
 
 
 ;;; --------------------------------------------------------------------------------------
@@ -202,8 +232,8 @@
       (load asd))
     (asdf:operate (if compilep 'asdf:compile-op 'asdf:load-op) system)))
 
-(defun cl-user::make-wilbur (&key (compilep nil))
-  (cl-user::build-system :wilbur :compilep compilep))
+(defun cl-user::make-templeton (&key (compilep nil))
+  (cl-user::build-system :templeton :compilep compilep))
 
 ;;; comment out if you want triples to be structs instead of class instances
 (pushnew :wilbur-triples-as-classes *features*)
