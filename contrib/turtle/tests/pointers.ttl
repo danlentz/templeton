@@ -1,0 +1,218 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+<file:///Volumes/resource/data/base/pointers.rdf#ByteOffsetCompoundPointer>
+    a rdfs:Class ;
+    rdfs:comment "Pointer to a byte range with a defined start and a byte offset from there."@en ;
+    rdfs:label "Byte Offset Compound Pointer"@en ;
+    rdfs:subClassOf <file:///Volumes/resource/data/base/pointers.rdf#CompoundPointer> .
+
+<file:///Volumes/resource/data/base/pointers.rdf#ByteOffsetPointer>
+    a rdfs:Class ;
+    rdfs:comment "Single pointer using a byte offset from the start of the reference."@en ;
+    rdfs:label "Byte Offset Pointer"@en ;
+    rdfs:subClassOf <file:///Volumes/resource/data/base/pointers.rdf#OffsetPointer> .
+
+<file:///Volumes/resource/data/base/pointers.rdf#ByteSnippetCompoundPointer>
+    a rdfs:Class ;
+    rdfs:comment "Pointer to a range with a defined start and a byte snippet from there."@en ;
+    rdfs:label "Byte Snippet Compound Pointer"@en ;
+    rdfs:subClassOf <file:///Volumes/resource/data/base/pointers.rdf#CompoundPointer> .
+
+<file:///Volumes/resource/data/base/pointers.rdf#CSSSelectorPointer>
+    a rdfs:Class ;
+    rdfs:comment "Single pointer using a CSS selector."@en ;
+    rdfs:label "CSS selector Pointer"@en ;
+    rdfs:subClassOf <file:///Volumes/resource/data/base/pointers.rdf#ExpressionPointer> .
+
+<file:///Volumes/resource/data/base/pointers.rdf#CharOffsetCompoundPointer>
+    a rdfs:Class ;
+    rdfs:comment "Pointer to a char range with a defined start and a char offset from there."@en ;
+    rdfs:label "Char Offset Compound Pointer"@en ;
+    rdfs:subClassOf <file:///Volumes/resource/data/base/pointers.rdf#CompoundPointer> .
+
+<file:///Volumes/resource/data/base/pointers.rdf#CharOffsetPointer>
+    a rdfs:Class ;
+    rdfs:comment "Single pointer using a character offset from the start of the reference."@en ;
+    rdfs:label "Char Offset Pointer"@en ;
+    rdfs:subClassOf <file:///Volumes/resource/data/base/pointers.rdf#OffsetPointer> .
+
+<file:///Volumes/resource/data/base/pointers.rdf#CharSnippetCompoundPointer>
+    a rdfs:Class ;
+    rdfs:comment "Pointer to a range with a defined start and a character snippet from there."@en ;
+    rdfs:label "Char Snippet Compound Pointer"@en ;
+    rdfs:subClassOf <file:///Volumes/resource/data/base/pointers.rdf#CompoundPointer> .
+
+<file:///Volumes/resource/data/base/pointers.rdf#CompoundPointer>
+    a rdfs:Class ;
+    rdfs:comment "An abstract method made of a pair of pointers to a defined section to be subclassed for extensibility."@en ;
+    rdfs:label "Compound Pointer"@en ;
+    rdfs:subClassOf <file:///Volumes/resource/data/base/pointers.rdf#Pointer> .
+
+<file:///Volumes/resource/data/base/pointers.rdf#EquivalentPointers>
+    a rdfs:Class ;
+    rdfs:comment "Group of equivalent pointers that point to the same places."@en ;
+    rdfs:label "Equivalent Pointers"@en ;
+    rdfs:subClassOf <file:///Volumes/resource/data/base/pointers.rdf#PointersGroup> .
+
+<file:///Volumes/resource/data/base/pointers.rdf#ExpressionPointer>
+    a rdfs:Class ;
+    rdfs:comment "Generic single pointer that make use of an expression language such as xPath, CSS selectors, etc."@en ;
+    rdfs:label "Expression Pointer"@en ;
+    rdfs:subClassOf <file:///Volumes/resource/data/base/pointers.rdf#SinglePointer> .
+
+<file:///Volumes/resource/data/base/pointers.rdf#LineCharPointer>
+    a rdfs:Class ;
+    rdfs:comment "Single pointer using line and char numbers."@en ;
+    rdfs:label "Line-Char Pointer"@en ;
+    rdfs:subClassOf <file:///Volumes/resource/data/base/pointers.rdf#SinglePointer> .
+
+<file:///Volumes/resource/data/base/pointers.rdf#OffsetPointer>
+    a rdfs:Class ;
+    rdfs:comment "Generic single pointer based on an offset."@en ;
+    rdfs:label "Offset Pointer"@en ;
+    rdfs:subClassOf <file:///Volumes/resource/data/base/pointers.rdf#SinglePointer> .
+
+<file:///Volumes/resource/data/base/pointers.rdf#Pointer>
+    a rdfs:Class ;
+    rdfs:comment "Abstract Pointer to be subclassed for extensibility."@en ;
+    rdfs:label "Pointer"@en .
+
+<file:///Volumes/resource/data/base/pointers.rdf#PointersGroup>
+    a rdfs:Class ;
+    rdfs:comment "Generic container for a group of Pointers"@en ;
+    rdfs:label "Pointers Group"@en ;
+    rdfs:subClassOf <file:///Volumes/resource/data/base/pointers.rdf#Pointer> .
+
+<file:///Volumes/resource/data/base/pointers.rdf#RelatedPointers>
+    a rdfs:Class ;
+    rdfs:comment "Group of related pointers you use together for some purpose."@en ;
+    rdfs:label "Related Pointers"@en ;
+    rdfs:subClassOf <file:///Volumes/resource/data/base/pointers.rdf#PointersGroup> .
+
+<file:///Volumes/resource/data/base/pointers.rdf#SinglePointer>
+    a rdfs:Class ;
+    rdfs:comment "Abstract pointer to a single point to be subclassed for extensibility."@en ;
+    rdfs:label "Single Pointer"@en ;
+    rdfs:subClassOf <file:///Volumes/resource/data/base/pointers.rdf#Pointer> .
+
+<file:///Volumes/resource/data/base/pointers.rdf#StartEndPointer>
+    a rdfs:Class ;
+    rdfs:comment "Compound pointer to a range with a start and an end point."@en ;
+    rdfs:label "Start-End Pointer"@en ;
+    rdfs:subClassOf <file:///Volumes/resource/data/base/pointers.rdf#CompoundPointer> .
+
+<file:///Volumes/resource/data/base/pointers.rdf#XMLNamespace>
+    a rdfs:Class ;
+    rdfs:comment "An XML Namespace."@en ;
+    rdfs:label "XMLNamespace"@en .
+
+<file:///Volumes/resource/data/base/pointers.rdf#XPathPointer>
+    a rdfs:Class ;
+    rdfs:comment "Single pointer using an XPath expression."@en ;
+    rdfs:label "XPath Pointer"@en ;
+    rdfs:subClassOf <file:///Volumes/resource/data/base/pointers.rdf#ExpressionPointer> .
+
+<file:///Volumes/resource/data/base/pointers.rdf#XPointerPointer>
+    a rdfs:Class ;
+    rdfs:comment "Single pointer using an XPointer expression."@en ;
+    rdfs:label "XPointer Pointer"@en ;
+    rdfs:subClassOf <file:///Volumes/resource/data/base/pointers.rdf#XPathPointer> .
+
+<file:///Volumes/resource/data/base/pointers.rdf#byteOffset>
+    a rdf:Property ;
+    rdfs:comment "Number of bytes counting from the start point." ;
+    rdfs:domain <file:///Volumes/resource/data/base/pointers.rdf#ByteOffsetCompoundPointer> ;
+    rdfs:label "byte offset" ;
+    rdfs:range <http://www.w3.org/2001/XMLSchema#positiveInteger> .
+
+<file:///Volumes/resource/data/base/pointers.rdf#charNumber>
+    a rdf:Property ;
+    rdfs:comment """Char number within a line starting at one.
+		"""@en ;
+    rdfs:domain <file:///Volumes/resource/data/base/pointers.rdf#LineCharPointer> ;
+    rdfs:label "char number"@en ;
+    rdfs:range <http://www.w3.org/2001/XMLSchema#positiveInteger> .
+
+<file:///Volumes/resource/data/base/pointers.rdf#charOffset>
+    a rdf:Property ;
+    rdfs:comment "Number of characters counting from the start point."@en ;
+    rdfs:domain <file:///Volumes/resource/data/base/pointers.rdf#CharOffsetCompoundPointer> ;
+    rdfs:label "char offset"@en ;
+    rdfs:range <http://www.w3.org/2001/XMLSchema#positiveInteger> .
+
+<file:///Volumes/resource/data/base/pointers.rdf#endPointer>
+    a rdf:Property ;
+    rdfs:comment "Pointer to the end point of the range."@en ;
+    rdfs:domain <file:///Volumes/resource/data/base/pointers.rdf#StartEndPointer> ;
+    rdfs:label "end pointer"@en ;
+    rdfs:range <file:///Volumes/resource/data/base/pointers.rdf#SinglePointer> .
+
+<file:///Volumes/resource/data/base/pointers.rdf#expression>
+    a rdf:Property ;
+    rdfs:comment "Expressions, such as xPath or CSS selectors, that identify points."@en ;
+    rdfs:domain <file:///Volumes/resource/data/base/pointers.rdf#ExpressionPointer> ;
+    rdfs:label "expression"@en ;
+    rdfs:range rdfs:Literal .
+
+<file:///Volumes/resource/data/base/pointers.rdf#groupPointer>
+    a rdf:Property ;
+    rdfs:comment "A Pointer that is part of a Group"@en ;
+    rdfs:domain <file:///Volumes/resource/data/base/pointers.rdf#PointersGroup> ;
+    rdfs:label "groupPointer"@en ;
+    rdfs:range <file:///Volumes/resource/data/base/pointers.rdf#Pointer> .
+
+<file:///Volumes/resource/data/base/pointers.rdf#lineNumber>
+    a rdf:Property ;
+    rdfs:comment """Line number within the reference starting at one.
+		"""@en ;
+    rdfs:domain <file:///Volumes/resource/data/base/pointers.rdf#LineCharPointer> ;
+    rdfs:label "line number"@en ;
+    rdfs:range <http://www.w3.org/2001/XMLSchema#positiveInteger> .
+
+<file:///Volumes/resource/data/base/pointers.rdf#namespace>
+    a rdf:Property ;
+    rdfs:comment "The namespace being used for the XPath expression."@en ;
+    rdfs:domain <file:///Volumes/resource/data/base/pointers.rdf#XPathPointer> ;
+    rdfs:label "namespace"@en ;
+    rdfs:range <file:///Volumes/resource/data/base/pointers.rdf#XMLNamespace> .
+
+<file:///Volumes/resource/data/base/pointers.rdf#namespaceName>
+    a rdf:Property ;
+    rdfs:comment "The namespace name being used for an XML Namespace."@en ;
+    rdfs:domain <file:///Volumes/resource/data/base/pointers.rdf#XMLNamespace> ;
+    rdfs:label "namespace name"@en .
+
+<file:///Volumes/resource/data/base/pointers.rdf#offset>
+    a rdf:Property ;
+    rdfs:comment "Offset from the start of the reference."@en ;
+    rdfs:domain <file:///Volumes/resource/data/base/pointers.rdf#OffsetPointer> ;
+    rdfs:label "offset"@en ;
+    rdfs:range <http://www.w3.org/2001/XMLSchema#positiveInteger> .
+
+<file:///Volumes/resource/data/base/pointers.rdf#prefix>
+    a rdf:Property ;
+    rdfs:comment "The namespace prefix being used for an XML Namespace."@en ;
+    rdfs:domain <file:///Volumes/resource/data/base/pointers.rdf#XMLNamespace> ;
+    rdfs:label "prefix"@en .
+
+<file:///Volumes/resource/data/base/pointers.rdf#reference>
+    a rdf:Property ;
+    rdfs:comment "Scope within which a single pointer operates."@en ;
+    rdfs:domain <file:///Volumes/resource/data/base/pointers.rdf#SinglePointer> ;
+    rdfs:label "reference"@en .
+
+<file:///Volumes/resource/data/base/pointers.rdf#startPointer>
+    a rdf:Property ;
+    rdfs:comment "Pointer to the start point of the range in a compound pointer."@en ;
+    rdfs:domain <file:///Volumes/resource/data/base/pointers.rdf#CompoundPointer> ;
+    rdfs:label "start pointer"@en ;
+    rdfs:range <file:///Volumes/resource/data/base/pointers.rdf#SinglePointer> .
+
+<file:///Volumes/resource/data/base/pointers.rdf#version>
+    a rdf:Property ;
+    rdfs:comment "Version for the expression language being used."@en ;
+    rdfs:domain <file:///Volumes/resource/data/base/pointers.rdf#ExpressionPointer> ;
+    rdfs:label "version"@en ;
+    rdfs:range rdfs:Literal .
+

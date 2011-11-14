@@ -1,0 +1,70 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+<http://purl.org/rss/1.0/channel>
+    a rdfs:Class ;
+    rdfs:comment "An RSS information channel." ;
+    rdfs:isDefinedBy <http://purl.org/rss/1.0/> ;
+    rdfs:label "Channel" .
+
+<http://purl.org/rss/1.0/description>
+    a rdf:Property ;
+    rdfs:comment "A short text description of the subject." ;
+    rdfs:isDefinedBy <http://purl.org/rss/1.0/> ;
+    rdfs:label "Description" ;
+    rdfs:subPropertyOf dc:description .
+
+<http://purl.org/rss/1.0/image>
+    a rdfs:Class ;
+    rdfs:comment "An RSS image." ;
+    rdfs:isDefinedBy <http://purl.org/rss/1.0/> ;
+    rdfs:label "Image" .
+
+<http://purl.org/rss/1.0/item>
+    a rdfs:Class ;
+    rdfs:comment "An RSS item." ;
+    rdfs:isDefinedBy <http://purl.org/rss/1.0/> ;
+    rdfs:label "Item" .
+
+<http://purl.org/rss/1.0/items>
+    a rdf:Property ;
+    rdfs:comment "Points to a list of rss:item elements that are members of the subject channel." ;
+    rdfs:isDefinedBy <http://purl.org/rss/1.0/> ;
+    rdfs:label "Items" .
+
+<http://purl.org/rss/1.0/link>
+    a rdf:Property ;
+    rdfs:comment "The URL to which an HTML rendering of the subject will link." ;
+    rdfs:isDefinedBy <http://purl.org/rss/1.0/> ;
+    rdfs:label "Link" ;
+    rdfs:subPropertyOf dc:identifier .
+
+<http://purl.org/rss/1.0/name>
+    a rdf:Property ;
+    rdfs:comment "The text input field's (variable) name." ;
+    rdfs:isDefinedBy <http://purl.org/rss/1.0/> ;
+    rdfs:label "Name" .
+
+<http://purl.org/rss/1.0/textinput>
+    a rdfs:Class ;
+    rdfs:comment "An RSS text input." ;
+    rdfs:isDefinedBy <http://purl.org/rss/1.0/> ;
+    rdfs:label "Text Input" .
+
+<http://purl.org/rss/1.0/title>
+    a rdf:Property ;
+    rdfs:comment "A descriptive title for the channel." ;
+    rdfs:isDefinedBy <http://purl.org/rss/1.0/> ;
+    rdfs:label "Title" ;
+    rdfs:subPropertyOf dc:title .
+
+<http://purl.org/rss/1.0/url>
+    a rdf:Property ;
+    rdfs:comment "The URL of the image to used in the 'src' attribute of the channel's image tag when rendered as HTML." ;
+    rdfs:isDefinedBy <http://purl.org/rss/1.0/> ;
+    rdfs:label "URL" ;
+    rdfs:subPropertyOf dc:identifier .
+

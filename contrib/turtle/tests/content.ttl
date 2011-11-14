@@ -1,0 +1,138 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix : <http://www.w3.org/2007/content#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+<http://www.w3.org/2007/content>
+    a owl:Ontology ;
+    owl:versionInfo "Copyright © 2008 World Wide Web Consortium"^^xsd:string .
+
+:Base64Content
+    a rdfs:Class ;
+    rdfs:comment "The base64 encoded content (can be used for all types of content)"@en ;
+    rdfs:label "Base64 content"@en ;
+    rdfs:subClassOf :Content .
+
+:Content
+    a rdfs:Class ;
+    rdfs:comment "The message body content"@en ;
+    rdfs:label "Content"@en .
+
+:DoctypeDecl
+    a rdfs:Class ;
+    rdfs:comment "The document type declaration"@en ;
+    rdfs:label "Document type declaration"@en .
+
+:TextContent
+    a rdfs:Class ;
+    rdfs:comment "The text content (can be used for non-XML-wellformed text resources)"@en ;
+    rdfs:label "Text content"@en ;
+    rdfs:subClassOf :Content .
+
+:XMLContent
+    a rdfs:Class ;
+    rdfs:comment "The XML content (can be used for XML-wellformed resource)"@en ;
+    rdfs:label "XML content"@en ;
+    rdfs:subClassOf :Content .
+
+:XMLDecl
+    a rdfs:Class ;
+    rdfs:comment "The XML declaration"@en ;
+    rdfs:label "XML declaration"@en .
+
+:bytes
+    a rdf:Property ;
+    rdfs:comment "The Base64 encoded byte sequence of the content"@en ;
+    rdfs:domain :Base64Content ;
+    rdfs:label "Base64 encoded byte sequence"@en .
+
+:characterEncoding
+    a rdf:Property ;
+    rdfs:comment """The character encoding used create a character sequence from a byte
+    sequence or vice versa"""@en ;
+    rdfs:label "Character encoding"@en .
+
+:chars
+    a rdf:Property ;
+    rdfs:comment "The character sequence of the content"@en ;
+    rdfs:domain :TextContent ;
+    rdfs:label "Character sequence"@en .
+
+:doctypeDecl
+    a rdf:Property ;
+    rdfs:comment "The document type declaration"@en ;
+    rdfs:domain :XMLContent ;
+    rdfs:label "Document type declaration"@en ;
+    rdfs:range :DoctypeDecl .
+
+:doctypeName
+    a rdf:Property ;
+    rdfs:comment "The document type name"@en ;
+    rdfs:domain :DoctypeDecl ;
+    rdfs:label "Document type name"@en ;
+    rdfs:range rdfs:Literal .
+
+:internalSubset
+    a rdf:Property ;
+    rdfs:comment "The internal subset of the DTD"^^xsd:string ;
+    rdfs:domain :DoctypeDecl ;
+    rdfs:label "Internal DTD subset"^^xsd:string ;
+    rdfs:range rdfs:Literal .
+
+:publicId
+    a rdf:Property ;
+    rdfs:comment "The document type declarations's public identifier"@en ;
+    rdfs:domain :DoctypeDecl ;
+    rdfs:label "Public ID"@en ;
+    rdfs:range rdfs:Literal .
+
+:systemId
+    a rdf:Property ;
+    rdfs:comment "The document type declarations's system identifier (typed: xsd:anyURI)"@en ;
+    rdfs:domain :DoctypeDecl ;
+    rdfs:label "System ID"@en ;
+    rdfs:range rdfs:Literal .
+
+:xmlDecl
+    a rdf:Property ;
+    rdfs:comment "The XML declaration"@en ;
+    rdfs:domain :XMLContent ;
+    rdfs:label "XML declaration"@en ;
+    rdfs:range :XMLDecl .
+
+:xmlEncoding
+    a rdf:Property ;
+    rdfs:comment "The XML character encoding"@en ;
+    rdfs:domain :XMLDecl ;
+    rdfs:label "XML character encoding"@en ;
+    rdfs:range rdfs:Literal .
+
+:xmlLeadingMisc
+    a rdf:Property ;
+    rdfs:comment "The XML content preceding the document type declaration"@en ;
+    rdfs:domain :XMLContent ;
+    rdfs:label "XML leading misc"@en ;
+    rdfs:range rdfs:XMLLiteral .
+
+:xmlRest
+    a rdf:Property ;
+    rdfs:comment "The XML content following the document type declaration"@en ;
+    rdfs:domain :XMLContent ;
+    rdfs:label "XML rest"@en ;
+    rdfs:range rdfs:XMLLiteral .
+
+:xmlStandalone
+    a rdf:Property ;
+    rdfs:comment "The XML standalone document declaration"@en ;
+    rdfs:domain :XMLDecl ;
+    rdfs:label "XML standalone document declaration"@en ;
+    rdfs:range rdfs:Literal .
+
+:xmlVersion
+    a rdf:Property ;
+    rdfs:comment "The XML version"@en ;
+    rdfs:domain :XMLDecl ;
+    rdfs:label "XML version"@en ;
+    rdfs:range rdfs:Literal .
+
