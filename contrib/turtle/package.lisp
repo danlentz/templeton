@@ -5,7 +5,7 @@
 (in-package :cl-user)
 
 
-(defpackage :gs.ebu.wilbur.turtle
+(defpackage :wilbur.turtle
   (:nicknames :ttl)
   (:use :common-lisp
     :named-readtables

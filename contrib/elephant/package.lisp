@@ -1,0 +1,56 @@
+;;; -*- mode: common-lisp;   common-lisp-style: modern;    coding: utf-8; -*-
+;;;
+
+(in-package :cl-user)
+
+(defpackage "_" (:use))
+
+
+(DEFPACKAGE #:TEMPLETON
+(:SHADOWING-IMPORT-FROM #:WILBUR #:GET-VALUE)
+  (:USE #:ELEPHANT #:HU.DWIM.STEFIL #:COMMON-LISP #:WILBUR #:HU.DWIM.DEF)  
+  (:EXPORT #:*GRAPHS*
+    #:ALL
+    #:ALL-STORABLE-GRAPHS
+    #:CLEAR-CACHE
+    #:CLEAR-TOUCHED
+    #:COLLECT-UNTOUCHED
+    #:COMMIT-GRAPH
+    #:DB-OF
+    #:DROP-GRAPH
+    #:DROP-ALL-STORABLE-GRAPHS
+    #:DROP-CACHED-OBJECT
+    #:FIND-GRAPH
+    #:GET-CACHE-ENTRIES
+    #:GET-PHASH
+    #:GET-PHASH*
+    #:GRAPH-CONTAINER
+    #:IMPORT-GRAPH
+    #:LOAD-SCHEMA
+    #:LOOKUP-CACHED-OBJECT
+    #:MAKE-GRAPH
+    #:MAKE-PHASH
+    #:MAKE-PINDEX
+    #:MAP
+    #:MAP-PHASH
+    #:MAP-SET
+    #:NAMED-GRAPH
+    #:NAMED-GRAPH-DB
+    #:PHASH
+    #:PHASH-HELP
+    #:PHASH-MAP
+    #:PHASH-SIZE
+    #:PINDEX
+    #:PINDEX-MAP
+    #:PUT-GRAPH
+    #:PUT-PHASH
+    #:REGISTER-OBJECT
+    #:REM-PHASH
+    #:RUN-SNAPSHOT-TESTS
+    #:SNAPSHOT-COMMIT
+    #:SNAPSHOT-RESTORE
+    #:SNAPSHOT-ROOT
+    #:SNAPSHOT-SET
+    #:STORABLE-GRAPH
+    #:TOUCH
+    #:UNREGISTER-OBJECT))

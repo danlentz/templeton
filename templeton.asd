@@ -161,7 +161,13 @@
   :depends-on (#+mcl :de.setf.utility.bsd
                 #+sbcl :usocket
                 :elephant
-                )
+                :named-readtables
+                :local-time
+                :cl-yacc
+                :unicly
+                :hu.dwim.def
+                :hu.dwim.defclass-star
+                :hu.dwim.stefil)
   :components
   ((:module :src
      :components ((:file "packages")
@@ -211,9 +217,15 @@
                                     (:file "grammar")
                                     (:file "turtle")
                                     (:file "test")))
+                    (:module :elephant
+                      :serial t
+                      :components ((:file "package")
+                                    (:file "phash")
+                                    (:file "snapshot")
+                                    (:file "node-db")))
                     
                                       
-    ))
+    )))
 
 
 ;;; --------------------------------------------------------------------------------------

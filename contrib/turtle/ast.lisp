@@ -2,7 +2,7 @@
 ;;;;;
 ;;;;; abstract syntax tree
 
-(in-package :gs.ebu.wilbur.turtle)
+(in-package :wilbur.turtle)
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

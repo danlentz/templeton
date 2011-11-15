@@ -5,7 +5,7 @@
 ;;;;;
 ;;;;; Portions Copyright © 2009 The Open University
 
-(in-package :gs.ebu.wilbur.turtle)
+(in-package :wilbur.turtle)
 
 
 (defun parse-turtle-string (turtle-string)

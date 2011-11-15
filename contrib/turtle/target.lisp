@@ -3,7 +3,7 @@
 ;;;;; still somewhat wilbur-oriented target production
 ;;;;;
 
-(in-package   :gs.ebu.wilbur.turtle)
+(in-package   :wilbur.turtle)
 
 (in-readtable extended)
 

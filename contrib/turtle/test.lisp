@@ -1,7 +1,7 @@
 ;;;;; -*- mode: lisp; syntax: common-lisp; coding: utf-8; base: 10; -*-
 ;;;;;
 
-(in-package :gs.ebu.wilbur.turtle)
+(in-package :wilbur.turtle)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; TEST-SUITE: GS.EBU.WILBUR.TURTLE 

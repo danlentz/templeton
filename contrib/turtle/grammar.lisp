@@ -6,7 +6,7 @@
 ;;; available at compile time.  For ASDF, this means the parser has to
 ;;; be in its own file, dependent on the functions in turtle.lisp
 
-(in-package :gs.ebu.wilbur.turtle)
+(in-package :wilbur.turtle)
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
