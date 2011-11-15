@@ -59,7 +59,8 @@
   (let* ((db (make-instance 'turtle-db))
           (wilbur:*db* db))
     (loop for statement in (rest turtle-ast)
-      do (logv:logv (ecase (first statement)
+      do 
+           (ecase (first statement)
                       ((:@prefix)
                         (let ((prefix (subseq (second statement)
                                         0 (- (length (second statement)) 1))))
@@ -67,7 +68,7 @@
                       ((:@base)
                         (error "@base unimplemented"))
                       ((:triples)
-                        (parse-triples db statement)))))
+                        (parse-triples db statement))))
     db))
 
 

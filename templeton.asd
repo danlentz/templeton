@@ -163,11 +163,12 @@
                 :elephant
                 :named-readtables
                 :local-time
-                :cl-yacc
+                :yacc
                 :unicly
                 :hu.dwim.def
                 :hu.dwim.defclass-star
                 :hu.dwim.stefil)
+  :serial t
   :components
   ((:module :src
      :components ((:file "packages")
@@ -222,10 +223,10 @@
                       :components ((:file "package")
                                     (:file "phash")
                                     (:file "snapshot")
-                                    (:file "node-db")))
+                                    (:file "node-db")))))
                     
                                       
-    )))
+    ))
 
 
 ;;; --------------------------------------------------------------------------------------
