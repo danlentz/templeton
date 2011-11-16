@@ -36,8 +36,8 @@ TURTLE>
 
 (defun test-file (name)
   (merge-pathnames name
-    (merge-pathnames "tests/"
-      (directory-namestring (asdf:system-definition-pathname :gs.ebu.wilbur.turtle)))))
+    (merge-pathnames "contrib/turtle/tests/"
+      (directory-namestring (truename (asdf:system-definition-pathname :templeton))))))
 
 
 (def test fixtures/ttl-source-data ()
@@ -45,15 +45,15 @@ TURTLE>
     (is (probe-file (test-file file)))))
 
 (def test parse/vann.0 ()
-  (let ((ttlsrc (read-file-to-string (test-file "vann.ttl"))))
+  (let ((ttlsrc (alexandria:read-file-into-string   (test-file "vann.ttl"))))
     (parse-turtle-string ttlsrc)))
 
 (def test parse/rss.0 ()
-  (let ((ttlsrc (read-file-to-string (test-file "rss.ttl"))))
+  (let ((ttlsrc (alexandria:read-file-into-string (test-file "rss.ttl"))))
     (is 16 (length (parse-turtle-string ttlsrc)))))
 
 (def test parse/rss.1 ()
-  (let* ((ttlsrc (read-file-to-string (test-file "rss.ttl")))
+  (let* ((ttlsrc (alexandria:read-file-into-string (test-file "rss.ttl")))
           (ttlast  (parse-turtle-string ttlsrc)))
     (is (pop ttlast) :TURTLE)
     (let ((prefixes (remove-if-not #'(lambda (sexp)
@@ -64,7 +64,7 @@ TURTLE>
         (is (find pfx prefixes :key #'second :test #'string-equal))))))
     
 (def (test :auto-call nil) parse/prefixes (ttl-file &rest prefix-list)
-  (let* ((ttlsrc (read-file-to-string (test-file ttl-file)))
+  (let* ((ttlsrc (alexandria:read-file-into-string (test-file ttl-file)))
           (ttlast  (parse-turtle-string ttlsrc)))
     (is (pop ttlast) :TURTLE)
     (let ((prefixes (remove-if-not #'(lambda (sexp)

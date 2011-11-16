@@ -9,15 +9,30 @@
 
 (in-package :templeton)
 
+(defun all-prefixes ()
+  (w:dictionary-namespaces w:*nodes*))
+
 (defvar *graphs* (make-hash-table :test 'equal))
+
+(defclass extended-db (w::edb ttl:turtle-db
+                        w::db-access-counter-mixin
+                        w::indexed-literal-db-mixin
+                        w::date-cleanup-db-mixin)
+  ()
+  (:default-initargs :index-literals-p t :blank-node-uri-prefix "_:"))
+  
+(unless w:*db*
+  (setf w:*db* (make-instance 'extended-db)))
 
 (defclass graph-container ()
   ())
 
 (defclass named-graph-db (w::interned-literal-indexed-db                      
-                          w::literal-transform-db-mixin                          
+                           w::literal-transform-db-mixin
+                           ttl:turtle-db
                           w::db-access-counter-mixin)
-  ())
+  ()
+  (:default-initargs  :blank-node-uri-prefix "_:"))
 
 (defgeneric find-graph (identifier &optional errorp))
 (defgeneric put-graph (container identifier))
@@ -80,9 +95,15 @@
 (defmethod named-graph ((id storable-graph))
   id)
 
+(defun ng (id)
+  (named-graph id))
+
 (defun named-graph-db (id)
   (db-of (named-graph id)))
-  
+
+(defun ndb (identifier)
+  (db-of (named-graph identifier)))
+
 (defgeneric commit-graph (graph-designator))
 
 (defmethod commit-graph ((g storable-graph))
@@ -93,6 +114,9 @@
 
 (defmethod commit-graph ((id w:node))
   (snapshot-commit (named-graph (w:node-uri id))))
+
+(defun commit (id)
+  (commit-graph id))
 
 (defun all (type) 
   (let (result)
@@ -105,6 +129,9 @@
 (defun all-storable-graphs ()
   (all 'storable-graph))
 
+(defun all-named-graphs ()
+  (all-storable-graphs))
+
 (defun drop-all-storable-graphs ()
   (let ((graphs  (mapcar #'car (all-storable-graphs))))
     (mapc #'ele:remove-from-root graphs)
@@ -112,6 +139,9 @@
               (remhash symbol *graphs*))
       graphs)))
 
+(defun drop-all-named-graphs ()
+  (drop-all-storable-graphs))
+  
 (defgeneric drop-graph (id))
 
 (defmethod drop-graph ((id string))
@@ -129,6 +159,7 @@
                    (w:db-load (db-of g) (princ-to-string uri) :appendp t :merge-results-p t)
                    (snapshot-commit g)
                    (setf (symbol-value (intern id "_")) g)
+                   (export (intern id "_") "_")
                    g))
 
 (defun load-schema (uri-designator)
