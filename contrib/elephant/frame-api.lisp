@@ -5,6 +5,10 @@
 (in-package :templeton)
 
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; WITH-* Bridge Macros
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 (def (with-macro* e) with-graph (node)
   (let* ((w:*db* (named-graph-db node))
           (result (-with-macro/body-)))
@@ -16,6 +20,15 @@
       (db-merge *db* node))
     (let ((result (-with-macro/body-)))
     (values result *db* nodes))))
+
+(def (with-macro e) with (graph)
+  (with-graph (graph)
+    (-with-macro/body-)))
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Named-Graph Frame API extensions
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defun make-frame (graph node &rest slot/value-pairs)
   (with-graph (graph)
