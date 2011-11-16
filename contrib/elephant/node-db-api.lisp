@@ -88,27 +88,3 @@
   (apply #'w::db-make-literal
     (append (list (named-graph-db db) string) 
       (list :property property :datatype datatype :language language))))
-
-(def (with-macro* e) with-graph (node)
-  (let* ((w:*db* (named-graph-db node))
-          (result (-with-macro/body-)))
-    (values *db* node result)))
-
-(def (with-macro* e) with-merged-graphs (&rest nodes)
-  (let ((*db* (make-instance 'extended-db :emptyp t)))
-    (dolist (node (alexandria:ensure-list nodes))
-      (db-merge *db* node))
-    (let ((result (-with-macro/body-)))
-    (values *db* nodes result))))
-
-
-
-
-
-#|
-
- (with-merged-graphs (!rdf: !skos:)
-   (pprint (own-slots !rdf:Statement))
-   (describe *db*)) 
- (!rdf:type !rdfs:isDefinedBy !rdfs:label !rdfs:subClassOf !rdfs:comment)
-|#
