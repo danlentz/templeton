@@ -148,6 +148,9 @@
 (defun all-storable-graphs ()
   (all 'storable-graph))
 
+(defun ang ()
+  (all-storable-graphs))
+
 (defun all-named-graphs ()
   (all-storable-graphs))
 

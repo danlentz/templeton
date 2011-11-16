@@ -15,7 +15,7 @@
     (db-of (setf *prefix-graph* (named-graph "ns")))))
 
 (defun commit-prefix-db ()
-  (and *prefix-graph* (commit *prefix-graph*)))
+  (commit (named-graph "ns")))
     
 (defun resolve-prefix (string)
   (or (cdr (assoc string (all-prefixes) :test 'equalp))

@@ -15,21 +15,21 @@
 
 (in-package :templeton)
 
-(export (list 'snapshot-set
-          'register-object
-          'unregister-object
-          'snapshot-root
-          'map-set
-          'snapshot-commit
-          'snapshot-restore
-          'clear-cache
-          'get-cache-entries
-          'drop-cached-object
-          'lookup-cached-object
-          'touch
-          'clear-touched
-          'collect-untouched
-          'run-snapshot-tests))
+;; (export (list 'snapshot-set
+;;           'register-object
+;;           'unregister-object
+;;           'snapshot-root
+;;           'map-set
+;;           'snapshot-commit
+;;           'snapshot-restore
+;;           'clear-cache
+;;           'get-cache-entries
+;;           'drop-cached-object
+;;           'lookup-cached-object
+;;           'touch
+;;           'clear-touched
+;;           'collect-untouched
+;;           'run-snapshot-tests))
   
 ;; (def logger snapshot ())
 ;; (unless ele:*store-controller* (ele:open-store trip:*graph-storage-space*))
@@ -308,6 +308,7 @@
 ;; Tests
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(in-suite test)
 
 (defclass snapshot-test ()
   ((slot1 :accessor slot1 :initarg :slot1)
@@ -316,10 +317,8 @@
 (defun make-stest (slot1 slot2)
   (make-instance 'snapshot-test :slot1 slot1 :slot2 slot2))
 
-
-(defun run-snapshot-tests ()
+(def test snapshot-set-basic-operations-test ()
  
-
   (let* ((set (make-instance 'snapshot-set))
 	 (hash (make-hash-table))
 	 (test1 (make-stest 1 2))
@@ -329,8 +328,7 @@
     (loop for num from 1
           for obj in (list test1 test2 test3 test4) do
       (setf (gethash num hash) obj))
-    
- ;;(:printv   
+     
     (setf (snapshot-root set) hash)
     (ele:add-to-root 'snap-test-set set)
     (snapshot-commit set)
@@ -338,19 +336,22 @@
     ;; Clear
     (setf set nil)
     (setf hash nil)
-    (elephant::flush-instance-cache ele:*store-controller*)
-    
+    (elephant::flush-instance-cache ele:*store-controller*)    
     #+sbcl (cl-user::gc)
+
     ;; Reload
-    (setf set (ele:get-from-root 'snap-test-set))
-    (setf hash (snapshot-root (ele:get-from-root 'snap-test-set)))
+    (setf set (snapshot-restore (ele:get-from-root 'snap-test-set)))
+    (is set)
+    (setf hash (snapshot-root set))
+    (is hash)
     (let ((t1 (gethash 1 hash))
 	  (t2 (gethash 2 hash))
 	  (t3 (gethash 3 hash))
 	  (t4 (gethash 4 hash)))
-      (values
-        (eq 1 (slot1 t1))  (eq 20 (slot2 t2)) (eq (slot2 t3) (slot2 t4))))))
-;)
+      (is (eq 1 (slot1 t1)))
+      (is (eq 20 (slot2 t2)))
+      (is (eq (slot2 t3) (slot2 t4))))))
+
 
 
 ;; (run-snapshot-tests)

@@ -227,6 +227,9 @@
                     (:module :prefix
                       :serial t
                       :components ((:file "prefix")))
+                    (:module :misc
+                      :serial t
+                      :components ((:file "printv")))
                     ))                                                         
     ))
 
