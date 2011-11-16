@@ -223,9 +223,11 @@
                       :components ((:file "package")
                                     (:file "phash")
                                     (:file "snapshot")
-                                    (:file "node-db")))))
-                    
-                                      
+                                    (:file "node-db")))
+                    (:module :prefix
+                      :serial t
+                      :components ((:file "prefix")))
+                    ))                                                         
     ))
 
 
