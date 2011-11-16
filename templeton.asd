@@ -223,7 +223,8 @@
                       :components ((:file "package")
                                     (:file "phash")
                                     (:file "snapshot")
-                                    (:file "node-db")))
+                                    (:file "node-db")
+                                    (:file "node-db-api")))
                     (:module :prefix
                       :serial t
                       :components ((:file "prefix")))
