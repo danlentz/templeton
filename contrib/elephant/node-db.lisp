@@ -32,7 +32,7 @@
                            ttl:turtle-db
                           w::db-access-counter-mixin)
   ()
-  (:default-initargs  :blank-node-uri-prefix "_:"))
+  (:default-initargs :emptyp t :blank-node-uri-prefix "_:"))
 
 (defgeneric find-graph (identifier &optional errorp))
 (defgeneric put-graph (container identifier))
@@ -44,10 +44,16 @@
 (defgeneric db-of (graph-designator))
 
 (defmethod (setf db-of) ((db wilbur:db) (container storable-graph))
-  (setf (snapshot-root container) db))
+;;  (register-object db container)
+  (setf (snapshot-root container) db)
+  (snapshot-commit container)
+  )
 
+#+()
 (defmethod (setf db-of) :after ((db wilbur:db) (container storable-graph))
-  (snapshot-commit container))
+  nil)
+
+;;  (snapshot-commit container))
 
 (defmethod db-of ((container storable-graph))
   (snapshot-root container))
@@ -63,7 +69,8 @@
       value
       (multiple-value-bind (value foundp) (ele:get-from-root identifier)
         (if foundp
-          value
+          (prog1 value
+            (snapshot-restore value))
           (if errorp
             (error "~A not found" identifier)
             nil))))))
@@ -117,6 +124,21 @@
 
 (defun commit (id)
   (commit-graph id))
+
+
+(defgeneric rollback-graph (graph-designator))
+
+(defmethod rollback-graph ((g storable-graph))
+  (snapshot-restore g))
+
+(defmethod rollback-graph ((id string))
+  (snapshot-restore (named-graph id)))
+
+(defmethod rollback-graph ((id w:node))
+  (snapshot-restore (named-graph (w:node-uri id))))
+
+(defun rollback (id)
+  (rollback-graph id))
 
 (defun all (type) 
   (let (result)
