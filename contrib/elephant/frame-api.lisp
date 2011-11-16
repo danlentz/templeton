@@ -51,8 +51,10 @@
 (defun frame-cbd (graph node)
   (db-find-cbd (named-graph-db graph) node))
 
-(defun cbd (node)
-  (db-find-cbd w:*db* node))
+(defun cbd (major &optional minor)
+  (if minor
+    (frame-cbd major minor)
+    (db-find-cbd *db* major)))
   
 #|
 
