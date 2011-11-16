@@ -4,9 +4,6 @@
 
 (in-package :templeton)
 
-;; (defvar *storable-nodes* nil)
-;; (get-from-root '*storable-nodes*)
-
 (defclass storable-node (node)
   ((w::uri :transient t)
     (last-uri :initarg :last-uri :index t :accessor last-uri-of))
