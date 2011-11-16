@@ -4,7 +4,6 @@
 
 (in-package :templeton)
 
-
 ;; (defvar *storable-nodes* nil)
 ;; (get-from-root '*storable-nodes*)
 
@@ -30,7 +29,16 @@
 (defun dictionary-clear ()
   (setf *nodes* (make-instance 'storable-node-dictionary)))
 
+(defun dictionary-size (&optional (dict *nodes*))
+  (hash-table-size (slot-value dict 'w::nodes)))
 
+(defmethod initialize-instance :after ((dict storable-node-dictionary) &rest args)
+  (declare (ignore args))
+  (let ((nodes
+          (or (slot-value dict 'w::nodes)
+            (setf (slot-value dict 'w::nodes) (make-hash-table :test 'equal)))))
+    (map-class #'(lambda (x) (setf (gethash (node-uri x) nodes) x))
+      (find-class 'storable-node))))
 
 (when (and ele:*store-controller* (not (typep *nodes* 'storable-node-dictionary)))
   (dictionary-clear))
