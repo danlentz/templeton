@@ -26,6 +26,8 @@
       (cdr (assoc string (merge-resolved-prefixes) :test 'equalp)))))
 
 (defun all-resolved-prefixes ()
+  (unless (assoc "vann" (all-prefixes) :test 'equalp)
+    (add-namespace "vann" "http://purl.org/vocab/vann/"))
   (let (result)
     (dolist (triple (db-query (prefix-db) nil !rdf:type !owl:Ontology))
       (let ((pfx (w:db-get-values  (prefix-db) 
@@ -39,7 +41,7 @@
 
 (defun merge-resolved-prefixes ()
   (let ((p (all-prefixes)))
-    (dolist (rp  (all-resolved-prefixes))
+    (dolist (rp (all-resolved-prefixes))
       (unless (assoc (car rp) p :test 'equalp)
         (add-namespace (car rp) (cdr rp)))))
   (all-prefixes))
