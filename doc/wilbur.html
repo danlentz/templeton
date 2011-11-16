@@ -1,0 +1,6917 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html> 
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <title>WILBUR - salutations!</title>
+  <style type="text/css">
+  pre { padding:5px; background-color:#e0e0e0 }
+  h3, h4 { text-decoration: underline; }
+  a { text-decoration: none; padding: 1px 2px 1px 2px; }
+  a:visited { text-decoration: none; padding: 1px 2px 1px 2px; }
+  a:hover { text-decoration: none; padding: 1px 1px 1px 1px; border: 1px solid #000000; } 
+  a:focus { text-decoration: none; padding: 1px 2px 1px 2px; border: none; }
+  a.none { text-decoration: none; padding: 0; }
+  a.none:visited { text-decoration: none; padding: 0; } 
+  a.none:hover { text-decoration: none; border: none; padding: 0; } 
+  a.none:focus { text-decoration: none; border: none; padding: 0; } 
+  a.noborder { text-decoration: none; padding: 0; } 
+  a.noborder:visited { text-decoration: none; padding: 0; } 
+  a.noborder:hover { text-decoration: none; border: none; padding: 0; } 
+  a.noborder:focus { text-decoration: none; border: none; padding: 0; }  
+  pre.none { padding:5px; background-color:#ffffff }
+  </style>
+</head>
+
+<body bgcolor=white>
+
+<h2> WILBUR - salutations!</h2>
+
+<blockquote>
+<br>&nbsp;<br><h3><a name=abstract class=none>Abstract</a></h3>
+
+The code comes with
+a <a
+href="http://www.opensource.org/licenses/bsd-license.php">BSD-style
+license</a> so you can basically do with it whatever you want.
+
+<p>
+<font color=red>Download shortcut:</font> <a href="http://weitz.de/files/wilbur.tar.gz">http://weitz.de/files/wilbur.tar.gz</a>.
+</blockquote>
+
+<br>&nbsp;<br><h3><a class=none name="contents">Contents</a></h3>
+<ol>
+  <li><a href="#download">Download</a>
+  <li><a href="#dictionary">The WILBUR dictionary</a>
+    <ol>
+      <li><a href="#*current-parser*"><code>*current-parser*</code></a>
+      <li><a href="#*db*"><code>*db*</code></a>
+      <li><a href="#*name-reader*"><code>*name-reader*</code></a>
+      <li><a href="#*nodes*"><code>*nodes*</code></a>
+      <li><a href="#-daml-first-uri-"><code>-daml-first-uri-</code></a>
+      <li><a href="#-daml-list-uri-"><code>-daml-list-uri-</code></a>
+      <li><a href="#-daml-nil-uri-"><code>-daml-nil-uri-</code></a>
+      <li><a href="#-daml-rest-uri-"><code>-daml-rest-uri-</code></a>
+      <li><a href="#-owl-first-uri-"><code>-owl-first-uri-</code></a>
+      <li><a href="#-owl-imports-uri-"><code>-owl-imports-uri-</code></a>
+      <li><a href="#-owl-list-uri-"><code>-owl-list-uri-</code></a>
+      <li><a href="#-owl-nil-uri-"><code>-owl-nil-uri-</code></a>
+      <li><a href="#-owl-rest-uri-"><code>-owl-rest-uri-</code></a>
+      <li><a href="#-rdf-about-uri-"><code>-rdf-about-uri-</code></a>
+      <li><a href="#-rdf-abouteach-uri-"><code>-rdf-abouteach-uri-</code></a>
+      <li><a href="#-rdf-abouteachprefix-uri-"><code>-rdf-abouteachprefix-uri-</code></a>
+      <li><a href="#-rdf-alt-uri-"><code>-rdf-alt-uri-</code></a>
+      <li><a href="#-rdf-attr-map-"><code>-rdf-attr-map-</code></a>
+      <li><a href="#-rdf-attrs-"><code>-rdf-attrs-</code></a>
+      <li><a href="#-rdf-bag-uri-"><code>-rdf-bag-uri-</code></a>
+      <li><a href="#-rdf-bagid-uri-"><code>-rdf-bagid-uri-</code></a>
+      <li><a href="#-rdf-datatype-uri-"><code>-rdf-datatype-uri-</code></a>
+      <li><a href="#-rdf-description-uri-"><code>-rdf-description-uri-</code></a>
+      <li><a href="#-rdf-id-uri-"><code>-rdf-id-uri-</code></a>
+      <li><a href="#-rdf-li-uri-"><code>-rdf-li-uri-</code></a>
+      <li><a href="#-rdf-nodeid-uri-"><code>-rdf-nodeid-uri-</code></a>
+      <li><a href="#-rdf-object-uri-"><code>-rdf-object-uri-</code></a>
+      <li><a href="#-rdf-parsetype-uri-"><code>-rdf-parsetype-uri-</code></a>
+      <li><a href="#-rdf-predicate-uri-"><code>-rdf-predicate-uri-</code></a>
+      <li><a href="#-rdf-rdf-uri-"><code>-rdf-rdf-uri-</code></a>
+      <li><a href="#-rdf-resource-uri-"><code>-rdf-resource-uri-</code></a>
+      <li><a href="#-rdf-seq-uri-"><code>-rdf-seq-uri-</code></a>
+      <li><a href="#-rdf-statement-uri-"><code>-rdf-statement-uri-</code></a>
+      <li><a href="#-rdf-subject-uri-"><code>-rdf-subject-uri-</code></a>
+      <li><a href="#-rdf-type-uri-"><code>-rdf-type-uri-</code></a>
+      <li><a href="#-rdf-uri-"><code>-rdf-uri-</code></a>
+      <li><a href="#-rdfs-class-uri-"><code>-rdfs-class-uri-</code></a>
+      <li><a href="#-rdfs-comment-uri-"><code>-rdfs-comment-uri-</code></a>
+      <li><a href="#-rdfs-constraintproperty-uri-"><code>-rdfs-constraintproperty-uri-</code></a>
+      <li><a href="#-rdfs-constraintresource-uri-"><code>-rdfs-constraintresource-uri-</code></a>
+      <li><a href="#-rdfs-container-uri-"><code>-rdfs-container-uri-</code></a>
+      <li><a href="#-rdfs-domain-uri-"><code>-rdfs-domain-uri-</code></a>
+      <li><a href="#-rdfs-isdefinedby-uri-"><code>-rdfs-isdefinedby-uri-</code></a>
+      <li><a href="#-rdfs-label-uri-"><code>-rdfs-label-uri-</code></a>
+      <li><a href="#-rdfs-literal-uri-"><code>-rdfs-literal-uri-</code></a>
+      <li><a href="#-rdfs-range-uri-"><code>-rdfs-range-uri-</code></a>
+      <li><a href="#-rdfs-resource-uri-"><code>-rdfs-resource-uri-</code></a>
+      <li><a href="#-rdfs-seealso-uri-"><code>-rdfs-seealso-uri-</code></a>
+      <li><a href="#-rdfs-subclassof-uri-"><code>-rdfs-subclassof-uri-</code></a>
+      <li><a href="#-rdfs-subpropertyof-uri-"><code>-rdfs-subpropertyof-uri-</code></a>
+      <li><a href="#-rdfs-uri-"><code>-rdfs-uri-</code></a>
+      <li><a href="#-whitespace-chars-"><code>-whitespace-chars-</code></a>
+      <li><a href="#-xml-lang-attr-"><code>-xml-lang-attr-</code></a>
+      <li><a href="#about-and-id-both-present"><code>about-and-id-both-present</code></a>
+      <li><a href="#about-and-nodeid-both-present"><code>about-and-nodeid-both-present</code></a>
+      <li><a href="#add-namespace"><code>add-namespace</code></a>
+      <li><a href="#add-triple"><code>add-triple</code></a>
+      <li><a href="#add-value"><code>add-value</code></a>
+      <li><a href="#all-values"><code>all-values</code></a>
+      <li><a href="#attach-to-parent"><code>attach-to-parent</code></a>
+      <li><a href="#blank-node-db-mixin"><code>blank-node-db-mixin</code></a>
+      <li><a href="#char-content"><code>char-content</code></a>
+      <li><a href="#close-rdf-element"><code>close-rdf-element</code></a>
+      <li><a href="#close-tag"><code>close-tag</code></a>
+      <li><a href="#collapse-whitespace"><code>collapse-whitespace</code></a>
+      <li><a href="#collect-using-fsa"><code>collect-using-fsa</code></a>
+      <li><a href="#comma-separated"><code>comma-separated</code></a>
+      <li><a href="#comment"><code>comment</code></a>
+      <li><a href="#container-required"><code>container-required</code></a>
+      <li><a href="#daml-cons"><code>daml-cons</code></a>
+      <li><a href="#daml-list"><code>daml-list</code></a>
+      <li><a href="#date-cleanup-db-mixin"><code>date-cleanup-db-mixin</code></a>
+      <li><a href="#db"><code>db</code></a>
+      <li><a href="#db-access-counter-mixin"><code>db-access-counter-mixin</code></a>
+      <li><a href="#db-access-stats"><code>db-access-stats</code></a>
+      <li><a href="#db-add-triple"><code>db-add-triple</code></a>
+      <li><a href="#db-blank-node-uri"><code>db-blank-node-uri</code></a>
+      <li><a href="#db-blank-node-uri-p"><code>db-blank-node-uri-p</code></a>
+      <li><a href="#db-clear"><code>db-clear</code></a>
+      <li><a href="#db-clear-reasoner-cache"><code>db-clear-reasoner-cache</code></a>
+      <li><a href="#db-del-source"><code>db-del-source</code></a>
+      <li><a href="#db-del-triple"><code>db-del-triple</code></a>
+      <li><a href="#db-find-cbd"><code>db-find-cbd</code></a>
+      <li><a href="#db-find-source-desc"><code>db-find-source-desc</code></a>
+      <li><a href="#db-get-values"><code>db-get-values</code></a>
+      <li><a href="#db-index-literals"><code>db-index-literals</code></a>
+      <li><a href="#db-index-literals-p"><code>db-index-literals-p</code></a>
+      <li><a href="#db-index-stats"><code>db-index-stats</code></a>
+      <li><a href="#db-load"><code>db-load</code></a>
+      <li><a href="#db-load-using-source"><code>db-load-using-source</code></a>
+      <li><a href="#db-make-triple"><code>db-make-triple</code></a>
+      <li><a href="#db-match-literals"><code>db-match-literals</code></a>
+      <li><a href="#db-merge"><code>db-merge</code></a>
+      <li><a href="#db-node-properties-partitioned"><code>db-node-properties-partitioned</code></a>
+      <li><a href="#db-node-type-p"><code>db-node-type-p</code></a>
+      <li><a href="#db-node-types"><code>db-node-types</code></a>
+      <li><a href="#db-query"><code>db-query</code></a>
+      <li><a href="#db-query-by-source"><code>db-query-by-source</code></a>
+      <li><a href="#db-reify"><code>db-reify</code></a>
+      <li><a href="#db-reset-counters"><code>db-reset-counters</code></a>
+      <li><a href="#db-resolve-blank-node-uri"><code>db-resolve-blank-node-uri</code></a>
+      <li><a href="#db-sameas-clusters"><code>db-sameas-clusters</code></a>
+      <li><a href="#db-source-descs"><code>db-source-descs</code></a>
+      <li><a href="#db-source-real-url"><code>db-source-real-url</code></a>
+      <li><a href="#db-sources"><code>db-sources</code></a>
+      <li><a href="#db-startup-time"><code>db-startup-time</code></a>
+      <li><a href="#db-supports-matching-p"><code>db-supports-matching-p</code></a>
+      <li><a href="#db-transform-literal"><code>db-transform-literal</code></a>
+      <li><a href="#db-triple-lock"><code>db-triple-lock</code></a>
+      <li><a href="#db-triples"><code>db-triples</code></a>
+      <li><a href="#db-uri->blank-node"><code>db-uri->blank-node</code></a>
+      <li><a href="#deductive-closure-db-mixin"><code>deductive-closure-db-mixin</code></a>
+      <li><a href="#defer-task"><code>defer-task</code></a>
+      <li><a href="#define-readtable"><code>define-readtable</code></a>
+      <li><a href="#define-resource-pool"><code>define-resource-pool</code></a>
+      <li><a href="#del-namespace"><code>del-namespace</code></a>
+      <li><a href="#del-triple"><code>del-triple</code></a>
+      <li><a href="#del-value"><code>del-value</code></a>
+      <li><a href="#dictionary"><code>dictionary</code></a>
+      <li><a href="#dictionary-add-namespace"><code>dictionary-add-namespace</code></a>
+      <li><a href="#dictionary-apropos-list"><code>dictionary-apropos-list</code></a>
+      <li><a href="#dictionary-namespaces"><code>dictionary-namespaces</code></a>
+      <li><a href="#dictionary-node-class"><code>dictionary-node-class</code></a>
+      <li><a href="#dictionary-nodes"><code>dictionary-nodes</code></a>
+      <li><a href="#dictionary-remove-namespace"><code>dictionary-remove-namespace</code></a>
+      <li><a href="#dictionary-rename-namespace"><code>dictionary-rename-namespace</code></a>
+      <li><a href="#dictionary-unresolved-nodes"><code>dictionary-unresolved-nodes</code></a>
+      <li><a href="#do-string-dict"><code>do-string-dict</code></a>
+      <li><a href="#dolist+"><code>dolist+</code></a>
+      <li><a href="#dsb"><code>dsb</code></a>
+      <li><a href="#dtd-termination-problem"><code>dtd-termination-problem</code></a>
+      <li><a href="#duplicate-namespace-prefix"><code>duplicate-namespace-prefix</code></a>
+      <li><a href="#enable-literal-shorthand"><code>enable-literal-shorthand</code></a>
+      <li><a href="#enable-node-shorthand"><code>enable-node-shorthand</code></a>
+      <li><a href="#end-document"><code>end-document</code></a>
+      <li><a href="#end-element"><code>end-element</code></a>
+      <li><a href="#entity-declaration"><code>entity-declaration</code></a>
+      <li><a href="#entity-name"><code>entity-name</code></a>
+      <li><a href="#error-definition-type"><code>error-definition-type</code></a>
+      <li><a href="#error-expectation"><code>error-expectation</code></a>
+      <li><a href="#error-thing"><code>error-thing</code></a>
+      <li><a href="#escape-json-string"><code>escape-json-string</code></a>
+      <li><a href="#escape-xml-string"><code>escape-xml-string</code></a>
+      <li><a href="#execute-deferred-task"><code>execute-deferred-task</code></a>
+      <li><a href="#expand-name-with-namespace"><code>expand-name-with-namespace</code></a>
+      <li><a href="#feature-not-supported"><code>feature-not-supported</code></a>
+      <li><a href="#file-url"><code>file-url</code></a>
+      <li><a href="#find-first-producer"><code>find-first-producer</code></a>
+      <li><a href="#find-http-proxy"><code>find-http-proxy</code></a>
+      <li><a href="#find-long-name"><code>find-long-name</code></a>
+      <li><a href="#find-node"><code>find-node</code></a>
+      <li><a href="#find-short-name"><code>find-short-name</code></a>
+      <li><a href="#format-with-tags"><code>format-with-tags</code></a>
+      <li><a href="#frame"><code>frame</code></a>
+      <li><a href="#frames-related-p"><code>frames-related-p</code></a>
+      <li><a href="#get-canonical-uri"><code>get-canonical-uri</code></a>
+      <li><a href="#get-entity"><code>get-entity</code></a>
+      <li><a href="#get-header"><code>get-header</code></a>
+      <li><a href="#http-body"><code>http-body</code></a>
+      <li><a href="#http-headers"><code>http-headers</code></a>
+      <li><a href="#http-message"><code>http-message</code></a>
+      <li><a href="#http-status"><code>http-status</code></a>
+      <li><a href="#http-url"><code>http-url</code></a>
+      <li><a href="#http-url"><code>http-url</code></a>
+      <li><a href="#http-version"><code>http-version</code></a>
+      <li><a href="#illegal-character-content"><code>illegal-character-content</code></a>
+      <li><a href="#index-uri"><code>index-uri</code></a>
+      <li><a href="#index-uri-p"><code>index-uri-p</code></a>
+      <li><a href="#indexed-db"><code>indexed-db</code></a>
+      <li><a href="#indexed-literal-db-mixin"><code>indexed-literal-db-mixin</code></a>
+      <li><a href="#interned-literal"><code>interned-literal</code></a>
+      <li><a href="#interned-literal-db-mixin"><code>interned-literal-db-mixin</code></a>
+      <li><a href="#invert-path"><code>invert-path</code></a>
+      <li><a href="#is-container-p"><code>is-container-p</code></a>
+      <li><a href="#iso8601-date-string"><code>iso8601-date-string</code></a>
+      <li><a href="#literal"><code>literal</code></a>
+      <li><a href="#literal"><code>literal</code></a>
+      <li><a href="#literal-datatype"><code>literal-datatype</code></a>
+      <li><a href="#literal-language"><code>literal-language</code></a>
+      <li><a href="#literal-language-match-p"><code>literal-language-match-p</code></a>
+      <li><a href="#literal-string"><code>literal-string</code></a>
+      <li><a href="#literal-transform-db-mixin"><code>literal-transform-db-mixin</code></a>
+      <li><a href="#literal-value"><code>literal-value</code></a>
+      <li><a href="#load-db"><code>load-db</code></a>
+      <li><a href="#locked-db-mixin"><code>locked-db-mixin</code></a>
+      <li><a href="#make-container"><code>make-container</code></a>
+      <li><a href="#make-file-url"><code>make-file-url</code></a>
+      <li><a href="#make-http-url"><code>make-http-url</code></a>
+      <li><a href="#make-lock"><code>make-lock</code></a>
+      <li><a href="#make-triple-collection"><code>make-triple-collection</code></a>
+      <li><a href="#make-url"><code>make-url</code></a>
+      <li><a href="#malformed-url"><code>malformed-url</code></a>
+      <li><a href="#maybe-use-namespace"><code>maybe-use-namespace</code></a>
+      <li><a href="#missing-definition"><code>missing-definition</code></a>
+      <li><a href="#missing-entity-definition"><code>missing-entity-definition</code></a>
+      <li><a href="#missing-namespace-definition"><code>missing-namespace-definition</code></a>
+      <li><a href="#namespaces"><code>namespaces</code></a>
+      <li><a href="#node"><code>node</code></a>
+      <li><a href="#node"><code>node</code></a>
+      <li><a href="#node-name-resolved-p"><code>node-name-resolved-p</code></a>
+      <li><a href="#node-uri"><code>node-uri</code></a>
+      <li><a href="#open-http-stream"><code>open-http-stream</code></a>
+      <li><a href="#open-tag"><code>open-tag</code></a>
+      <li><a href="#out-of-sequence-index"><code>out-of-sequence-index</code></a>
+      <li><a href="#owl-list"><code>owl-list</code></a>
+      <li><a href="#owl-parser"><code>owl-parser</code></a>
+      <li><a href="#owl-uri"><code>owl-uri</code></a>
+      <li><a href="#own-slots"><code>own-slots</code></a>
+      <li><a href="#parse"><code>parse</code></a>
+      <li><a href="#parse-db-from-stream"><code>parse-db-from-stream</code></a>
+      <li><a href="#parse-exif-date"><code>parse-exif-date</code></a>
+      <li><a href="#parse-from-stream"><code>parse-from-stream</code></a>
+      <li><a href="#parse-http-date"><code>parse-http-date</code></a>
+      <li><a href="#parse-iso8601-date"><code>parse-iso8601-date</code></a>
+      <li><a href="#parse-url"><code>parse-url</code></a>
+      <li><a href="#parse-using-parsetype"><code>parse-using-parsetype</code></a>
+      <li><a href="#parser-db"><code>parser-db</code></a>
+      <li><a href="#parser-interpret-content"><code>parser-interpret-content</code></a>
+      <li><a href="#path"><code>path</code></a>
+      <li><a href="#path-expression"><code>path-expression</code></a>
+      <li><a href="#pi-termination-problem"><code>pi-termination-problem</code></a>
+      <li><a href="#princ-with-tags"><code>princ-with-tags</code></a>
+      <li><a href="#prioritize"><code>prioritize</code></a>
+      <li><a href="#prioritize-list"><code>prioritize-list</code></a>
+      <li><a href="#proc-instruction"><code>proc-instruction</code></a>
+      <li><a href="#proc-instruction"><code>proc-instruction</code></a>
+      <li><a href="#query"><code>query</code></a>
+      <li><a href="#quit-lisp-process"><code>quit-lisp-process</code></a>
+      <li><a href="#rdf-error"><code>rdf-error</code></a>
+      <li><a href="#rdf-parser"><code>rdf-parser</code></a>
+      <li><a href="#rdf-syntax-normalizer"><code>rdf-syntax-normalizer</code></a>
+      <li><a href="#rdf-uri"><code>rdf-uri</code></a>
+      <li><a href="#rdfs-uri"><code>rdfs-uri</code></a>
+      <li><a href="#read-using"><code>read-using</code></a>
+      <li><a href="#reify"><code>reify</code></a>
+      <li><a href="#relatedp"><code>relatedp</code></a>
+      <li><a href="#replay"><code>replay</code></a>
+      <li><a href="#reverse-expand-name"><code>reverse-expand-name</code></a>
+      <li><a href="#sax-consumer"><code>sax-consumer</code></a>
+      <li><a href="#sax-consumer-mode"><code>sax-consumer-mode</code></a>
+      <li><a href="#sax-consumer-producer"><code>sax-consumer-producer</code></a>
+      <li><a href="#sax-filter"><code>sax-filter</code></a>
+      <li><a href="#sax-producer"><code>sax-producer</code></a>
+      <li><a href="#sax-producer-consumer"><code>sax-producer-consumer</code></a>
+      <li><a href="#simple-external-process"><code>simple-external-process</code></a>
+      <li><a href="#single-subject-triples"><code>single-subject-triples</code></a>
+      <li><a href="#source-close-stream"><code>source-close-stream</code></a>
+      <li><a href="#source-desc"><code>source-desc</code></a>
+      <li><a href="#source-desc-load-time"><code>source-desc-load-time</code></a>
+      <li><a href="#source-desc-loaded-from"><code>source-desc-loaded-from</code></a>
+      <li><a href="#source-desc-url"><code>source-desc-url</code></a>
+      <li><a href="#source-locator"><code>source-locator</code></a>
+      <li><a href="#source-modification"><code>source-modification</code></a>
+      <li><a href="#source-open-stream"><code>source-open-stream</code></a>
+      <li><a href="#source-original-stream"><code>source-original-stream</code></a>
+      <li><a href="#source-with-modification"><code>source-with-modification</code></a>
+      <li><a href="#split-list"><code>split-list</code></a>
+      <li><a href="#start-document"><code>start-document</code></a>
+      <li><a href="#start-element"><code>start-element</code></a>
+      <li><a href="#string->keyword"><code>string->keyword</code></a>
+      <li><a href="#string-dict-add"><code>string-dict-add</code></a>
+      <li><a href="#string-dict-del"><code>string-dict-del</code></a>
+      <li><a href="#string-dict-get"><code>string-dict-get</code></a>
+      <li><a href="#string-dict-get-by-value"><code>string-dict-get-by-value</code></a>
+      <li><a href="#string-source"><code>string-source</code></a>
+      <li><a href="#syntax-error"><code>syntax-error</code></a>
+      <li><a href="#tag-attribute"><code>tag-attribute</code></a>
+      <li><a href="#tag-attributes"><code>tag-attributes</code></a>
+      <li><a href="#tag-counterpart"><code>tag-counterpart</code></a>
+      <li><a href="#tag-empty-p"><code>tag-empty-p</code></a>
+      <li><a href="#tag-namespaces"><code>tag-namespaces</code></a>
+      <li><a href="#task"><code>task</code></a>
+      <li><a href="#task-node"><code>task-node</code></a>
+      <li><a href="#task-parameter"><code>task-parameter</code></a>
+      <li><a href="#task-type"><code>task-type</code></a>
+      <li><a href="#token"><code>token</code></a>
+      <li><a href="#token-string"><code>token-string</code></a>
+      <li><a href="#tree-parser"><code>tree-parser</code></a>
+      <li><a href="#triple"><code>triple</code></a>
+      <li><a href="#triple"><code>triple</code></a>
+      <li><a href="#triple-collection-add"><code>triple-collection-add</code></a>
+      <li><a href="#triple-collection-triples"><code>triple-collection-triples</code></a>
+      <li><a href="#triple-object"><code>triple-object</code></a>
+      <li><a href="#triple-predicate"><code>triple-predicate</code></a>
+      <li><a href="#triple-sources"><code>triple-sources</code></a>
+      <li><a href="#triple-subject"><code>triple-subject</code></a>
+      <li><a href="#triple="><code>triple=</code></a>
+      <li><a href="#unexpected-end-tag"><code>unexpected-end-tag</code></a>
+      <li><a href="#unknown-character-reference"><code>unknown-character-reference</code></a>
+      <li><a href="#unknown-declaration"><code>unknown-declaration</code></a>
+      <li><a href="#unknown-parsetype"><code>unknown-parsetype</code></a>
+      <li><a href="#url"><code>url</code></a>
+      <li><a href="#url-host"><code>url-host</code></a>
+      <li><a href="#url-path"><code>url-path</code></a>
+      <li><a href="#url-port"><code>url-port</code></a>
+      <li><a href="#url-string"><code>url-string</code></a>
+      <li><a href="#value"><code>value</code></a>
+      <li><a href="#walk-using-fsa"><code>walk-using-fsa</code></a>
+      <li><a href="#with-lock"><code>with-lock</code></a>
+      <li><a href="#with-rdf-page"><code>with-rdf-page</code></a>
+      <li><a href="#with-resource-from-pool"><code>with-resource-from-pool</code></a>
+      <li><a href="#with-spo-case"><code>with-spo-case</code></a>
+      <li><a href="#with-tags"><code>with-tags</code></a>
+      <li><a href="#with-temps"><code>with-temps</code></a>
+      <li><a href="#without-closure"><code>without-closure</code></a>
+      <li><a href="#xhtml-preamble"><code>xhtml-preamble</code></a>
+      <li><a href="#xml-error"><code>xml-error</code></a>
+      <li><a href="#xml-feature-not-supported"><code>xml-feature-not-supported</code></a>
+      <li><a href="#xml-formatter"><code>xml-formatter</code></a>
+      <li><a href="#xml-parser"><code>xml-parser</code></a>
+      <li><a href="#xml-preamble"><code>xml-preamble</code></a>
+      <li><a href="#xml-warning"><code>xml-warning</code></a>
+      <li><a href="#xml-warning"><code>xml-warning</code></a>
+      <li><a href="#xsd-uri"><code>xsd-uri</code></a>
+    </ol>
+  <li><a href="#ack">Acknowledgements</a>
+</ol>
+
+<br>&nbsp;<br><h3><a class=none name="download">Download</a></h3>
+
+WILBUR together with this documentation can be downloaded from <a
+href="http://weitz.de/files/wilbur.tar.gz">http://weitz.de/files/wilbur.tar.gz</a>. The
+current version is 0.1.0.
+
+<br>&nbsp;<br><h3><a class=none name="dictionary">The WILBUR dictionary</a></h3>
+
+
+
+<!-- Entry for *CURRENT-PARSER* -->
+
+<p><br>[Special variable]<br><a class=none name='*current-parser*'><b>*current-parser*</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for *CURRENT-PARSER* -->
+
+
+<!-- Entry for *DB* -->
+
+<p><br>[Special variable]<br><a class=none name='*db*'><b>*db*</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for *DB* -->
+
+
+<!-- Entry for *NAME-READER* -->
+
+<p><br>[Special variable]<br><a class=none name='*name-reader*'><b>*name-reader*</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for *NAME-READER* -->
+
+
+<!-- Entry for *NODES* -->
+
+<p><br>[Special variable]<br><a class=none name='*nodes*'><b>*nodes*</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for *NODES* -->
+
+
+<!-- Entry for -DAML-FIRST-URI- -->
+
+<p><br>[Constant]<br><a class=none name='-daml-first-uri-'><b>-daml-first-uri-</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for -DAML-FIRST-URI- -->
+
+
+<!-- Entry for -DAML-LIST-URI- -->
+
+<p><br>[Constant]<br><a class=none name='-daml-list-uri-'><b>-daml-list-uri-</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for -DAML-LIST-URI- -->
+
+
+<!-- Entry for -DAML-NIL-URI- -->
+
+<p><br>[Constant]<br><a class=none name='-daml-nil-uri-'><b>-daml-nil-uri-</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for -DAML-NIL-URI- -->
+
+
+<!-- Entry for -DAML-REST-URI- -->
+
+<p><br>[Constant]<br><a class=none name='-daml-rest-uri-'><b>-daml-rest-uri-</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for -DAML-REST-URI- -->
+
+
+<!-- Entry for -OWL-FIRST-URI- -->
+
+<p><br>[Constant]<br><a class=none name='-owl-first-uri-'><b>-owl-first-uri-</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for -OWL-FIRST-URI- -->
+
+
+<!-- Entry for -OWL-IMPORTS-URI- -->
+
+<p><br>[Constant]<br><a class=none name='-owl-imports-uri-'><b>-owl-imports-uri-</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for -OWL-IMPORTS-URI- -->
+
+
+<!-- Entry for -OWL-LIST-URI- -->
+
+<p><br>[Constant]<br><a class=none name='-owl-list-uri-'><b>-owl-list-uri-</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for -OWL-LIST-URI- -->
+
+
+<!-- Entry for -OWL-NIL-URI- -->
+
+<p><br>[Constant]<br><a class=none name='-owl-nil-uri-'><b>-owl-nil-uri-</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for -OWL-NIL-URI- -->
+
+
+<!-- Entry for -OWL-REST-URI- -->
+
+<p><br>[Constant]<br><a class=none name='-owl-rest-uri-'><b>-owl-rest-uri-</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for -OWL-REST-URI- -->
+
+
+<!-- Entry for -RDF-ABOUT-URI- -->
+
+<p><br>[Constant]<br><a class=none name='-rdf-about-uri-'><b>-rdf-about-uri-</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for -RDF-ABOUT-URI- -->
+
+
+<!-- Entry for -RDF-ABOUTEACH-URI- -->
+
+<p><br>[Constant]<br><a class=none name='-rdf-abouteach-uri-'><b>-rdf-abouteach-uri-</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for -RDF-ABOUTEACH-URI- -->
+
+
+<!-- Entry for -RDF-ABOUTEACHPREFIX-URI- -->
+
+<p><br>[Constant]<br><a class=none name='-rdf-abouteachprefix-uri-'><b>-rdf-abouteachprefix-uri-</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for -RDF-ABOUTEACHPREFIX-URI- -->
+
+
+<!-- Entry for -RDF-ALT-URI- -->
+
+<p><br>[Constant]<br><a class=none name='-rdf-alt-uri-'><b>-rdf-alt-uri-</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for -RDF-ALT-URI- -->
+
+
+<!-- Entry for -RDF-ATTR-MAP- -->
+
+<p><br>[Constant]<br><a class=none name='-rdf-attr-map-'><b>-rdf-attr-map-</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for -RDF-ATTR-MAP- -->
+
+
+<!-- Entry for -RDF-ATTRS- -->
+
+<p><br>[Constant]<br><a class=none name='-rdf-attrs-'><b>-rdf-attrs-</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for -RDF-ATTRS- -->
+
+
+<!-- Entry for -RDF-BAG-URI- -->
+
+<p><br>[Constant]<br><a class=none name='-rdf-bag-uri-'><b>-rdf-bag-uri-</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for -RDF-BAG-URI- -->
+
+
+<!-- Entry for -RDF-BAGID-URI- -->
+
+<p><br>[Constant]<br><a class=none name='-rdf-bagid-uri-'><b>-rdf-bagid-uri-</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for -RDF-BAGID-URI- -->
+
+
+<!-- Entry for -RDF-DATATYPE-URI- -->
+
+<p><br>[Constant]<br><a class=none name='-rdf-datatype-uri-'><b>-rdf-datatype-uri-</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for -RDF-DATATYPE-URI- -->
+
+
+<!-- Entry for -RDF-DESCRIPTION-URI- -->
+
+<p><br>[Constant]<br><a class=none name='-rdf-description-uri-'><b>-rdf-description-uri-</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for -RDF-DESCRIPTION-URI- -->
+
+
+<!-- Entry for -RDF-ID-URI- -->
+
+<p><br>[Constant]<br><a class=none name='-rdf-id-uri-'><b>-rdf-id-uri-</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for -RDF-ID-URI- -->
+
+
+<!-- Entry for -RDF-LI-URI- -->
+
+<p><br>[Constant]<br><a class=none name='-rdf-li-uri-'><b>-rdf-li-uri-</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for -RDF-LI-URI- -->
+
+
+<!-- Entry for -RDF-NODEID-URI- -->
+
+<p><br>[Constant]<br><a class=none name='-rdf-nodeid-uri-'><b>-rdf-nodeid-uri-</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for -RDF-NODEID-URI- -->
+
+
+<!-- Entry for -RDF-OBJECT-URI- -->
+
+<p><br>[Constant]<br><a class=none name='-rdf-object-uri-'><b>-rdf-object-uri-</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for -RDF-OBJECT-URI- -->
+
+
+<!-- Entry for -RDF-PARSETYPE-URI- -->
+
+<p><br>[Constant]<br><a class=none name='-rdf-parsetype-uri-'><b>-rdf-parsetype-uri-</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for -RDF-PARSETYPE-URI- -->
+
+
+<!-- Entry for -RDF-PREDICATE-URI- -->
+
+<p><br>[Constant]<br><a class=none name='-rdf-predicate-uri-'><b>-rdf-predicate-uri-</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for -RDF-PREDICATE-URI- -->
+
+
+<!-- Entry for -RDF-RDF-URI- -->
+
+<p><br>[Constant]<br><a class=none name='-rdf-rdf-uri-'><b>-rdf-rdf-uri-</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for -RDF-RDF-URI- -->
+
+
+<!-- Entry for -RDF-RESOURCE-URI- -->
+
+<p><br>[Constant]<br><a class=none name='-rdf-resource-uri-'><b>-rdf-resource-uri-</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for -RDF-RESOURCE-URI- -->
+
+
+<!-- Entry for -RDF-SEQ-URI- -->
+
+<p><br>[Constant]<br><a class=none name='-rdf-seq-uri-'><b>-rdf-seq-uri-</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for -RDF-SEQ-URI- -->
+
+
+<!-- Entry for -RDF-STATEMENT-URI- -->
+
+<p><br>[Constant]<br><a class=none name='-rdf-statement-uri-'><b>-rdf-statement-uri-</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for -RDF-STATEMENT-URI- -->
+
+
+<!-- Entry for -RDF-SUBJECT-URI- -->
+
+<p><br>[Constant]<br><a class=none name='-rdf-subject-uri-'><b>-rdf-subject-uri-</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for -RDF-SUBJECT-URI- -->
+
+
+<!-- Entry for -RDF-TYPE-URI- -->
+
+<p><br>[Constant]<br><a class=none name='-rdf-type-uri-'><b>-rdf-type-uri-</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for -RDF-TYPE-URI- -->
+
+
+<!-- Entry for -RDF-URI- -->
+
+<p><br>[Constant]<br><a class=none name='-rdf-uri-'><b>-rdf-uri-</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for -RDF-URI- -->
+
+
+<!-- Entry for -RDFS-CLASS-URI- -->
+
+<p><br>[Constant]<br><a class=none name='-rdfs-class-uri-'><b>-rdfs-class-uri-</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for -RDFS-CLASS-URI- -->
+
+
+<!-- Entry for -RDFS-COMMENT-URI- -->
+
+<p><br>[Constant]<br><a class=none name='-rdfs-comment-uri-'><b>-rdfs-comment-uri-</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for -RDFS-COMMENT-URI- -->
+
+
+<!-- Entry for -RDFS-CONSTRAINTPROPERTY-URI- -->
+
+<p><br>[Constant]<br><a class=none name='-rdfs-constraintproperty-uri-'><b>-rdfs-constraintproperty-uri-</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for -RDFS-CONSTRAINTPROPERTY-URI- -->
+
+
+<!-- Entry for -RDFS-CONSTRAINTRESOURCE-URI- -->
+
+<p><br>[Constant]<br><a class=none name='-rdfs-constraintresource-uri-'><b>-rdfs-constraintresource-uri-</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for -RDFS-CONSTRAINTRESOURCE-URI- -->
+
+
+<!-- Entry for -RDFS-CONTAINER-URI- -->
+
+<p><br>[Constant]<br><a class=none name='-rdfs-container-uri-'><b>-rdfs-container-uri-</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for -RDFS-CONTAINER-URI- -->
+
+
+<!-- Entry for -RDFS-DOMAIN-URI- -->
+
+<p><br>[Constant]<br><a class=none name='-rdfs-domain-uri-'><b>-rdfs-domain-uri-</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for -RDFS-DOMAIN-URI- -->
+
+
+<!-- Entry for -RDFS-ISDEFINEDBY-URI- -->
+
+<p><br>[Constant]<br><a class=none name='-rdfs-isdefinedby-uri-'><b>-rdfs-isdefinedby-uri-</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for -RDFS-ISDEFINEDBY-URI- -->
+
+
+<!-- Entry for -RDFS-LABEL-URI- -->
+
+<p><br>[Constant]<br><a class=none name='-rdfs-label-uri-'><b>-rdfs-label-uri-</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for -RDFS-LABEL-URI- -->
+
+
+<!-- Entry for -RDFS-LITERAL-URI- -->
+
+<p><br>[Constant]<br><a class=none name='-rdfs-literal-uri-'><b>-rdfs-literal-uri-</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for -RDFS-LITERAL-URI- -->
+
+
+<!-- Entry for -RDFS-RANGE-URI- -->
+
+<p><br>[Constant]<br><a class=none name='-rdfs-range-uri-'><b>-rdfs-range-uri-</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for -RDFS-RANGE-URI- -->
+
+
+<!-- Entry for -RDFS-RESOURCE-URI- -->
+
+<p><br>[Constant]<br><a class=none name='-rdfs-resource-uri-'><b>-rdfs-resource-uri-</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for -RDFS-RESOURCE-URI- -->
+
+
+<!-- Entry for -RDFS-SEEALSO-URI- -->
+
+<p><br>[Constant]<br><a class=none name='-rdfs-seealso-uri-'><b>-rdfs-seealso-uri-</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for -RDFS-SEEALSO-URI- -->
+
+
+<!-- Entry for -RDFS-SUBCLASSOF-URI- -->
+
+<p><br>[Constant]<br><a class=none name='-rdfs-subclassof-uri-'><b>-rdfs-subclassof-uri-</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for -RDFS-SUBCLASSOF-URI- -->
+
+
+<!-- Entry for -RDFS-SUBPROPERTYOF-URI- -->
+
+<p><br>[Constant]<br><a class=none name='-rdfs-subpropertyof-uri-'><b>-rdfs-subpropertyof-uri-</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for -RDFS-SUBPROPERTYOF-URI- -->
+
+
+<!-- Entry for -RDFS-URI- -->
+
+<p><br>[Constant]<br><a class=none name='-rdfs-uri-'><b>-rdfs-uri-</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for -RDFS-URI- -->
+
+
+<!-- Entry for -WHITESPACE-CHARS- -->
+
+<p><br>[Constant]<br><a class=none name='-whitespace-chars-'><b>-whitespace-chars-</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for -WHITESPACE-CHARS- -->
+
+
+<!-- Entry for -XML-LANG-ATTR- -->
+
+<p><br>[Constant]<br><a class=none name='-xml-lang-attr-'><b>-xml-lang-attr-</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for -XML-LANG-ATTR- -->
+
+
+<!-- Entry for ABOUT-AND-ID-BOTH-PRESENT -->
+
+<p><br>[Condition type]<br><a class=none name='about-and-id-both-present'><b>about-and-id-both-present</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for ABOUT-AND-ID-BOTH-PRESENT -->
+
+
+<!-- Entry for ABOUT-AND-NODEID-BOTH-PRESENT -->
+
+<p><br>[Condition type]<br><a class=none name='about-and-nodeid-both-present'><b>about-and-nodeid-both-present</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for ABOUT-AND-NODEID-BOTH-PRESENT -->
+
+
+<!-- Entry for ADD-NAMESPACE -->
+
+<p><br>[Function]<br><a class=none name='add-namespace'><b>add-namespace</b> <i>prefix uri</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for ADD-NAMESPACE -->
+
+
+<!-- Entry for ADD-TRIPLE -->
+
+<p><br>[Function]<br><a class=none name='add-triple'><b>add-triple</b> <i>triple</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for ADD-TRIPLE -->
+
+
+<!-- Entry for ADD-VALUE -->
+
+<p><br>[Function]<br><a class=none name='add-value'><b>add-value</b> <i>frame path value</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for ADD-VALUE -->
+
+
+<!-- Entry for ALL-VALUES -->
+
+<p><br>[Function]<br><a class=none name='all-values'><b>all-values</b> <i>frame <tt>&amp;rest</tt> paths</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for ALL-VALUES -->
+
+
+<!-- Entry for ATTACH-TO-PARENT -->
+
+<p><br>[Generic function]<br><a class=none name='attach-to-parent'><b>attach-to-parent</b> <i>parser parent child <tt>&amp;optional</tt> statement-id</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for ATTACH-TO-PARENT -->
+
+
+<!-- Entry for ATTACH-TO-PARENT -->
+
+<p><br>[Method]<br><a class=none><b>attach-to-parent</b> <i>(parser owl-parser) (parent node) (child node) <tt>&amp;optional</tt> statement-id</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for ATTACH-TO-PARENT -->
+
+
+<!-- Entry for ATTACH-TO-PARENT -->
+
+<p><br>[Method]<br><a class=none><b>attach-to-parent</b> <i>(parser rdf-parser) (parent node) (child node) <tt>&amp;optional</tt> statement-id</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for ATTACH-TO-PARENT -->
+
+
+<!-- Entry for BLANK-NODE-DB-MIXIN -->
+
+<p><br>[Standard class]<br><a class=none name='blank-node-db-mixin'><b>blank-node-db-mixin</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for BLANK-NODE-DB-MIXIN -->
+
+
+<!-- Entry for CHAR-CONTENT -->
+
+<p><br>[Generic function]<br><a class=none name='char-content'><b>char-content</b> <i>consumer char-content mode</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for CHAR-CONTENT -->
+
+
+<!-- Entry for CHAR-CONTENT -->
+
+<p><br>[Method]<br><a class=none><b>char-content</b> <i>(consumer rdf-parser) (char-content string) mode</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for CHAR-CONTENT -->
+
+
+<!-- Entry for CHAR-CONTENT -->
+
+<p><br>[Method]<br><a class=none><b>char-content</b> <i>(consumer rdf-parser) (char-content string) (mode (eql scan))</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for CHAR-CONTENT -->
+
+
+<!-- Entry for CHAR-CONTENT -->
+
+<p><br>[Method]<br><a class=none><b>char-content</b> <i>(consumer rdf-parser) (char-content string) (mode (eql literal))</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for CHAR-CONTENT -->
+
+
+<!-- Entry for CHAR-CONTENT -->
+
+<p><br>[Method]<br><a class=none><b>char-content</b> <i>(consumer rdf-parser) (char-content string) (mode (eql description))</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for CHAR-CONTENT -->
+
+
+<!-- Entry for CHAR-CONTENT -->
+
+<p><br>[Method]<br><a class=none><b>char-content</b> <i>(consumer tree-parser) (char-content string) mode</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for CHAR-CONTENT -->
+
+
+<!-- Entry for CHAR-CONTENT -->
+
+<p><br>[Method]<br><a class=none><b>char-content</b> <i>(consumer xml-formatter) char-content mode</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for CHAR-CONTENT -->
+
+
+<!-- Entry for CHAR-CONTENT -->
+
+<p><br>[Method]<br><a class=none><b>char-content</b> <i>(consumer sax-filter) (char-content string) mode</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for CHAR-CONTENT -->
+
+
+<!-- Entry for CHAR-CONTENT -->
+
+<p><br>[Method]<br><a class=none><b>char-content</b> <i>(consumer sax-consumer) (char-content string) mode</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for CHAR-CONTENT -->
+
+
+<!-- Entry for CLOSE-RDF-ELEMENT -->
+
+<p><br>[Condition type]<br><a class=none name='close-rdf-element'><b>close-rdf-element</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for CLOSE-RDF-ELEMENT -->
+
+
+<!-- Entry for CLOSE-TAG -->
+
+<p><br>[Standard class]<br><a class=none name='close-tag'><b>close-tag</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for CLOSE-TAG -->
+
+
+<!-- Entry for COLLAPSE-WHITESPACE -->
+
+<p><br>[Function]<br><a class=none name='collapse-whitespace'><b>collapse-whitespace</b> <i>string</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for COLLAPSE-WHITESPACE -->
+
+
+<!-- Entry for COLLECT-USING-FSA -->
+
+<p><br>[Function]<br><a class=none name='collect-using-fsa'><b>collect-using-fsa</b> <i>root fsa db</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for COLLECT-USING-FSA -->
+
+
+<!-- Entry for COMMA-SEPARATED -->
+
+<p><br>[Function]<br><a class=none name='comma-separated'><b>comma-separated</b> <i>items stream <tt>&amp;optional</tt> mapper only-non-null-p</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for COMMA-SEPARATED -->
+
+
+<!-- Entry for COMMENT -->
+
+<p><br>[Standard class]<br><a class=none name='comment'><b>comment</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for COMMENT -->
+
+
+<!-- Entry for CONTAINER-REQUIRED -->
+
+<p><br>[Condition type]<br><a class=none name='container-required'><b>container-required</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for CONTAINER-REQUIRED -->
+
+
+<!-- Entry for DAML-CONS -->
+
+<p><br>[Function]<br><a class=none name='daml-cons'><b>daml-cons</b> <i>first rest <tt>&amp;optional</tt> uri</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DAML-CONS -->
+
+
+<!-- Entry for DAML-LIST -->
+
+<p><br>[Function]<br><a class=none name='daml-list'><b>daml-list</b> <i><tt>&amp;rest</tt> items</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DAML-LIST -->
+
+
+<!-- Entry for DATE-CLEANUP-DB-MIXIN -->
+
+<p><br>[Standard class]<br><a class=none name='date-cleanup-db-mixin'><b>date-cleanup-db-mixin</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DATE-CLEANUP-DB-MIXIN -->
+
+
+<!-- Entry for DB -->
+
+<p><br>[Standard class]<br><a class=none name='db'><b>db</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB -->
+
+
+<!-- Entry for DB-ACCESS-COUNTER-MIXIN -->
+
+<p><br>[Standard class]<br><a class=none name='db-access-counter-mixin'><b>db-access-counter-mixin</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-ACCESS-COUNTER-MIXIN -->
+
+
+<!-- Entry for DB-ACCESS-STATS -->
+
+<p><br>[Generic function]<br><a class=none name='db-access-stats'><b>db-access-stats</b> <i>db</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-ACCESS-STATS -->
+
+
+<!-- Entry for DB-ACCESS-STATS -->
+
+<p><br>[Method]<br><a class=none><b>db-access-stats</b> <i>(db node)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-ACCESS-STATS -->
+
+
+<!-- Entry for DB-ACCESS-STATS -->
+
+<p><br>[Method]<br><a class=none><b>db-access-stats</b> <i>(db db-access-counter-mixin)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-ACCESS-STATS -->
+
+
+<!-- Entry for DB-ADD-TRIPLE -->
+
+<p><br>[Generic function]<br><a class=none name='db-add-triple'><b>db-add-triple</b> <i>db triple <tt>&amp;optional</tt> source</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-ADD-TRIPLE -->
+
+
+<!-- Entry for DB-ADD-TRIPLE -->
+
+<p><br>[Method]<br><a class=none><b>db-add-triple</b> <i>(db node) triple <tt>&amp;optional</tt> source</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-ADD-TRIPLE -->
+
+
+<!-- Entry for DB-ADD-TRIPLE -->
+
+<p><br>[Method]<br><a class=none><b>db-add-triple</b> <i>(db deductive-closure-db-mixin) (triple triple) <tt>&amp;optional</tt> source</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-ADD-TRIPLE -->
+
+
+<!-- Entry for DB-ADD-TRIPLE -->
+
+<p><br>[Method]<br><a class=none><b>db-add-triple</b> <i>(db locked-db-mixin) (triple triple) <tt>&amp;optional</tt> source</i> =&gt; <i>result</i></a><tt> :around</tt>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-ADD-TRIPLE -->
+
+
+<!-- Entry for DB-ADD-TRIPLE -->
+
+<p><br>[Method]<br><a class=none><b>db-add-triple</b> <i>(db indexed-db) (triple triple) <tt>&amp;optional</tt> source</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-ADD-TRIPLE -->
+
+
+<!-- Entry for DB-ADD-TRIPLE -->
+
+<p><br>[Method]<br><a class=none><b>db-add-triple</b> <i>(db fast-temporary-db) (triple triple) <tt>&amp;optional</tt> source</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-ADD-TRIPLE -->
+
+
+<!-- Entry for DB-ADD-TRIPLE -->
+
+<p><br>[Method]<br><a class=none><b>db-add-triple</b> <i>(db db) (triple triple) <tt>&amp;optional</tt> source</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-ADD-TRIPLE -->
+
+
+<!-- Entry for DB-BLANK-NODE-URI -->
+
+<p><br>[Generic function]<br><a class=none name='db-blank-node-uri'><b>db-blank-node-uri</b> <i>db node <tt>&amp;optional</tt> createp</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-BLANK-NODE-URI -->
+
+
+<!-- Entry for DB-BLANK-NODE-URI -->
+
+<p><br>[Method]<br><a class=none><b>db-blank-node-uri</b> <i>(db blank-node-db-mixin) (node node) <tt>&amp;optional</tt> createp</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-BLANK-NODE-URI -->
+
+
+<!-- Entry for DB-BLANK-NODE-URI-P -->
+
+<p><br>[Generic function]<br><a class=none name='db-blank-node-uri-p'><b>db-blank-node-uri-p</b> <i>db uri</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-BLANK-NODE-URI-P -->
+
+
+<!-- Entry for DB-BLANK-NODE-URI-P -->
+
+<p><br>[Method]<br><a class=none><b>db-blank-node-uri-p</b> <i>(db blank-node-db-mixin) uri</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-BLANK-NODE-URI-P -->
+
+
+<!-- Entry for DB-CLEAR -->
+
+<p><br>[Generic function]<br><a class=none name='db-clear'><b>db-clear</b> <i>db</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-CLEAR -->
+
+
+<!-- Entry for DB-CLEAR -->
+
+<p><br>[Method]<br><a class=none><b>db-clear</b> <i>(db node)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-CLEAR -->
+
+
+<!-- Entry for DB-CLEAR -->
+
+<p><br>[Method]<br><a class=none><b>db-clear</b> <i>(db indexed-db)</i><tt> :after</tt>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-CLEAR -->
+
+
+<!-- Entry for DB-CLEAR -->
+
+<p><br>[Method]<br><a class=none><b>db-clear</b> <i>(db db)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-CLEAR -->
+
+
+<!-- Entry for DB-CLEAR-REASONER-CACHE -->
+
+<p><br>[Function]<br><a class=none name='db-clear-reasoner-cache'><b>db-clear-reasoner-cache</b> <i>db</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-CLEAR-REASONER-CACHE -->
+
+
+<!-- Entry for DB-DEL-SOURCE -->
+
+<p><br>[Generic function]<br><a class=none name='db-del-source'><b>db-del-source</b> <i>db source</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-DEL-SOURCE -->
+
+
+<!-- Entry for DB-DEL-SOURCE -->
+
+<p><br>[Method]<br><a class=none><b>db-del-source</b> <i>(db node) source</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-DEL-SOURCE -->
+
+
+<!-- Entry for DB-DEL-SOURCE -->
+
+<p><br>[Method]<br><a class=none><b>db-del-source</b> <i>(db indexed-db) (source node)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-DEL-SOURCE -->
+
+
+<!-- Entry for DB-DEL-SOURCE -->
+
+<p><br>[Method]<br><a class=none><b>db-del-source</b> <i>(db db) (source node)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-DEL-SOURCE -->
+
+
+<!-- Entry for DB-DEL-TRIPLE -->
+
+<p><br>[Generic function]<br><a class=none name='db-del-triple'><b>db-del-triple</b> <i>db triple <tt>&amp;optional</tt> source</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-DEL-TRIPLE -->
+
+
+<!-- Entry for DB-DEL-TRIPLE -->
+
+<p><br>[Method]<br><a class=none><b>db-del-triple</b> <i>(db node) triple <tt>&amp;optional</tt> source</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-DEL-TRIPLE -->
+
+
+<!-- Entry for DB-DEL-TRIPLE -->
+
+<p><br>[Method]<br><a class=none><b>db-del-triple</b> <i>(db deductive-closure-db-mixin) (triple triple) <tt>&amp;optional</tt> source</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-DEL-TRIPLE -->
+
+
+<!-- Entry for DB-DEL-TRIPLE -->
+
+<p><br>[Method]<br><a class=none><b>db-del-triple</b> <i>(db locked-db-mixin) (triple triple) <tt>&amp;optional</tt> source</i> =&gt; <i>result</i></a><tt> :around</tt>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-DEL-TRIPLE -->
+
+
+<!-- Entry for DB-DEL-TRIPLE -->
+
+<p><br>[Method]<br><a class=none><b>db-del-triple</b> <i>(db indexed-db) (triple triple) <tt>&amp;optional</tt> source</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-DEL-TRIPLE -->
+
+
+<!-- Entry for DB-DEL-TRIPLE -->
+
+<p><br>[Method]<br><a class=none><b>db-del-triple</b> <i>(db fast-temporary-db) (triple triple) <tt>&amp;optional</tt> source</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-DEL-TRIPLE -->
+
+
+<!-- Entry for DB-DEL-TRIPLE -->
+
+<p><br>[Method]<br><a class=none><b>db-del-triple</b> <i>(db db) (triple triple) <tt>&amp;optional</tt> source</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-DEL-TRIPLE -->
+
+
+<!-- Entry for DB-FIND-CBD -->
+
+<p><br>[Generic function]<br><a class=none name='db-find-cbd'><b>db-find-cbd</b> <i>db node</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-FIND-CBD -->
+
+
+<!-- Entry for DB-FIND-CBD -->
+
+<p><br>[Method]<br><a class=none><b>db-find-cbd</b> <i>(db db) (node node)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-FIND-CBD -->
+
+
+<!-- Entry for DB-FIND-SOURCE-DESC -->
+
+<p><br>[Generic function]<br><a class=none name='db-find-source-desc'><b>db-find-source-desc</b> <i>db url <tt>&amp;optional</tt> createp</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-FIND-SOURCE-DESC -->
+
+
+<!-- Entry for DB-FIND-SOURCE-DESC -->
+
+<p><br>[Method]<br><a class=none><b>db-find-source-desc</b> <i>(db db) (url node) <tt>&amp;optional</tt> createp</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-FIND-SOURCE-DESC -->
+
+
+<!-- Entry for DB-FIND-SOURCE-DESC -->
+
+<p><br>[Method]<br><a class=none><b>db-find-source-desc</b> <i>(db db) (url url) <tt>&amp;optional</tt> createp</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-FIND-SOURCE-DESC -->
+
+
+<!-- Entry for DB-FIND-SOURCE-DESC -->
+
+<p><br>[Method]<br><a class=none><b>db-find-source-desc</b> <i>(db db) (url string) <tt>&amp;optional</tt> createp</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-FIND-SOURCE-DESC -->
+
+
+<!-- Entry for DB-GET-VALUES -->
+
+<p><br>[Generic function]<br><a class=none name='db-get-values'><b>db-get-values</b> <i>db frame path</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-GET-VALUES -->
+
+
+<!-- Entry for DB-GET-VALUES -->
+
+<p><br>[Method]<br><a class=none><b>db-get-values</b> <i>(db db-access-counter-mixin) frame path</i><tt> :after</tt>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-GET-VALUES -->
+
+
+<!-- Entry for DB-GET-VALUES -->
+
+<p><br>[Method]<br><a class=none><b>db-get-values</b> <i>(db deductive-closure-db-mixin) (frame (eql !rdfs:resource)) (path inverse-slot)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-GET-VALUES -->
+
+
+<!-- Entry for DB-GET-VALUES -->
+
+<p><br>[Method]<br><a class=none><b>db-get-values</b> <i>(db deductive-closure-db-mixin) (frame node) path</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-GET-VALUES -->
+
+
+<!-- Entry for DB-GET-VALUES -->
+
+<p><br>[Method]<br><a class=none><b>db-get-values</b> <i>(db deductive-closure-db-mixin) (frame node) path</i> =&gt; <i>result</i></a><tt> :around</tt>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-GET-VALUES -->
+
+
+<!-- Entry for DB-GET-VALUES -->
+
+<p><br>[Method]<br><a class=none><b>db-get-values</b> <i>(db db) frame path</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-GET-VALUES -->
+
+
+<!-- Entry for DB-GET-VALUES -->
+
+<p><br>[Method]<br><a class=none><b>db-get-values</b> <i>(db db) (frame literal) path</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-GET-VALUES -->
+
+
+<!-- Entry for DB-INDEX-LITERALS -->
+
+<p><br>[Generic function]<br><a class=none name='db-index-literals'><b>db-index-literals</b> <i>db</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-INDEX-LITERALS -->
+
+
+<!-- Entry for DB-INDEX-LITERALS -->
+
+<p><br>[Method]<br><a class=none><b>db-index-literals</b> <i>(db indexed-literal-db-mixin)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-INDEX-LITERALS -->
+
+
+<!-- Entry for DB-INDEX-LITERALS-P -->
+
+<p><br>[Generic function]<br><a class=none name='db-index-literals-p'><b>db-index-literals-p</b> <i>object</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-INDEX-LITERALS-P -->
+
+
+<!-- Entry for DB-INDEX-LITERALS-P -->
+
+<p><br>[Method]<br><a class=none><b>db-index-literals-p</b> <i>(object indexed-literal-db-mixin)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+automatically generated reader method
+
+</blockquote>
+
+<!-- End of entry for DB-INDEX-LITERALS-P -->
+
+
+<!-- Entry for DB-INDEX-STATS -->
+
+<p><br>[Generic function]<br><a class=none name='db-index-stats'><b>db-index-stats</b> <i>indexed-db</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-INDEX-STATS -->
+
+
+<!-- Entry for DB-INDEX-STATS -->
+
+<p><br>[Method]<br><a class=none><b>db-index-stats</b> <i>(indexed-db node)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-INDEX-STATS -->
+
+
+<!-- Entry for DB-INDEX-STATS -->
+
+<p><br>[Method]<br><a class=none><b>db-index-stats</b> <i>(indexed-db indexed-db)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-INDEX-STATS -->
+
+
+<!-- Entry for DB-LOAD -->
+
+<p><br>[Generic function]<br><a class=none name='db-load'><b>db-load</b> <i>db source <tt>&amp;rest</tt> options <tt>&amp;key</tt> error-handling merge-results-p clear-temporary-db-p verbosep appendp <tt>&amp;allow-other-keys</tt></i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-LOAD -->
+
+
+<!-- Entry for DB-LOAD -->
+
+<p><br>[Method]<br><a class=none><b>db-load</b> <i>(db db) source <tt>&amp;rest</tt> options <tt>&amp;key</tt> error-handling merge-results-p clear-temporary-db-p verbosep appendp <tt>&amp;allow-other-keys</tt></i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-LOAD -->
+
+
+<!-- Entry for DB-LOAD-USING-SOURCE -->
+
+<p><br>[Generic function]<br><a class=none name='db-load-using-source'><b>db-load-using-source</b> <i>db source <tt>&amp;rest</tt> options <tt>&amp;key</tt> locator error-handling <tt>&amp;allow-other-keys</tt></i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-LOAD-USING-SOURCE -->
+
+
+<!-- Entry for DB-LOAD-USING-SOURCE -->
+
+<p><br>[Method]<br><a class=none><b>db-load-using-source</b> <i>(db db) (source computed-source) <tt>&amp;rest</tt> options <tt>&amp;key</tt> locator error-handling <tt>&amp;allow-other-keys</tt></i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-LOAD-USING-SOURCE -->
+
+
+<!-- Entry for DB-LOAD-USING-SOURCE -->
+
+<p><br>[Method]<br><a class=none><b>db-load-using-source</b> <i>(db db) source <tt>&amp;rest</tt> options <tt>&amp;key</tt> locator error-handling <tt>&amp;allow-other-keys</tt></i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-LOAD-USING-SOURCE -->
+
+
+<!-- Entry for DB-LOAD-USING-SOURCE -->
+
+<p><br>[Method]<br><a class=none><b>db-load-using-source</b> <i>(db db) (source url) <tt>&amp;rest</tt> options <tt>&amp;key</tt> locator error-handling <tt>&amp;allow-other-keys</tt></i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-LOAD-USING-SOURCE -->
+
+
+<!-- Entry for DB-LOAD-USING-SOURCE -->
+
+<p><br>[Method]<br><a class=none><b>db-load-using-source</b> <i>(db db) (source string) <tt>&amp;rest</tt> options <tt>&amp;key</tt> locator error-handling <tt>&amp;allow-other-keys</tt></i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-LOAD-USING-SOURCE -->
+
+
+<!-- Entry for DB-MAKE-TRIPLE -->
+
+<p><br>[Generic function]<br><a class=none name='db-make-triple'><b>db-make-triple</b> <i>db subject predicate object <tt>&amp;optional</tt> source</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-MAKE-TRIPLE -->
+
+
+<!-- Entry for DB-MAKE-TRIPLE -->
+
+<p><br>[Method]<br><a class=none><b>db-make-triple</b> <i>(db node) subject predicate object <tt>&amp;optional</tt> source</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-MAKE-TRIPLE -->
+
+
+<!-- Entry for DB-MAKE-TRIPLE -->
+
+<p><br>[Method]<br><a class=none><b>db-make-triple</b> <i>(db db) subject predicate object <tt>&amp;optional</tt> source</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-MAKE-TRIPLE -->
+
+
+<!-- Entry for DB-MATCH-LITERALS -->
+
+<p><br>[Generic function]<br><a class=none name='db-match-literals'><b>db-match-literals</b> <i>db pattern</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-MATCH-LITERALS -->
+
+
+<!-- Entry for DB-MATCH-LITERALS -->
+
+<p><br>[Method]<br><a class=none><b>db-match-literals</b> <i>(db indexed-literal-db-mixin) (pattern string)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-MATCH-LITERALS -->
+
+
+<!-- Entry for DB-MERGE -->
+
+<p><br>[Generic function]<br><a class=none name='db-merge'><b>db-merge</b> <i>to from <tt>&amp;optional</tt> source</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-MERGE -->
+
+
+<!-- Entry for DB-MERGE -->
+
+<p><br>[Method]<br><a class=none><b>db-merge</b> <i>(to node) from <tt>&amp;optional</tt> source</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-MERGE -->
+
+
+<!-- Entry for DB-MERGE -->
+
+<p><br>[Method]<br><a class=none><b>db-merge</b> <i>to (from node) <tt>&amp;optional</tt> source</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-MERGE -->
+
+
+<!-- Entry for DB-MERGE -->
+
+<p><br>[Method]<br><a class=none><b>db-merge</b> <i>(to deductive-closure-db-mixin) (from db) <tt>&amp;optional</tt> source</i><tt> :after</tt>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-MERGE -->
+
+
+<!-- Entry for DB-MERGE -->
+
+<p><br>[Method]<br><a class=none><b>db-merge</b> <i>(to locked-db-mixin) (from db) <tt>&amp;optional</tt> source</i> =&gt; <i>result</i></a><tt> :around</tt>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-MERGE -->
+
+
+<!-- Entry for DB-MERGE -->
+
+<p><br>[Method]<br><a class=none><b>db-merge</b> <i>(to db) (from db) <tt>&amp;optional</tt> source</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-MERGE -->
+
+
+<!-- Entry for DB-NODE-PROPERTIES-PARTITIONED -->
+
+<p><br>[Generic function]<br><a class=none name='db-node-properties-partitioned'><b>db-node-properties-partitioned</b> <i>db node</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-NODE-PROPERTIES-PARTITIONED -->
+
+
+<!-- Entry for DB-NODE-PROPERTIES-PARTITIONED -->
+
+<p><br>[Method]<br><a class=none><b>db-node-properties-partitioned</b> <i>(db deductive-closure-db-mixin) (node node)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-NODE-PROPERTIES-PARTITIONED -->
+
+
+<!-- Entry for DB-NODE-TYPE-P -->
+
+<p><br>[Generic function]<br><a class=none name='db-node-type-p'><b>db-node-type-p</b> <i>db node type</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-NODE-TYPE-P -->
+
+
+<!-- Entry for DB-NODE-TYPE-P -->
+
+<p><br>[Method]<br><a class=none><b>db-node-type-p</b> <i>(db deductive-closure-db-mixin) (node node) (type node)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-NODE-TYPE-P -->
+
+
+<!-- Entry for DB-NODE-TYPES -->
+
+<p><br>[Generic function]<br><a class=none name='db-node-types'><b>db-node-types</b> <i>db node</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-NODE-TYPES -->
+
+
+<!-- Entry for DB-NODE-TYPES -->
+
+<p><br>[Method]<br><a class=none><b>db-node-types</b> <i>(db db) (node node)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-NODE-TYPES -->
+
+
+<!-- Entry for DB-QUERY -->
+
+<p><br>[Generic function]<br><a class=none name='db-query'><b>db-query</b> <i>db subject predicate obect</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-QUERY -->
+
+
+<!-- Entry for DB-QUERY -->
+
+<p><br>[Method]<br><a class=none><b>db-query</b> <i>(db node) subject predicate obect</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-QUERY -->
+
+
+<!-- Entry for DB-QUERY -->
+
+<p><br>[Method]<br><a class=none><b>db-query</b> <i>(db db-access-counter-mixin) subject predicate obect</i><tt> :after</tt>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-QUERY -->
+
+
+<!-- Entry for DB-QUERY -->
+
+<p><br>[Method]<br><a class=none><b>db-query</b> <i>(db indexed-db) subject predicate obect</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-QUERY -->
+
+
+<!-- Entry for DB-QUERY -->
+
+<p><br>[Method]<br><a class=none><b>db-query</b> <i>(db db) subject predicate obect</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-QUERY -->
+
+
+<!-- Entry for DB-QUERY-BY-SOURCE -->
+
+<p><br>[Generic function]<br><a class=none name='db-query-by-source'><b>db-query-by-source</b> <i>db source</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-QUERY-BY-SOURCE -->
+
+
+<!-- Entry for DB-QUERY-BY-SOURCE -->
+
+<p><br>[Method]<br><a class=none><b>db-query-by-source</b> <i>(db node) source</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-QUERY-BY-SOURCE -->
+
+
+<!-- Entry for DB-QUERY-BY-SOURCE -->
+
+<p><br>[Method]<br><a class=none><b>db-query-by-source</b> <i>(db indexed-db) (source node)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-QUERY-BY-SOURCE -->
+
+
+<!-- Entry for DB-QUERY-BY-SOURCE -->
+
+<p><br>[Method]<br><a class=none><b>db-query-by-source</b> <i>(db db) (source node)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-QUERY-BY-SOURCE -->
+
+
+<!-- Entry for DB-REIFY -->
+
+<p><br>[Generic function]<br><a class=none name='db-reify'><b>db-reify</b> <i>triple db <tt>&amp;optional</tt> statement-uri source</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-REIFY -->
+
+
+<!-- Entry for DB-REIFY -->
+
+<p><br>[Method]<br><a class=none><b>db-reify</b> <i>(triple triple) (db db) <tt>&amp;optional</tt> statement-uri source</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-REIFY -->
+
+
+<!-- Entry for DB-RESET-COUNTERS -->
+
+<p><br>[Generic function]<br><a class=none name='db-reset-counters'><b>db-reset-counters</b> <i>db</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-RESET-COUNTERS -->
+
+
+<!-- Entry for DB-RESET-COUNTERS -->
+
+<p><br>[Method]<br><a class=none><b>db-reset-counters</b> <i>(db db-access-counter-mixin)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-RESET-COUNTERS -->
+
+
+<!-- Entry for DB-RESOLVE-BLANK-NODE-URI -->
+
+<p><br>[Generic function]<br><a class=none name='db-resolve-blank-node-uri'><b>db-resolve-blank-node-uri</b> <i>db uri</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-RESOLVE-BLANK-NODE-URI -->
+
+
+<!-- Entry for DB-RESOLVE-BLANK-NODE-URI -->
+
+<p><br>[Method]<br><a class=none><b>db-resolve-blank-node-uri</b> <i>(db blank-node-db-mixin) uri</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-RESOLVE-BLANK-NODE-URI -->
+
+
+<!-- Entry for DB-SAMEAS-CLUSTERS -->
+
+<p><br>[Generic function]<br><a class=none name='db-sameas-clusters'><b>db-sameas-clusters</b> <i>object</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-SAMEAS-CLUSTERS -->
+
+
+<!-- Entry for DB-SAMEAS-CLUSTERS -->
+
+<p><br>[Method]<br><a class=none><b>db-sameas-clusters</b> <i>(object deductive-closure-db-mixin)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+automatically generated reader method
+
+</blockquote>
+
+<!-- End of entry for DB-SAMEAS-CLUSTERS -->
+
+
+<!-- Entry for DB-SOURCE-DESCS -->
+
+<p><br>[Generic accessor]<br><a class=none name='db-source-descs'><b>db-source-descs</b> <i>db</i> =&gt; <i>result</i></a>
+<br><a class=none><tt>(setf (</tt><b>db-source-descs</b> <i>object</i><tt>)</tt> <i>new-value</i><tt>)</tt></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-SOURCE-DESCS -->
+
+
+<!-- Entry for DB-SOURCE-DESCS -->
+
+<p><br>[Method]<br><a class=none><b>db-source-descs</b> <i>(db node)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-SOURCE-DESCS -->
+
+
+<!-- Entry for DB-SOURCE-DESCS -->
+
+<p><br>[Specialized accessor]<br><a class=none><b>db-source-descs</b> <i>(db db)</i> =&gt; <i>result</i></a>
+<br><a class=none><tt>(setf (</tt><b>db-source-descs</b> <i>(object db)</i><tt>)</tt> <i>new-value</i><tt>)</tt></a>
+<blockquote><br>
+
+automatically generated reader method
+
+</blockquote>
+
+<!-- End of entry for DB-SOURCE-DESCS -->
+
+
+<!-- Entry for DB-SOURCE-REAL-URL -->
+
+<p><br>[Generic function]<br><a class=none name='db-source-real-url'><b>db-source-real-url</b> <i>db source</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-SOURCE-REAL-URL -->
+
+
+<!-- Entry for DB-SOURCE-REAL-URL -->
+
+<p><br>[Method]<br><a class=none><b>db-source-real-url</b> <i>(db db) (source node)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-SOURCE-REAL-URL -->
+
+
+<!-- Entry for DB-SOURCES -->
+
+<p><br>[Generic function]<br><a class=none name='db-sources'><b>db-sources</b> <i>db</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-SOURCES -->
+
+
+<!-- Entry for DB-SOURCES -->
+
+<p><br>[Method]<br><a class=none><b>db-sources</b> <i>(db node)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-SOURCES -->
+
+
+<!-- Entry for DB-SOURCES -->
+
+<p><br>[Method]<br><a class=none><b>db-sources</b> <i>(db indexed-db)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-SOURCES -->
+
+
+<!-- Entry for DB-SOURCES -->
+
+<p><br>[Method]<br><a class=none><b>db-sources</b> <i>(db db)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-SOURCES -->
+
+
+<!-- Entry for DB-STARTUP-TIME -->
+
+<p><br>[Generic function]<br><a class=none name='db-startup-time'><b>db-startup-time</b> <i>object</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-STARTUP-TIME -->
+
+
+<!-- Entry for DB-STARTUP-TIME -->
+
+<p><br>[Method]<br><a class=none><b>db-startup-time</b> <i>(object blank-node-db-mixin)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+automatically generated reader method
+
+</blockquote>
+
+<!-- End of entry for DB-STARTUP-TIME -->
+
+
+<!-- Entry for DB-SUPPORTS-MATCHING-P -->
+
+<p><br>[Generic function]<br><a class=none name='db-supports-matching-p'><b>db-supports-matching-p</b> <i>object</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-SUPPORTS-MATCHING-P -->
+
+
+<!-- Entry for DB-SUPPORTS-MATCHING-P -->
+
+<p><br>[Method]<br><a class=none><b>db-supports-matching-p</b> <i>(object indexed-literal-db-mixin)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+automatically generated reader method
+
+</blockquote>
+
+<!-- End of entry for DB-SUPPORTS-MATCHING-P -->
+
+
+<!-- Entry for DB-TRANSFORM-LITERAL -->
+
+<p><br>[Generic function]<br><a class=none name='db-transform-literal'><b>db-transform-literal</b> <i>db string property <tt>&amp;key</tt> datatype language</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-TRANSFORM-LITERAL -->
+
+
+<!-- Entry for DB-TRANSFORM-LITERAL -->
+
+<p><br>[Method]<br><a class=none><b>db-transform-literal</b> <i>(db date-cleanup-db-mixin) string (property node) <tt>&amp;key</tt> datatype language</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-TRANSFORM-LITERAL -->
+
+
+<!-- Entry for DB-TRANSFORM-LITERAL -->
+
+<p><br>[Method]<br><a class=none><b>db-transform-literal</b> <i>(db literal-transform-db-mixin) string property <tt>&amp;key</tt> datatype language</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-TRANSFORM-LITERAL -->
+
+
+<!-- Entry for DB-TRIPLE-LOCK -->
+
+<p><br>[Generic function]<br><a class=none name='db-triple-lock'><b>db-triple-lock</b> <i>object</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-TRIPLE-LOCK -->
+
+
+<!-- Entry for DB-TRIPLE-LOCK -->
+
+<p><br>[Method]<br><a class=none><b>db-triple-lock</b> <i>(object locked-db-mixin)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+automatically generated reader method
+
+</blockquote>
+
+<!-- End of entry for DB-TRIPLE-LOCK -->
+
+
+<!-- Entry for DB-TRIPLES -->
+
+<p><br>[Generic accessor]<br><a class=none name='db-triples'><b>db-triples</b> <i>db</i> =&gt; <i>result</i></a>
+<br><a class=none><tt>(setf (</tt><b>db-triples</b> <i>object</i><tt>)</tt> <i>new-value</i><tt>)</tt></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-TRIPLES -->
+
+
+<!-- Entry for DB-TRIPLES -->
+
+<p><br>[Method]<br><a class=none><b>db-triples</b> <i>(db node)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-TRIPLES -->
+
+
+<!-- Entry for DB-TRIPLES -->
+
+<p><br>[Specialized accessor]<br><a class=none><b>db-triples</b> <i>(db db)</i> =&gt; <i>result</i></a>
+<br><a class=none><tt>(setf (</tt><b>db-triples</b> <i>(object db)</i><tt>)</tt> <i>new-value</i><tt>)</tt></a>
+<blockquote><br>
+
+automatically generated reader method
+
+</blockquote>
+
+<!-- End of entry for DB-TRIPLES -->
+
+
+<!-- Entry for DB-URI->BLANK-NODE -->
+
+<p><br>[Generic function]<br><a class=none name='db-uri->blank-node'><b>db-uri->blank-node</b> <i>object</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-URI->BLANK-NODE -->
+
+
+<!-- Entry for DB-URI->BLANK-NODE -->
+
+<p><br>[Method]<br><a class=none><b>db-uri->blank-node</b> <i>(object blank-node-db-mixin)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+automatically generated reader method
+
+</blockquote>
+
+<!-- End of entry for DB-URI->BLANK-NODE -->
+
+
+<!-- Entry for DEDUCTIVE-CLOSURE-DB-MIXIN -->
+
+<p><br>[Standard class]<br><a class=none name='deductive-closure-db-mixin'><b>deductive-closure-db-mixin</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DEDUCTIVE-CLOSURE-DB-MIXIN -->
+
+
+<!-- Entry for DEFER-TASK -->
+
+<p><br>[Generic function]<br><a class=none name='defer-task'><b>defer-task</b> <i>parser type node <tt>&amp;rest</tt> args</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DEFER-TASK -->
+
+
+<!-- Entry for DEFER-TASK -->
+
+<p><br>[Method]<br><a class=none><b>defer-task</b> <i>(parser rdf-parser) type node <tt>&amp;rest</tt> args</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DEFER-TASK -->
+
+
+<!-- Entry for DEFINE-READTABLE -->
+
+<p><br>[Macro]<br><a class=none name='define-readtable'><b>define-readtable</b> <i>readtablevar copied-from declaration* statement*</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DEFINE-READTABLE -->
+
+
+<!-- Entry for DEFINE-RESOURCE-POOL -->
+
+<p><br>[Macro]<br><a class=none name='define-resource-pool'><b>define-resource-pool</b> <i>name constructor <tt>&amp;optional</tt> initializer destructor</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DEFINE-RESOURCE-POOL -->
+
+
+<!-- Entry for DEL-NAMESPACE -->
+
+<p><br>[Function]<br><a class=none name='del-namespace'><b>del-namespace</b> <i>prefix</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DEL-NAMESPACE -->
+
+
+<!-- Entry for DEL-TRIPLE -->
+
+<p><br>[Function]<br><a class=none name='del-triple'><b>del-triple</b> <i>triple</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DEL-TRIPLE -->
+
+
+<!-- Entry for DEL-VALUE -->
+
+<p><br>[Function]<br><a class=none name='del-value'><b>del-value</b> <i>frame path <tt>&amp;optional</tt> value</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DEL-VALUE -->
+
+
+<!-- Entry for DICTIONARY -->
+
+<p><br>[Standard class]<br><a class=none name='dictionary'><b>dictionary</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DICTIONARY -->
+
+
+<!-- Entry for DICTIONARY-ADD-NAMESPACE -->
+
+<p><br>[Generic function]<br><a class=none name='dictionary-add-namespace'><b>dictionary-add-namespace</b> <i>dictionary prefix uri</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DICTIONARY-ADD-NAMESPACE -->
+
+
+<!-- Entry for DICTIONARY-ADD-NAMESPACE -->
+
+<p><br>[Method]<br><a class=none><b>dictionary-add-namespace</b> <i>(dictionary dictionary) prefix uri</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DICTIONARY-ADD-NAMESPACE -->
+
+
+<!-- Entry for DICTIONARY-APROPOS-LIST -->
+
+<p><br>[Generic function]<br><a class=none name='dictionary-apropos-list'><b>dictionary-apropos-list</b> <i>dictionary pattern</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DICTIONARY-APROPOS-LIST -->
+
+
+<!-- Entry for DICTIONARY-APROPOS-LIST -->
+
+<p><br>[Method]<br><a class=none><b>dictionary-apropos-list</b> <i>(dictionary dictionary) (pattern string)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DICTIONARY-APROPOS-LIST -->
+
+
+<!-- Entry for DICTIONARY-NAMESPACES -->
+
+<p><br>[Generic accessor]<br><a class=none name='dictionary-namespaces'><b>dictionary-namespaces</b> <i>dictionary</i> =&gt; <i>result</i></a>
+<br><a class=none><tt>(setf (</tt><b>dictionary-namespaces</b> <i>object</i><tt>)</tt> <i>new-value</i><tt>)</tt></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DICTIONARY-NAMESPACES -->
+
+
+<!-- Entry for DICTIONARY-NAMESPACES -->
+
+<p><br>[Specialized accessor]<br><a class=none><b>dictionary-namespaces</b> <i>(dictionary dictionary)</i> =&gt; <i>result</i></a>
+<br><a class=none><tt>(setf (</tt><b>dictionary-namespaces</b> <i>(object dictionary)</i><tt>)</tt> <i>new-value</i><tt>)</tt></a>
+<blockquote><br>
+
+automatically generated reader method
+
+</blockquote>
+
+<!-- End of entry for DICTIONARY-NAMESPACES -->
+
+
+<!-- Entry for DICTIONARY-NODE-CLASS -->
+
+<p><br>[Generic function]<br><a class=none name='dictionary-node-class'><b>dictionary-node-class</b> <i>dictionary</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DICTIONARY-NODE-CLASS -->
+
+
+<!-- Entry for DICTIONARY-NODE-CLASS -->
+
+<p><br>[Method]<br><a class=none><b>dictionary-node-class</b> <i>(dictionary dictionary)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+automatically generated reader method
+
+</blockquote>
+
+<!-- End of entry for DICTIONARY-NODE-CLASS -->
+
+
+<!-- Entry for DICTIONARY-NODES -->
+
+<p><br>[Generic function]<br><a class=none name='dictionary-nodes'><b>dictionary-nodes</b> <i>dictionary</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DICTIONARY-NODES -->
+
+
+<!-- Entry for DICTIONARY-NODES -->
+
+<p><br>[Method]<br><a class=none><b>dictionary-nodes</b> <i>(dictionary dictionary)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+automatically generated reader method
+
+</blockquote>
+
+<!-- End of entry for DICTIONARY-NODES -->
+
+
+<!-- Entry for DICTIONARY-REMOVE-NAMESPACE -->
+
+<p><br>[Generic function]<br><a class=none name='dictionary-remove-namespace'><b>dictionary-remove-namespace</b> <i>dictionary prefix</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DICTIONARY-REMOVE-NAMESPACE -->
+
+
+<!-- Entry for DICTIONARY-REMOVE-NAMESPACE -->
+
+<p><br>[Method]<br><a class=none><b>dictionary-remove-namespace</b> <i>(dictionary dictionary) prefix</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DICTIONARY-REMOVE-NAMESPACE -->
+
+
+<!-- Entry for DICTIONARY-RENAME-NAMESPACE -->
+
+<p><br>[Generic function]<br><a class=none name='dictionary-rename-namespace'><b>dictionary-rename-namespace</b> <i>dictionary old-prefix new-prefix</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DICTIONARY-RENAME-NAMESPACE -->
+
+
+<!-- Entry for DICTIONARY-RENAME-NAMESPACE -->
+
+<p><br>[Method]<br><a class=none><b>dictionary-rename-namespace</b> <i>(dictionary dictionary) old-prefix new-prefix</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DICTIONARY-RENAME-NAMESPACE -->
+
+
+<!-- Entry for DICTIONARY-UNRESOLVED-NODES -->
+
+<p><br>[Generic accessor]<br><a class=none name='dictionary-unresolved-nodes'><b>dictionary-unresolved-nodes</b> <i>dictionary</i> =&gt; <i>result</i></a>
+<br><a class=none><tt>(setf (</tt><b>dictionary-unresolved-nodes</b> <i>object</i><tt>)</tt> <i>new-value</i><tt>)</tt></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DICTIONARY-UNRESOLVED-NODES -->
+
+
+<!-- Entry for DICTIONARY-UNRESOLVED-NODES -->
+
+<p><br>[Specialized accessor]<br><a class=none><b>dictionary-unresolved-nodes</b> <i>(dictionary dictionary)</i> =&gt; <i>result</i></a>
+<br><a class=none><tt>(setf (</tt><b>dictionary-unresolved-nodes</b> <i>(object dictionary)</i><tt>)</tt> <i>new-value</i><tt>)</tt></a>
+<blockquote><br>
+
+automatically generated reader method
+
+</blockquote>
+
+<!-- End of entry for DICTIONARY-UNRESOLVED-NODES -->
+
+
+<!-- Entry for DO-STRING-DICT -->
+
+<p><br>[Macro]<br><a class=none name='do-string-dict'><b>do-string-dict</b> <i>(key value dict) declaration* statement*</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DO-STRING-DICT -->
+
+
+<!-- Entry for DOLIST+ -->
+
+<p><br>[Macro]<br><a class=none name='dolist+'><b>dolist+</b> <i>(pattern list <tt>&amp;optional</tt> value) declaration* statement*</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DOLIST+ -->
+
+
+<!-- Entry for DSB -->
+
+<p><br>[Macro]<br><a class=none name='dsb'><b>dsb</b> <i>pattern form declaration* statement*</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DSB -->
+
+
+<!-- Entry for DTD-TERMINATION-PROBLEM -->
+
+<p><br>[Condition type]<br><a class=none name='dtd-termination-problem'><b>dtd-termination-problem</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DTD-TERMINATION-PROBLEM -->
+
+
+<!-- Entry for DUPLICATE-NAMESPACE-PREFIX -->
+
+<p><br>[Condition type]<br><a class=none name='duplicate-namespace-prefix'><b>duplicate-namespace-prefix</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DUPLICATE-NAMESPACE-PREFIX -->
+
+
+<!-- Entry for ENABLE-LITERAL-SHORTHAND -->
+
+<p><br>[Function]<br><a class=none name='enable-literal-shorthand'><b>enable-literal-shorthand</b> <i></i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for ENABLE-LITERAL-SHORTHAND -->
+
+
+<!-- Entry for ENABLE-NODE-SHORTHAND -->
+
+<p><br>[Function]<br><a class=none name='enable-node-shorthand'><b>enable-node-shorthand</b> <i></i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for ENABLE-NODE-SHORTHAND -->
+
+
+<!-- Entry for END-DOCUMENT -->
+
+<p><br>[Generic function]<br><a class=none name='end-document'><b>end-document</b> <i>consumer mode</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for END-DOCUMENT -->
+
+
+<!-- Entry for END-DOCUMENT -->
+
+<p><br>[Method]<br><a class=none><b>end-document</b> <i>(consumer rdf-parser) mode</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for END-DOCUMENT -->
+
+
+<!-- Entry for END-DOCUMENT -->
+
+<p><br>[Method]<br><a class=none><b>end-document</b> <i>(consumer sax-filter) mode</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for END-DOCUMENT -->
+
+
+<!-- Entry for END-DOCUMENT -->
+
+<p><br>[Method]<br><a class=none><b>end-document</b> <i>(consumer sax-consumer) mode</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for END-DOCUMENT -->
+
+
+<!-- Entry for END-ELEMENT -->
+
+<p><br>[Generic function]<br><a class=none name='end-element'><b>end-element</b> <i>consumer tag mode</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for END-ELEMENT -->
+
+
+<!-- Entry for END-ELEMENT -->
+
+<p><br>[Method]<br><a class=none><b>end-element</b> <i>(consumer owl-parser) (tag open-tag) (mode (eql owl-collection))</i><tt> :before</tt>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for END-ELEMENT -->
+
+
+<!-- Entry for END-ELEMENT -->
+
+<p><br>[Method]<br><a class=none><b>end-element</b> <i>(consumer rdf-parser) (tag open-tag) (mode (eql daml-collection))</i><tt> :before</tt>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for END-ELEMENT -->
+
+
+<!-- Entry for END-ELEMENT -->
+
+<p><br>[Method]<br><a class=none><b>end-element</b> <i>(consumer rdf-parser) (tag open-tag) (mode (eql collection))</i><tt> :before</tt>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for END-ELEMENT -->
+
+
+<!-- Entry for END-ELEMENT -->
+
+<p><br>[Method]<br><a class=none><b>end-element</b> <i>(consumer rdf-parser) (tag open-tag) mode</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for END-ELEMENT -->
+
+
+<!-- Entry for END-ELEMENT -->
+
+<p><br>[Method]<br><a class=none><b>end-element</b> <i>(consumer rdf-parser) (tag open-tag) (mode (eql description))</i><tt> :after</tt>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for END-ELEMENT -->
+
+
+<!-- Entry for END-ELEMENT -->
+
+<p><br>[Method]<br><a class=none><b>end-element</b> <i>(consumer rdf-parser) (tag open-tag) (mode (eql property))</i><tt> :after</tt>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for END-ELEMENT -->
+
+
+<!-- Entry for END-ELEMENT -->
+
+<p><br>[Method]<br><a class=none><b>end-element</b> <i>(consumer rdf-parser) (tag open-tag) (mode (eql scan))</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for END-ELEMENT -->
+
+
+<!-- Entry for END-ELEMENT -->
+
+<p><br>[Method]<br><a class=none><b>end-element</b> <i>(consumer rdf-parser) (tag open-tag) (mode (eql literal))</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for END-ELEMENT -->
+
+
+<!-- Entry for END-ELEMENT -->
+
+<p><br>[Method]<br><a class=none><b>end-element</b> <i>(consumer rdf-parser) (tag open-tag) mode</i><tt> :after</tt>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for END-ELEMENT -->
+
+
+<!-- Entry for END-ELEMENT -->
+
+<p><br>[Method]<br><a class=none><b>end-element</b> <i>(consumer tree-parser) (tag open-tag) mode</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for END-ELEMENT -->
+
+
+<!-- Entry for END-ELEMENT -->
+
+<p><br>[Method]<br><a class=none><b>end-element</b> <i>(consumer xml-formatter) tag mode</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for END-ELEMENT -->
+
+
+<!-- Entry for END-ELEMENT -->
+
+<p><br>[Method]<br><a class=none><b>end-element</b> <i>(consumer node-position-tracker) (tag open-tag) mode</i> =&gt; <i>result</i></a><tt> :around</tt>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for END-ELEMENT -->
+
+
+<!-- Entry for END-ELEMENT -->
+
+<p><br>[Method]<br><a class=none><b>end-element</b> <i>(consumer sax-filter) (tag open-tag) mode</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for END-ELEMENT -->
+
+
+<!-- Entry for END-ELEMENT -->
+
+<p><br>[Method]<br><a class=none><b>end-element</b> <i>(consumer sax-consumer) (tag open-tag) mode</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for END-ELEMENT -->
+
+
+<!-- Entry for ENTITY-DECLARATION -->
+
+<p><br>[Standard class]<br><a class=none name='entity-declaration'><b>entity-declaration</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for ENTITY-DECLARATION -->
+
+
+<!-- Entry for ENTITY-NAME -->
+
+<p><br>[Generic function]<br><a class=none name='entity-name'><b>entity-name</b> <i>object</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for ENTITY-NAME -->
+
+
+<!-- Entry for ENTITY-NAME -->
+
+<p><br>[Method]<br><a class=none><b>entity-name</b> <i>(object entity-declaration)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+automatically generated reader method
+
+</blockquote>
+
+<!-- End of entry for ENTITY-NAME -->
+
+
+<!-- Entry for ERROR-DEFINITION-TYPE -->
+
+<p><br>[Generic function]<br><a class=none name='error-definition-type'><b>error-definition-type</b> <i>condition</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for ERROR-DEFINITION-TYPE -->
+
+
+<!-- Entry for ERROR-DEFINITION-TYPE -->
+
+<p><br>[Method]<br><a class=none><b>error-definition-type</b> <i>(condition missing-definition)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for ERROR-DEFINITION-TYPE -->
+
+
+<!-- Entry for ERROR-EXPECTATION -->
+
+<p><br>[Generic function]<br><a class=none name='error-expectation'><b>error-expectation</b> <i>condition</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for ERROR-EXPECTATION -->
+
+
+<!-- Entry for ERROR-EXPECTATION -->
+
+<p><br>[Method]<br><a class=none><b>error-expectation</b> <i>(condition unexpected-end-tag)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for ERROR-EXPECTATION -->
+
+
+<!-- Entry for ERROR-THING -->
+
+<p><br>[Generic function]<br><a class=none name='error-thing'><b>error-thing</b> <i>condition</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for ERROR-THING -->
+
+
+<!-- Entry for ERROR-THING -->
+
+<p><br>[Method]<br><a class=none><b>error-thing</b> <i>(condition wilbur-error)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for ERROR-THING -->
+
+
+<!-- Entry for ESCAPE-JSON-STRING -->
+
+<p><br>[Function]<br><a class=none name='escape-json-string'><b>escape-json-string</b> <i>string <tt>&amp;optional</tt> extended-chars-p</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for ESCAPE-JSON-STRING -->
+
+
+<!-- Entry for ESCAPE-XML-STRING -->
+
+<p><br>[Function]<br><a class=none name='escape-xml-string'><b>escape-xml-string</b> <i>string <tt>&amp;optional</tt> extended-chars-p</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for ESCAPE-XML-STRING -->
+
+
+<!-- Entry for EXECUTE-DEFERRED-TASK -->
+
+<p><br>[Generic function]<br><a class=none name='execute-deferred-task'><b>execute-deferred-task</b> <i>parser task type</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for EXECUTE-DEFERRED-TASK -->
+
+
+<!-- Entry for EXECUTE-DEFERRED-TASK -->
+
+<p><br>[Method]<br><a class=none><b>execute-deferred-task</b> <i>(parser rdf-parser) task type</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for EXECUTE-DEFERRED-TASK -->
+
+
+<!-- Entry for EXPAND-NAME-WITH-NAMESPACE -->
+
+<p><br>[Function]<br><a class=none name='expand-name-with-namespace'><b>expand-name-with-namespace</b> <i>string namespaces</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for EXPAND-NAME-WITH-NAMESPACE -->
+
+
+<!-- Entry for FEATURE-NOT-SUPPORTED -->
+
+<p><br>[Condition type]<br><a class=none name='feature-not-supported'><b>feature-not-supported</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for FEATURE-NOT-SUPPORTED -->
+
+
+<!-- Entry for FILE-URL -->
+
+<p><br>[Standard class]<br><a class=none name='file-url'><b>file-url</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for FILE-URL -->
+
+
+<!-- Entry for FIND-FIRST-PRODUCER -->
+
+<p><br>[Generic function]<br><a class=none name='find-first-producer'><b>find-first-producer</b> <i>consumer</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for FIND-FIRST-PRODUCER -->
+
+
+<!-- Entry for FIND-FIRST-PRODUCER -->
+
+<p><br>[Method]<br><a class=none><b>find-first-producer</b> <i>(consumer sax-producer)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for FIND-FIRST-PRODUCER -->
+
+
+<!-- Entry for FIND-FIRST-PRODUCER -->
+
+<p><br>[Method]<br><a class=none><b>find-first-producer</b> <i>(consumer sax-consumer)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for FIND-FIRST-PRODUCER -->
+
+
+<!-- Entry for FIND-HTTP-PROXY -->
+
+<p><br>[Function]<br><a class=none name='find-http-proxy'><b>find-http-proxy</b> <i></i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for FIND-HTTP-PROXY -->
+
+
+<!-- Entry for FIND-LONG-NAME -->
+
+<p><br>[Generic function]<br><a class=none name='find-long-name'><b>find-long-name</b> <i>dictionary name</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for FIND-LONG-NAME -->
+
+
+<!-- Entry for FIND-LONG-NAME -->
+
+<p><br>[Method]<br><a class=none><b>find-long-name</b> <i>(dictionary dictionary) name</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for FIND-LONG-NAME -->
+
+
+<!-- Entry for FIND-NODE -->
+
+<p><br>[Generic accessor]<br><a class=none name='find-node'><b>find-node</b> <i>dictionary uri</i> =&gt; <i>result</i></a>
+<br><a class=none><tt>(setf (</tt><b>find-node</b> <i>dictionary uri</i><tt>)</tt> <i>node</i><tt>)</tt></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for FIND-NODE -->
+
+
+<!-- Entry for FIND-NODE -->
+
+<p><br>[Specialized accessor]<br><a class=none><b>find-node</b> <i>(dictionary dictionary) uri</i> =&gt; <i>result</i></a>
+<br><a class=none><tt>(setf (</tt><b>find-node</b> <i>(dictionary dictionary) uri</i><tt>)</tt> <i>node</i><tt>)</tt></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for FIND-NODE -->
+
+
+<!-- Entry for FIND-SHORT-NAME -->
+
+<p><br>[Generic function]<br><a class=none name='find-short-name'><b>find-short-name</b> <i>dictionary uri <tt>&amp;optional</tt> use-entities-p</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for FIND-SHORT-NAME -->
+
+
+<!-- Entry for FIND-SHORT-NAME -->
+
+<p><br>[Method]<br><a class=none><b>find-short-name</b> <i>(dictionary dictionary) uri <tt>&amp;optional</tt> use-entities-p</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for FIND-SHORT-NAME -->
+
+
+<!-- Entry for FORMAT-WITH-TAGS -->
+
+<p><br>[Macro]<br><a class=none name='format-with-tags'><b>format-with-tags</b> <i>(stream <tt>&amp;rest</tt> tags) control <tt>&amp;rest</tt> args</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for FORMAT-WITH-TAGS -->
+
+
+<!-- Entry for FRAME -->
+
+<p><br>[Function]<br><a class=none name='frame'><b>frame</b> <i>uri <tt>&amp;rest</tt> slot/value-pairs</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for FRAME -->
+
+
+<!-- Entry for FRAMES-RELATED-P -->
+
+<p><br>[Generic function]<br><a class=none name='frames-related-p'><b>frames-related-p</b> <i>source path sink db action</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for FRAMES-RELATED-P -->
+
+
+<!-- Entry for FRAMES-RELATED-P -->
+
+<p><br>[Method]<br><a class=none><b>frames-related-p</b> <i>(source node) path (sink node) (db deductive-closure-db-mixin) action</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for FRAMES-RELATED-P -->
+
+
+<!-- Entry for FRAMES-RELATED-P -->
+
+<p><br>[Method]<br><a class=none><b>frames-related-p</b> <i>(source node) path (sink node) (db db) action</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for FRAMES-RELATED-P -->
+
+
+<!-- Entry for GET-CANONICAL-URI -->
+
+<p><br>[Accessor]<br><a class=none name='get-canonical-uri'><b>get-canonical-uri</b> <i>parser uri</i> =&gt; <i>result</i></a>
+<br><a class=none><tt>(setf (</tt><b>get-canonical-uri</b> <i>parser uri</i><tt>)</tt> <i>new-uri</i><tt>)</tt></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for GET-CANONICAL-URI -->
+
+
+<!-- Entry for GET-ENTITY -->
+
+<p><br>[Accessor]<br><a class=none name='get-entity'><b>get-entity</b> <i>parser name</i> =&gt; <i>result</i></a>
+<br><a class=none><tt>(setf (</tt><b>get-entity</b> <i>parser name</i><tt>)</tt> <i>definition</i><tt>)</tt></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for GET-ENTITY -->
+
+
+<!-- Entry for GET-HEADER -->
+
+<p><br>[Generic function]<br><a class=none name='get-header'><b>get-header</b> <i>message header</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for GET-HEADER -->
+
+
+<!-- Entry for GET-HEADER -->
+
+<p><br>[Method]<br><a class=none><b>get-header</b> <i>(message list) (header string)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for GET-HEADER -->
+
+
+<!-- Entry for GET-HEADER -->
+
+<p><br>[Method]<br><a class=none><b>get-header</b> <i>(message http-message) (header string)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for GET-HEADER -->
+
+
+<!-- Entry for HTTP-BODY -->
+
+<p><br>[Generic function]<br><a class=none name='http-body'><b>http-body</b> <i>object</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for HTTP-BODY -->
+
+
+<!-- Entry for HTTP-BODY -->
+
+<p><br>[Method]<br><a class=none><b>http-body</b> <i>(object http-message)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+automatically generated reader method
+
+</blockquote>
+
+<!-- End of entry for HTTP-BODY -->
+
+
+<!-- Entry for HTTP-HEADERS -->
+
+<p><br>[Generic accessor]<br><a class=none name='http-headers'><b>http-headers</b> <i>object</i> =&gt; <i>result</i></a>
+<br><a class=none><tt>(setf (</tt><b>http-headers</b> <i>object</i><tt>)</tt> <i>new-value</i><tt>)</tt></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for HTTP-HEADERS -->
+
+
+<!-- Entry for HTTP-HEADERS -->
+
+<p><br>[Specialized accessor]<br><a class=none><b>http-headers</b> <i>(object http-message)</i> =&gt; <i>result</i></a>
+<br><a class=none><tt>(setf (</tt><b>http-headers</b> <i>(object http-message)</i><tt>)</tt> <i>new-value</i><tt>)</tt></a>
+<blockquote><br>
+
+automatically generated reader method
+
+</blockquote>
+
+<!-- End of entry for HTTP-HEADERS -->
+
+
+<!-- Entry for HTTP-MESSAGE -->
+
+<p><br>[Standard class]<br><a class=none name='http-message'><b>http-message</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for HTTP-MESSAGE -->
+
+
+<!-- Entry for HTTP-STATUS -->
+
+<p><br>[Generic function]<br><a class=none name='http-status'><b>http-status</b> <i>object</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for HTTP-STATUS -->
+
+
+<!-- Entry for HTTP-STATUS -->
+
+<p><br>[Method]<br><a class=none><b>http-status</b> <i>(object http-message)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+automatically generated reader method
+
+</blockquote>
+
+<!-- End of entry for HTTP-STATUS -->
+
+
+<!-- Entry for HTTP-URL -->
+
+<p><br>[Standard class]<br><a class=none name='http-url'><b>http-url</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for HTTP-URL -->
+
+
+<!-- Entry for HTTP-URL -->
+
+<p><br>[Generic function]<br><a class=none name='http-url'><b>http-url</b> <i>object</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for HTTP-URL -->
+
+
+<!-- Entry for HTTP-URL -->
+
+<p><br>[Method]<br><a class=none><b>http-url</b> <i>(object http-message)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+automatically generated reader method
+
+</blockquote>
+
+<!-- End of entry for HTTP-URL -->
+
+
+<!-- Entry for HTTP-VERSION -->
+
+<p><br>[Generic function]<br><a class=none name='http-version'><b>http-version</b> <i>object</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for HTTP-VERSION -->
+
+
+<!-- Entry for HTTP-VERSION -->
+
+<p><br>[Method]<br><a class=none><b>http-version</b> <i>(object http-message)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+automatically generated reader method
+
+</blockquote>
+
+<!-- End of entry for HTTP-VERSION -->
+
+
+<!-- Entry for ILLEGAL-CHARACTER-CONTENT -->
+
+<p><br>[Condition type]<br><a class=none name='illegal-character-content'><b>illegal-character-content</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for ILLEGAL-CHARACTER-CONTENT -->
+
+
+<!-- Entry for INDEX-URI -->
+
+<p><br>[Function]<br><a class=none name='index-uri'><b>index-uri</b> <i>index db</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for INDEX-URI -->
+
+
+<!-- Entry for INDEX-URI-P -->
+
+<p><br>[Function]<br><a class=none name='index-uri-p'><b>index-uri-p</b> <i>node</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for INDEX-URI-P -->
+
+
+<!-- Entry for INDEXED-DB -->
+
+<p><br>[Standard class]<br><a class=none name='indexed-db'><b>indexed-db</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for INDEXED-DB -->
+
+
+<!-- Entry for INDEXED-LITERAL-DB-MIXIN -->
+
+<p><br>[Standard class]<br><a class=none name='indexed-literal-db-mixin'><b>indexed-literal-db-mixin</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for INDEXED-LITERAL-DB-MIXIN -->
+
+
+<!-- Entry for INTERNED-LITERAL -->
+
+<p><br>[Standard class]<br><a class=none name='interned-literal'><b>interned-literal</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for INTERNED-LITERAL -->
+
+
+<!-- Entry for INTERNED-LITERAL-DB-MIXIN -->
+
+<p><br>[Standard class]<br><a class=none name='interned-literal-db-mixin'><b>interned-literal-db-mixin</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for INTERNED-LITERAL-DB-MIXIN -->
+
+
+<!-- Entry for INVERT-PATH -->
+
+<p><br>[Function]<br><a class=none name='invert-path'><b>invert-path</b> <i>expr <tt>&amp;optional</tt> canonicalizep</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for INVERT-PATH -->
+
+
+<!-- Entry for IS-CONTAINER-P -->
+
+<p><br>[Generic function]<br><a class=none name='is-container-p'><b>is-container-p</b> <i>db node <tt>&amp;optional</tt> errorp</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for IS-CONTAINER-P -->
+
+
+<!-- Entry for IS-CONTAINER-P -->
+
+<p><br>[Method]<br><a class=none><b>is-container-p</b> <i>(db db) (node node) <tt>&amp;optional</tt> errorp</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for IS-CONTAINER-P -->
+
+
+<!-- Entry for ISO8601-DATE-STRING -->
+
+<p><br>[Function]<br><a class=none name='iso8601-date-string'><b>iso8601-date-string</b> <i>universal-time <tt>&amp;optional</tt> omit-time-p</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for ISO8601-DATE-STRING -->
+
+
+<!-- Entry for LITERAL -->
+
+<p><br>[Standard class]<br><a class=none name='literal'><b>literal</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for LITERAL -->
+
+
+<!-- Entry for LITERAL -->
+
+<p><br>[Function]<br><a class=none name='literal'><b>literal</b> <i>string <tt>&amp;rest</tt> options</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for LITERAL -->
+
+
+<!-- Entry for LITERAL-DATATYPE -->
+
+<p><br>[Generic function]<br><a class=none name='literal-datatype'><b>literal-datatype</b> <i>literal</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for LITERAL-DATATYPE -->
+
+
+<!-- Entry for LITERAL-DATATYPE -->
+
+<p><br>[Method]<br><a class=none><b>literal-datatype</b> <i>(literal string)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for LITERAL-DATATYPE -->
+
+
+<!-- Entry for LITERAL-DATATYPE -->
+
+<p><br>[Method]<br><a class=none><b>literal-datatype</b> <i>(literal literal)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+automatically generated reader method
+
+</blockquote>
+
+<!-- End of entry for LITERAL-DATATYPE -->
+
+
+<!-- Entry for LITERAL-LANGUAGE -->
+
+<p><br>[Generic function]<br><a class=none name='literal-language'><b>literal-language</b> <i>literal</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for LITERAL-LANGUAGE -->
+
+
+<!-- Entry for LITERAL-LANGUAGE -->
+
+<p><br>[Method]<br><a class=none><b>literal-language</b> <i>(literal string)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for LITERAL-LANGUAGE -->
+
+
+<!-- Entry for LITERAL-LANGUAGE -->
+
+<p><br>[Method]<br><a class=none><b>literal-language</b> <i>(literal literal)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+automatically generated reader method
+
+</blockquote>
+
+<!-- End of entry for LITERAL-LANGUAGE -->
+
+
+<!-- Entry for LITERAL-LANGUAGE-MATCH-P -->
+
+<p><br>[Generic function]<br><a class=none name='literal-language-match-p'><b>literal-language-match-p</b> <i>literal language</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for LITERAL-LANGUAGE-MATCH-P -->
+
+
+<!-- Entry for LITERAL-LANGUAGE-MATCH-P -->
+
+<p><br>[Method]<br><a class=none><b>literal-language-match-p</b> <i>literal language</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for LITERAL-LANGUAGE-MATCH-P -->
+
+
+<!-- Entry for LITERAL-LANGUAGE-MATCH-P -->
+
+<p><br>[Method]<br><a class=none><b>literal-language-match-p</b> <i>(literal literal) language</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for LITERAL-LANGUAGE-MATCH-P -->
+
+
+<!-- Entry for LITERAL-STRING -->
+
+<p><br>[Generic function]<br><a class=none name='literal-string'><b>literal-string</b> <i>literal</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for LITERAL-STRING -->
+
+
+<!-- Entry for LITERAL-STRING -->
+
+<p><br>[Method]<br><a class=none><b>literal-string</b> <i>(literal string)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for LITERAL-STRING -->
+
+
+<!-- Entry for LITERAL-STRING -->
+
+<p><br>[Method]<br><a class=none><b>literal-string</b> <i>(literal literal)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+automatically generated reader method
+
+</blockquote>
+
+<!-- End of entry for LITERAL-STRING -->
+
+
+<!-- Entry for LITERAL-TRANSFORM-DB-MIXIN -->
+
+<p><br>[Standard class]<br><a class=none name='literal-transform-db-mixin'><b>literal-transform-db-mixin</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for LITERAL-TRANSFORM-DB-MIXIN -->
+
+
+<!-- Entry for LITERAL-VALUE -->
+
+<p><br>[Generic accessor]<br><a class=none name='literal-value'><b>literal-value</b> <i>literal</i> =&gt; <i>result</i></a>
+<br><a class=none><tt>(setf (</tt><b>literal-value</b> <i>literal</i><tt>)</tt> <i>value</i><tt>)</tt></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for LITERAL-VALUE -->
+
+
+<!-- Entry for LITERAL-VALUE -->
+
+<p><br>[Specialized accessor]<br><a class=none><b>literal-value</b> <i>(literal literal)</i> =&gt; <i>result</i></a><tt> :around</tt>
+<br><a class=none><tt>(setf (</tt><b>literal-value</b> <i>(literal literal)</i><tt>)</tt> <i>value</i><tt>)</tt></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for LITERAL-VALUE -->
+
+
+<!-- Entry for LITERAL-VALUE -->
+
+<p><br>[Method]<br><a class=none><b>literal-value</b> <i>(literal string)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for LITERAL-VALUE -->
+
+
+<!-- Entry for LITERAL-VALUE -->
+
+<p><br>[Method]<br><a class=none><b>literal-value</b> <i>(literal literal)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+automatically generated reader method
+
+</blockquote>
+
+<!-- End of entry for LITERAL-VALUE -->
+
+
+<!-- Entry for LOAD-DB -->
+
+<p><br>[Function]<br><a class=none name='load-db'><b>load-db</b> <i>source <tt>&amp;rest</tt> options</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for LOAD-DB -->
+
+
+<!-- Entry for LOCKED-DB-MIXIN -->
+
+<p><br>[Standard class]<br><a class=none name='locked-db-mixin'><b>locked-db-mixin</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for LOCKED-DB-MIXIN -->
+
+
+<!-- Entry for MAKE-CONTAINER -->
+
+<p><br>[Generic function]<br><a class=none name='make-container'><b>make-container</b> <i>parser elements <tt>&amp;optional</tt> container-uri container-type-uri</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for MAKE-CONTAINER -->
+
+
+<!-- Entry for MAKE-CONTAINER -->
+
+<p><br>[Method]<br><a class=none><b>make-container</b> <i>(parser rdf-parser) elements <tt>&amp;optional</tt> container-uri container-type-uri</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for MAKE-CONTAINER -->
+
+
+<!-- Entry for MAKE-FILE-URL -->
+
+<p><br>[Function]<br><a class=none name='make-file-url'><b>make-file-url</b> <i>pathname</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for MAKE-FILE-URL -->
+
+
+<!-- Entry for MAKE-HTTP-URL -->
+
+<p><br>[Function]<br><a class=none name='make-http-url'><b>make-http-url</b> <i>host port path</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for MAKE-HTTP-URL -->
+
+
+<!-- Entry for MAKE-LOCK -->
+
+<p><br>[Function]<br><a class=none name='make-lock'><b>make-lock</b> <i></i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for MAKE-LOCK -->
+
+
+<!-- Entry for MAKE-TRIPLE-COLLECTION -->
+
+<p><br>[Function]<br><a class=none name='make-triple-collection'><b>make-triple-collection</b> <i><tt>&amp;optional</tt> triples</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for MAKE-TRIPLE-COLLECTION -->
+
+
+<!-- Entry for MAKE-URL -->
+
+<p><br>[Function]<br><a class=none name='make-url'><b>make-url</b> <i>string</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for MAKE-URL -->
+
+
+<!-- Entry for MALFORMED-URL -->
+
+<p><br>[Condition type]<br><a class=none name='malformed-url'><b>malformed-url</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for MALFORMED-URL -->
+
+
+<!-- Entry for MAYBE-USE-NAMESPACE -->
+
+<p><br>[Generic function]<br><a class=none name='maybe-use-namespace'><b>maybe-use-namespace</b> <i>consumer prefix uri</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for MAYBE-USE-NAMESPACE -->
+
+
+<!-- Entry for MAYBE-USE-NAMESPACE -->
+
+<p><br>[Method]<br><a class=none><b>maybe-use-namespace</b> <i>(consumer rdf-parser) prefix uri</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for MAYBE-USE-NAMESPACE -->
+
+
+<!-- Entry for MAYBE-USE-NAMESPACE -->
+
+<p><br>[Method]<br><a class=none><b>maybe-use-namespace</b> <i>(consumer rdf-syntax-normalizer) prefix uri</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for MAYBE-USE-NAMESPACE -->
+
+
+<!-- Entry for MAYBE-USE-NAMESPACE -->
+
+<p><br>[Method]<br><a class=none><b>maybe-use-namespace</b> <i>(consumer sax-consumer) prefix uri</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for MAYBE-USE-NAMESPACE -->
+
+
+<!-- Entry for MISSING-DEFINITION -->
+
+<p><br>[Condition type]<br><a class=none name='missing-definition'><b>missing-definition</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for MISSING-DEFINITION -->
+
+
+<!-- Entry for MISSING-ENTITY-DEFINITION -->
+
+<p><br>[Condition type]<br><a class=none name='missing-entity-definition'><b>missing-entity-definition</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for MISSING-ENTITY-DEFINITION -->
+
+
+<!-- Entry for MISSING-NAMESPACE-DEFINITION -->
+
+<p><br>[Condition type]<br><a class=none name='missing-namespace-definition'><b>missing-namespace-definition</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for MISSING-NAMESPACE-DEFINITION -->
+
+
+<!-- Entry for NAMESPACES -->
+
+<p><br>[Function]<br><a class=none name='namespaces'><b>namespaces</b> <i></i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for NAMESPACES -->
+
+
+<!-- Entry for NODE -->
+
+<p><br>[Standard class]<br><a class=none name='node'><b>node</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for NODE -->
+
+
+<!-- Entry for NODE -->
+
+<p><br>[Function]<br><a class=none name='node'><b>node</b> <i>thing</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for NODE -->
+
+
+<!-- Entry for NODE-NAME-RESOLVED-P -->
+
+<p><br>[Generic accessor]<br><a class=none name='node-name-resolved-p'><b>node-name-resolved-p</b> <i>object</i> =&gt; <i>result</i></a>
+<br><a class=none><tt>(setf (</tt><b>node-name-resolved-p</b> <i>object</i><tt>)</tt> <i>new-value</i><tt>)</tt></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for NODE-NAME-RESOLVED-P -->
+
+
+<!-- Entry for NODE-NAME-RESOLVED-P -->
+
+<p><br>[Specialized accessor]<br><a class=none><b>node-name-resolved-p</b> <i>(object node)</i> =&gt; <i>result</i></a>
+<br><a class=none><tt>(setf (</tt><b>node-name-resolved-p</b> <i>(object node)</i><tt>)</tt> <i>new-value</i><tt>)</tt></a>
+<blockquote><br>
+
+automatically generated reader method
+
+</blockquote>
+
+<!-- End of entry for NODE-NAME-RESOLVED-P -->
+
+
+<!-- Entry for NODE-URI -->
+
+<p><br>[Generic accessor]<br><a class=none name='node-uri'><b>node-uri</b> <i>object</i> =&gt; <i>result</i></a>
+<br><a class=none><tt>(setf (</tt><b>node-uri</b> <i>object</i><tt>)</tt> <i>new-value</i><tt>)</tt></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for NODE-URI -->
+
+
+<!-- Entry for NODE-URI -->
+
+<p><br>[Specialized accessor]<br><a class=none><b>node-uri</b> <i>(object node)</i> =&gt; <i>result</i></a>
+<br><a class=none><tt>(setf (</tt><b>node-uri</b> <i>(object node)</i><tt>)</tt> <i>new-value</i><tt>)</tt></a>
+<blockquote><br>
+
+automatically generated reader method
+
+</blockquote>
+
+<!-- End of entry for NODE-URI -->
+
+
+<!-- Entry for OPEN-HTTP-STREAM -->
+
+<p><br>[Generic function]<br><a class=none name='open-http-stream'><b>open-http-stream</b> <i>url proxy</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for OPEN-HTTP-STREAM -->
+
+
+<!-- Entry for OPEN-HTTP-STREAM -->
+
+<p><br>[Method]<br><a class=none><b>open-http-stream</b> <i>(url http-url) (proxy null)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for OPEN-HTTP-STREAM -->
+
+
+<!-- Entry for OPEN-HTTP-STREAM -->
+
+<p><br>[Method]<br><a class=none><b>open-http-stream</b> <i>(url http-url) (proxy http-url)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for OPEN-HTTP-STREAM -->
+
+
+<!-- Entry for OPEN-TAG -->
+
+<p><br>[Standard class]<br><a class=none name='open-tag'><b>open-tag</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for OPEN-TAG -->
+
+
+<!-- Entry for OUT-OF-SEQUENCE-INDEX -->
+
+<p><br>[Condition type]<br><a class=none name='out-of-sequence-index'><b>out-of-sequence-index</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for OUT-OF-SEQUENCE-INDEX -->
+
+
+<!-- Entry for OWL-LIST -->
+
+<p><br>[Function]<br><a class=none name='owl-list'><b>owl-list</b> <i><tt>&amp;rest</tt> items</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for OWL-LIST -->
+
+
+<!-- Entry for OWL-PARSER -->
+
+<p><br>[Standard class]<br><a class=none name='owl-parser'><b>owl-parser</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for OWL-PARSER -->
+
+
+<!-- Entry for OWL-URI -->
+
+<p><br>[Macro]<br><a class=none name='owl-uri'><b>owl-uri</b> <i>string</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for OWL-URI -->
+
+
+<!-- Entry for OWN-SLOTS -->
+
+<p><br>[Function]<br><a class=none name='own-slots'><b>own-slots</b> <i>frame</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for OWN-SLOTS -->
+
+
+<!-- Entry for PARSE -->
+
+<p><br>[Generic function]<br><a class=none name='parse'><b>parse</b> <i>self stream locator</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for PARSE -->
+
+
+<!-- Entry for PARSE -->
+
+<p><br>[Method]<br><a class=none><b>parse</b> <i>(self turtle-parser) stream locator</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for PARSE -->
+
+
+<!-- Entry for PARSE -->
+
+<p><br>[Method]<br><a class=none><b>parse</b> <i>(self rdf-parser) stream locator</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for PARSE -->
+
+
+<!-- Entry for PARSE -->
+
+<p><br>[Method]<br><a class=none><b>parse</b> <i>(self tree-parser) stream locator</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for PARSE -->
+
+
+<!-- Entry for PARSE -->
+
+<p><br>[Method]<br><a class=none><b>parse</b> <i>(self xml-parser) stream locator</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for PARSE -->
+
+
+<!-- Entry for PARSE-DB-FROM-STREAM -->
+
+<p><br>[Function]<br><a class=none name='parse-db-from-stream'><b>parse-db-from-stream</b> <i>stream locator <tt>&amp;rest</tt> options <tt>&amp;key</tt> parser-class <tt>&amp;allow-other-keys</tt></i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for PARSE-DB-FROM-STREAM -->
+
+
+<!-- Entry for PARSE-EXIF-DATE -->
+
+<p><br>[Function]<br><a class=none name='parse-exif-date'><b>parse-exif-date</b> <i>string</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for PARSE-EXIF-DATE -->
+
+
+<!-- Entry for PARSE-FROM-STREAM -->
+
+<p><br>[Function]<br><a class=none name='parse-from-stream'><b>parse-from-stream</b> <i>stream locator parser-class <tt>&amp;rest</tt> options</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for PARSE-FROM-STREAM -->
+
+
+<!-- Entry for PARSE-HTTP-DATE -->
+
+<p><br>[Function]<br><a class=none name='parse-http-date'><b>parse-http-date</b> <i>string</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for PARSE-HTTP-DATE -->
+
+
+<!-- Entry for PARSE-ISO8601-DATE -->
+
+<p><br>[Function]<br><a class=none name='parse-iso8601-date'><b>parse-iso8601-date</b> <i>string</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for PARSE-ISO8601-DATE -->
+
+
+<!-- Entry for PARSE-URL -->
+
+<p><br>[Function]<br><a class=none name='parse-url'><b>parse-url</b> <i>u <tt>&amp;optional</tt> errorp</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for PARSE-URL -->
+
+
+<!-- Entry for PARSE-USING-PARSETYPE -->
+
+<p><br>[Generic function]<br><a class=none name='parse-using-parsetype'><b>parse-using-parsetype</b> <i>parser node property parsetype <tt>&amp;optional</tt> statement-id language datatype</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for PARSE-USING-PARSETYPE -->
+
+
+<!-- Entry for PARSE-USING-PARSETYPE -->
+
+<p><br>[Method]<br><a class=none><b>parse-using-parsetype</b> <i>(parser owl-parser) node property parsetype <tt>&amp;optional</tt> statement-id language datatype</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for PARSE-USING-PARSETYPE -->
+
+
+<!-- Entry for PARSE-USING-PARSETYPE -->
+
+<p><br>[Method]<br><a class=none><b>parse-using-parsetype</b> <i>(parser rdf-parser) node property parsetype <tt>&amp;optional</tt> statement-id language datatype</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for PARSE-USING-PARSETYPE -->
+
+
+<!-- Entry for PARSER-DB -->
+
+<p><br>[Generic accessor]<br><a class=none name='parser-db'><b>parser-db</b> <i>object</i> =&gt; <i>result</i></a>
+<br><a class=none><tt>(setf (</tt><b>parser-db</b> <i>object</i><tt>)</tt> <i>new-value</i><tt>)</tt></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for PARSER-DB -->
+
+
+<!-- Entry for PARSER-DB -->
+
+<p><br>[Specialized accessor]<br><a class=none><b>parser-db</b> <i>(object turtle-parser)</i> =&gt; <i>result</i></a>
+<br><a class=none><tt>(setf (</tt><b>parser-db</b> <i>(object turtle-parser)</i><tt>)</tt> <i>new-value</i><tt>)</tt></a>
+<blockquote><br>
+
+automatically generated reader method
+
+</blockquote>
+
+<!-- End of entry for PARSER-DB -->
+
+
+<!-- Entry for PARSER-DB -->
+
+<p><br>[Specialized accessor]<br><a class=none><b>parser-db</b> <i>(object rdf-parser)</i> =&gt; <i>result</i></a>
+<br><a class=none><tt>(setf (</tt><b>parser-db</b> <i>(object rdf-parser)</i><tt>)</tt> <i>new-value</i><tt>)</tt></a>
+<blockquote><br>
+
+automatically generated reader method
+
+</blockquote>
+
+<!-- End of entry for PARSER-DB -->
+
+
+<!-- Entry for PARSER-INTERPRET-CONTENT -->
+
+<p><br>[Generic function]<br><a class=none name='parser-interpret-content'><b>parser-interpret-content</b> <i>parser content</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for PARSER-INTERPRET-CONTENT -->
+
+
+<!-- Entry for PARSER-INTERPRET-CONTENT -->
+
+<p><br>[Method]<br><a class=none><b>parser-interpret-content</b> <i>(parser tree-parser) (content string)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for PARSER-INTERPRET-CONTENT -->
+
+
+<!-- Entry for PATH -->
+
+<p><br>[Standard class]<br><a class=none name='path'><b>path</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for PATH -->
+
+
+<!-- Entry for PATH-EXPRESSION -->
+
+<p><br>[Generic accessor]<br><a class=none name='path-expression'><b>path-expression</b> <i>object</i> =&gt; <i>result</i></a>
+<br><a class=none><tt>(setf (</tt><b>path-expression</b> <i>object</i><tt>)</tt> <i>new-value</i><tt>)</tt></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for PATH-EXPRESSION -->
+
+
+<!-- Entry for PATH-EXPRESSION -->
+
+<p><br>[Specialized accessor]<br><a class=none><b>path-expression</b> <i>(object path)</i> =&gt; <i>result</i></a>
+<br><a class=none><tt>(setf (</tt><b>path-expression</b> <i>(object path)</i><tt>)</tt> <i>new-value</i><tt>)</tt></a>
+<blockquote><br>
+
+automatically generated reader method
+
+</blockquote>
+
+<!-- End of entry for PATH-EXPRESSION -->
+
+
+<!-- Entry for PI-TERMINATION-PROBLEM -->
+
+<p><br>[Condition type]<br><a class=none name='pi-termination-problem'><b>pi-termination-problem</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for PI-TERMINATION-PROBLEM -->
+
+
+<!-- Entry for PRINC-WITH-TAGS -->
+
+<p><br>[Macro]<br><a class=none name='princ-with-tags'><b>princ-with-tags</b> <i>(stream <tt>&amp;rest</tt> tags) form</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for PRINC-WITH-TAGS -->
+
+
+<!-- Entry for PRIORITIZE -->
+
+<p><br>[Function]<br><a class=none name='prioritize'><b>prioritize</b> <i>list <tt>&amp;key</tt> prefer exclude test key splitp</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for PRIORITIZE -->
+
+
+<!-- Entry for PRIORITIZE-LIST -->
+
+<p><br>[Function]<br><a class=none name='prioritize-list'><b>prioritize-list</b> <i>list possible-priority-items <tt>&amp;key</tt> test key</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for PRIORITIZE-LIST -->
+
+
+<!-- Entry for PROC-INSTRUCTION -->
+
+<p><br>[Standard class]<br><a class=none name='proc-instruction'><b>proc-instruction</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for PROC-INSTRUCTION -->
+
+
+<!-- Entry for PROC-INSTRUCTION -->
+
+<p><br>[Generic function]<br><a class=none name='proc-instruction'><b>proc-instruction</b> <i>consumer instruction mode</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for PROC-INSTRUCTION -->
+
+
+<!-- Entry for PROC-INSTRUCTION -->
+
+<p><br>[Method]<br><a class=none><b>proc-instruction</b> <i>(consumer sax-filter) (instruction proc-instruction) mode</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for PROC-INSTRUCTION -->
+
+
+<!-- Entry for PROC-INSTRUCTION -->
+
+<p><br>[Method]<br><a class=none><b>proc-instruction</b> <i>(consumer sax-consumer) (instruction proc-instruction) mode</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for PROC-INSTRUCTION -->
+
+
+<!-- Entry for QUERY -->
+
+<p><br>[Function]<br><a class=none name='query'><b>query</b> <i>subject predicate object</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for QUERY -->
+
+
+<!-- Entry for QUIT-LISP-PROCESS -->
+
+<p><br>[Function]<br><a class=none name='quit-lisp-process'><b>quit-lisp-process</b> <i></i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for QUIT-LISP-PROCESS -->
+
+
+<!-- Entry for RDF-ERROR -->
+
+<p><br>[Condition type]<br><a class=none name='rdf-error'><b>rdf-error</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for RDF-ERROR -->
+
+
+<!-- Entry for RDF-PARSER -->
+
+<p><br>[Standard class]<br><a class=none name='rdf-parser'><b>rdf-parser</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for RDF-PARSER -->
+
+
+<!-- Entry for RDF-SYNTAX-NORMALIZER -->
+
+<p><br>[Standard class]<br><a class=none name='rdf-syntax-normalizer'><b>rdf-syntax-normalizer</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for RDF-SYNTAX-NORMALIZER -->
+
+
+<!-- Entry for RDF-URI -->
+
+<p><br>[Macro]<br><a class=none name='rdf-uri'><b>rdf-uri</b> <i>string</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for RDF-URI -->
+
+
+<!-- Entry for RDFS-URI -->
+
+<p><br>[Macro]<br><a class=none name='rdfs-uri'><b>rdfs-uri</b> <i>string</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for RDFS-URI -->
+
+
+<!-- Entry for READ-USING -->
+
+<p><br>[Function]<br><a class=none name='read-using'><b>read-using</b> <i>readtable stream <tt>&amp;optional</tt> recursivep</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for READ-USING -->
+
+
+<!-- Entry for REIFY -->
+
+<p><br>[Function]<br><a class=none name='reify'><b>reify</b> <i>triple <tt>&amp;key</tt> statement-uri source</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for REIFY -->
+
+
+<!-- Entry for RELATEDP -->
+
+<p><br>[Function]<br><a class=none name='relatedp'><b>relatedp</b> <i>source path sink <tt>&amp;optional</tt> action</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for RELATEDP -->
+
+
+<!-- Entry for REPLAY -->
+
+<p><br>[Generic function]<br><a class=none name='replay'><b>replay</b> <i>formatter events</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for REPLAY -->
+
+
+<!-- Entry for REPLAY -->
+
+<p><br>[Method]<br><a class=none><b>replay</b> <i>(formatter xml-formatter) events</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for REPLAY -->
+
+
+<!-- Entry for REVERSE-EXPAND-NAME -->
+
+<p><br>[Function]<br><a class=none name='reverse-expand-name'><b>reverse-expand-name</b> <i>name namespaces <tt>&amp;optional</tt> use-entities-p <tt>&amp;aux</tt> nn</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for REVERSE-EXPAND-NAME -->
+
+
+<!-- Entry for SAX-CONSUMER -->
+
+<p><br>[Standard class]<br><a class=none name='sax-consumer'><b>sax-consumer</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for SAX-CONSUMER -->
+
+
+<!-- Entry for SAX-CONSUMER-MODE -->
+
+<p><br>[Generic function]<br><a class=none name='sax-consumer-mode'><b>sax-consumer-mode</b> <i>self</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for SAX-CONSUMER-MODE -->
+
+
+<!-- Entry for SAX-CONSUMER-MODE -->
+
+<p><br>[Method]<br><a class=none><b>sax-consumer-mode</b> <i>(self rdf-parser)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for SAX-CONSUMER-MODE -->
+
+
+<!-- Entry for SAX-CONSUMER-MODE -->
+
+<p><br>[Method]<br><a class=none><b>sax-consumer-mode</b> <i>(self rdf-syntax-normalizer)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for SAX-CONSUMER-MODE -->
+
+
+<!-- Entry for SAX-CONSUMER-MODE -->
+
+<p><br>[Method]<br><a class=none><b>sax-consumer-mode</b> <i>(self sax-consumer)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for SAX-CONSUMER-MODE -->
+
+
+<!-- Entry for SAX-CONSUMER-PRODUCER -->
+
+<p><br>[Generic accessor]<br><a class=none name='sax-consumer-producer'><b>sax-consumer-producer</b> <i>object</i> =&gt; <i>result</i></a>
+<br><a class=none><tt>(setf (</tt><b>sax-consumer-producer</b> <i>object</i><tt>)</tt> <i>new-value</i><tt>)</tt></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for SAX-CONSUMER-PRODUCER -->
+
+
+<!-- Entry for SAX-CONSUMER-PRODUCER -->
+
+<p><br>[Specialized accessor]<br><a class=none><b>sax-consumer-producer</b> <i>(object sax-consumer)</i> =&gt; <i>result</i></a>
+<br><a class=none><tt>(setf (</tt><b>sax-consumer-producer</b> <i>(object sax-consumer)</i><tt>)</tt> <i>new-value</i><tt>)</tt></a>
+<blockquote><br>
+
+automatically generated reader method
+
+</blockquote>
+
+<!-- End of entry for SAX-CONSUMER-PRODUCER -->
+
+
+<!-- Entry for SAX-FILTER -->
+
+<p><br>[Standard class]<br><a class=none name='sax-filter'><b>sax-filter</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for SAX-FILTER -->
+
+
+<!-- Entry for SAX-PRODUCER -->
+
+<p><br>[Standard class]<br><a class=none name='sax-producer'><b>sax-producer</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for SAX-PRODUCER -->
+
+
+<!-- Entry for SAX-PRODUCER-CONSUMER -->
+
+<p><br>[Generic accessor]<br><a class=none name='sax-producer-consumer'><b>sax-producer-consumer</b> <i>object</i> =&gt; <i>result</i></a>
+<br><a class=none><tt>(setf (</tt><b>sax-producer-consumer</b> <i>object</i><tt>)</tt> <i>new-value</i><tt>)</tt></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for SAX-PRODUCER-CONSUMER -->
+
+
+<!-- Entry for SAX-PRODUCER-CONSUMER -->
+
+<p><br>[Specialized accessor]<br><a class=none><b>sax-producer-consumer</b> <i>(object sax-producer)</i> =&gt; <i>result</i></a>
+<br><a class=none><tt>(setf (</tt><b>sax-producer-consumer</b> <i>(object sax-producer)</i><tt>)</tt> <i>new-value</i><tt>)</tt></a><tt> :after</tt>
+<blockquote><br>
+
+automatically generated reader method
+
+</blockquote>
+
+<!-- End of entry for SAX-PRODUCER-CONSUMER -->
+
+
+<!-- Entry for SIMPLE-EXTERNAL-PROCESS -->
+
+<p><br>[Function]<br><a class=none name='simple-external-process'><b>simple-external-process</b> <i>cmd <tt>&amp;rest</tt> args</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for SIMPLE-EXTERNAL-PROCESS -->
+
+
+<!-- Entry for SINGLE-SUBJECT-TRIPLES -->
+
+<p><br>[Function]<br><a class=none name='single-subject-triples'><b>single-subject-triples</b> <i>subject <tt>&amp;rest</tt> predicates&amp;objects</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for SINGLE-SUBJECT-TRIPLES -->
+
+
+<!-- Entry for SOURCE-CLOSE-STREAM -->
+
+<p><br>[Generic function]<br><a class=none name='source-close-stream'><b>source-close-stream</b> <i>source stream <tt>&amp;optional</tt> abortp</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for SOURCE-CLOSE-STREAM -->
+
+
+<!-- Entry for SOURCE-CLOSE-STREAM -->
+
+<p><br>[Method]<br><a class=none><b>source-close-stream</b> <i>(source source-with-modification) stream <tt>&amp;optional</tt> abortp</i><tt> :after</tt>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for SOURCE-CLOSE-STREAM -->
+
+
+<!-- Entry for SOURCE-CLOSE-STREAM -->
+
+<p><br>[Method]<br><a class=none><b>source-close-stream</b> <i>source stream <tt>&amp;optional</tt> abortp</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for SOURCE-CLOSE-STREAM -->
+
+
+<!-- Entry for SOURCE-DESC -->
+
+<p><br>[Standard class]<br><a class=none name='source-desc'><b>source-desc</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for SOURCE-DESC -->
+
+
+<!-- Entry for SOURCE-DESC-LOAD-TIME -->
+
+<p><br>[Generic accessor]<br><a class=none name='source-desc-load-time'><b>source-desc-load-time</b> <i>object</i> =&gt; <i>result</i></a>
+<br><a class=none><tt>(setf (</tt><b>source-desc-load-time</b> <i>object</i><tt>)</tt> <i>new-value</i><tt>)</tt></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for SOURCE-DESC-LOAD-TIME -->
+
+
+<!-- Entry for SOURCE-DESC-LOAD-TIME -->
+
+<p><br>[Specialized accessor]<br><a class=none><b>source-desc-load-time</b> <i>(object source-desc)</i> =&gt; <i>result</i></a>
+<br><a class=none><tt>(setf (</tt><b>source-desc-load-time</b> <i>(object source-desc)</i><tt>)</tt> <i>new-value</i><tt>)</tt></a>
+<blockquote><br>
+
+automatically generated reader method
+
+</blockquote>
+
+<!-- End of entry for SOURCE-DESC-LOAD-TIME -->
+
+
+<!-- Entry for SOURCE-DESC-LOADED-FROM -->
+
+<p><br>[Generic accessor]<br><a class=none name='source-desc-loaded-from'><b>source-desc-loaded-from</b> <i>object</i> =&gt; <i>result</i></a>
+<br><a class=none><tt>(setf (</tt><b>source-desc-loaded-from</b> <i>object</i><tt>)</tt> <i>new-value</i><tt>)</tt></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for SOURCE-DESC-LOADED-FROM -->
+
+
+<!-- Entry for SOURCE-DESC-LOADED-FROM -->
+
+<p><br>[Specialized accessor]<br><a class=none><b>source-desc-loaded-from</b> <i>(object source-desc)</i> =&gt; <i>result</i></a>
+<br><a class=none><tt>(setf (</tt><b>source-desc-loaded-from</b> <i>(object source-desc)</i><tt>)</tt> <i>new-value</i><tt>)</tt></a>
+<blockquote><br>
+
+automatically generated reader method
+
+</blockquote>
+
+<!-- End of entry for SOURCE-DESC-LOADED-FROM -->
+
+
+<!-- Entry for SOURCE-DESC-URL -->
+
+<p><br>[Generic function]<br><a class=none name='source-desc-url'><b>source-desc-url</b> <i>object</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for SOURCE-DESC-URL -->
+
+
+<!-- Entry for SOURCE-DESC-URL -->
+
+<p><br>[Method]<br><a class=none><b>source-desc-url</b> <i>(object source-desc)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+automatically generated reader method
+
+</blockquote>
+
+<!-- End of entry for SOURCE-DESC-URL -->
+
+
+<!-- Entry for SOURCE-LOCATOR -->
+
+<p><br>[Generic function]<br><a class=none name='source-locator'><b>source-locator</b> <i>object</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for SOURCE-LOCATOR -->
+
+
+<!-- Entry for SOURCE-LOCATOR -->
+
+<p><br>[Method]<br><a class=none><b>source-locator</b> <i>(object string-source)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+automatically generated reader method
+
+</blockquote>
+
+<!-- End of entry for SOURCE-LOCATOR -->
+
+
+<!-- Entry for SOURCE-LOCATOR -->
+
+<p><br>[Method]<br><a class=none><b>source-locator</b> <i>(object source-with-modification)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for SOURCE-LOCATOR -->
+
+
+<!-- Entry for SOURCE-LOCATOR -->
+
+<p><br>[Method]<br><a class=none><b>source-locator</b> <i>(object url)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for SOURCE-LOCATOR -->
+
+
+<!-- Entry for SOURCE-LOCATOR -->
+
+<p><br>[Method]<br><a class=none><b>source-locator</b> <i>(object logical-pathname)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for SOURCE-LOCATOR -->
+
+
+<!-- Entry for SOURCE-LOCATOR -->
+
+<p><br>[Method]<br><a class=none><b>source-locator</b> <i>(object pathname)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for SOURCE-LOCATOR -->
+
+
+<!-- Entry for SOURCE-LOCATOR -->
+
+<p><br>[Method]<br><a class=none><b>source-locator</b> <i>(object string)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for SOURCE-LOCATOR -->
+
+
+<!-- Entry for SOURCE-LOCATOR -->
+
+<p><br>[Method]<br><a class=none><b>source-locator</b> <i>(object source-desc)</i> =&gt; <i>result</i></a><tt> :around</tt>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for SOURCE-LOCATOR -->
+
+
+<!-- Entry for SOURCE-LOCATOR -->
+
+<p><br>[Method]<br><a class=none><b>source-locator</b> <i>(object source-desc)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+automatically generated reader method
+
+</blockquote>
+
+<!-- End of entry for SOURCE-LOCATOR -->
+
+
+<!-- Entry for SOURCE-MODIFICATION -->
+
+<p><br>[Generic function]<br><a class=none name='source-modification'><b>source-modification</b> <i>source original-stream</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for SOURCE-MODIFICATION -->
+
+
+<!-- Entry for SOURCE-OPEN-STREAM -->
+
+<p><br>[Generic function]<br><a class=none name='source-open-stream'><b>source-open-stream</b> <i>source</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for SOURCE-OPEN-STREAM -->
+
+
+<!-- Entry for SOURCE-OPEN-STREAM -->
+
+<p><br>[Method]<br><a class=none><b>source-open-stream</b> <i>(source source-with-modification)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for SOURCE-OPEN-STREAM -->
+
+
+<!-- Entry for SOURCE-OPEN-STREAM -->
+
+<p><br>[Method]<br><a class=none><b>source-open-stream</b> <i>(source file-url)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for SOURCE-OPEN-STREAM -->
+
+
+<!-- Entry for SOURCE-OPEN-STREAM -->
+
+<p><br>[Method]<br><a class=none><b>source-open-stream</b> <i>(source http-url)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for SOURCE-OPEN-STREAM -->
+
+
+<!-- Entry for SOURCE-OPEN-STREAM -->
+
+<p><br>[Method]<br><a class=none><b>source-open-stream</b> <i>(source string)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for SOURCE-OPEN-STREAM -->
+
+
+<!-- Entry for SOURCE-OPEN-STREAM -->
+
+<p><br>[Method]<br><a class=none><b>source-open-stream</b> <i>(source source-desc)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for SOURCE-OPEN-STREAM -->
+
+
+<!-- Entry for SOURCE-ORIGINAL-STREAM -->
+
+<p><br>[Generic accessor]<br><a class=none name='source-original-stream'><b>source-original-stream</b> <i>object</i> =&gt; <i>result</i></a>
+<br><a class=none><tt>(setf (</tt><b>source-original-stream</b> <i>object</i><tt>)</tt> <i>new-value</i><tt>)</tt></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for SOURCE-ORIGINAL-STREAM -->
+
+
+<!-- Entry for SOURCE-ORIGINAL-STREAM -->
+
+<p><br>[Specialized accessor]<br><a class=none><b>source-original-stream</b> <i>(object source-with-modification)</i> =&gt; <i>result</i></a>
+<br><a class=none><tt>(setf (</tt><b>source-original-stream</b> <i>(object source-with-modification)</i><tt>)</tt> <i>new-value</i><tt>)</tt></a>
+<blockquote><br>
+
+automatically generated reader method
+
+</blockquote>
+
+<!-- End of entry for SOURCE-ORIGINAL-STREAM -->
+
+
+<!-- Entry for SOURCE-WITH-MODIFICATION -->
+
+<p><br>[Standard class]<br><a class=none name='source-with-modification'><b>source-with-modification</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for SOURCE-WITH-MODIFICATION -->
+
+
+<!-- Entry for SPLIT-LIST -->
+
+<p><br>[Function]<br><a class=none name='split-list'><b>split-list</b> <i>head tail n <tt>&amp;optional</tt> no-split-p</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for SPLIT-LIST -->
+
+
+<!-- Entry for START-DOCUMENT -->
+
+<p><br>[Generic function]<br><a class=none name='start-document'><b>start-document</b> <i>consumer locator</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for START-DOCUMENT -->
+
+
+<!-- Entry for START-DOCUMENT -->
+
+<p><br>[Method]<br><a class=none><b>start-document</b> <i>(consumer rdf-parser) locator</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for START-DOCUMENT -->
+
+
+<!-- Entry for START-DOCUMENT -->
+
+<p><br>[Method]<br><a class=none><b>start-document</b> <i>(consumer xml-formatter) locator</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for START-DOCUMENT -->
+
+
+<!-- Entry for START-DOCUMENT -->
+
+<p><br>[Method]<br><a class=none><b>start-document</b> <i>(consumer sax-filter) locator</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for START-DOCUMENT -->
+
+
+<!-- Entry for START-DOCUMENT -->
+
+<p><br>[Method]<br><a class=none><b>start-document</b> <i>(consumer sax-consumer) locator</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for START-DOCUMENT -->
+
+
+<!-- Entry for START-ELEMENT -->
+
+<p><br>[Generic function]<br><a class=none name='start-element'><b>start-element</b> <i>consumer tag mode</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for START-ELEMENT -->
+
+
+<!-- Entry for START-ELEMENT -->
+
+<p><br>[Method]<br><a class=none><b>start-element</b> <i>(consumer owl-parser) (tag open-tag) (mode (eql owl-collection))</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for START-ELEMENT -->
+
+
+<!-- Entry for START-ELEMENT -->
+
+<p><br>[Method]<br><a class=none><b>start-element</b> <i>(consumer owl-parser) (tag open-tag) (mode (eql property))</i><tt> :before</tt>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for START-ELEMENT -->
+
+
+<!-- Entry for START-ELEMENT -->
+
+<p><br>[Method]<br><a class=none><b>start-element</b> <i>(consumer rdf-parser) (tag open-tag) (mode (eql daml-collection))</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for START-ELEMENT -->
+
+
+<!-- Entry for START-ELEMENT -->
+
+<p><br>[Method]<br><a class=none><b>start-element</b> <i>(consumer rdf-parser) (tag open-tag) (mode (eql collection))</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for START-ELEMENT -->
+
+
+<!-- Entry for START-ELEMENT -->
+
+<p><br>[Method]<br><a class=none><b>start-element</b> <i>(consumer rdf-parser) (tag open-tag) (mode (eql literal))</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for START-ELEMENT -->
+
+
+<!-- Entry for START-ELEMENT -->
+
+<p><br>[Method]<br><a class=none><b>start-element</b> <i>(consumer rdf-parser) (tag open-tag) (mode (eql property))</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for START-ELEMENT -->
+
+
+<!-- Entry for START-ELEMENT -->
+
+<p><br>[Method]<br><a class=none><b>start-element</b> <i>(consumer rdf-parser) (tag open-tag) (mode (eql description))</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for START-ELEMENT -->
+
+
+<!-- Entry for START-ELEMENT -->
+
+<p><br>[Method]<br><a class=none><b>start-element</b> <i>(consumer rdf-parser) (tag open-tag) (mode (eql scan))</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for START-ELEMENT -->
+
+
+<!-- Entry for START-ELEMENT -->
+
+<p><br>[Method]<br><a class=none><b>start-element</b> <i>(consumer rdf-parser) (tag open-tag) mode</i><tt> :before</tt>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for START-ELEMENT -->
+
+
+<!-- Entry for START-ELEMENT -->
+
+<p><br>[Method]<br><a class=none><b>start-element</b> <i>(consumer rdf-syntax-normalizer) (tag open-tag) mode</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for START-ELEMENT -->
+
+
+<!-- Entry for START-ELEMENT -->
+
+<p><br>[Method]<br><a class=none><b>start-element</b> <i>(consumer tree-parser) (tag open-tag) mode</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for START-ELEMENT -->
+
+
+<!-- Entry for START-ELEMENT -->
+
+<p><br>[Method]<br><a class=none><b>start-element</b> <i>(consumer xml-formatter) (tag open-tag) mode</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for START-ELEMENT -->
+
+
+<!-- Entry for START-ELEMENT -->
+
+<p><br>[Method]<br><a class=none><b>start-element</b> <i>(consumer node-position-tracker) (tag open-tag) mode</i> =&gt; <i>result</i></a><tt> :around</tt>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for START-ELEMENT -->
+
+
+<!-- Entry for START-ELEMENT -->
+
+<p><br>[Method]<br><a class=none><b>start-element</b> <i>(consumer sax-filter) (tag open-tag) mode</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for START-ELEMENT -->
+
+
+<!-- Entry for START-ELEMENT -->
+
+<p><br>[Method]<br><a class=none><b>start-element</b> <i>(consumer sax-consumer) (tag open-tag) mode</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for START-ELEMENT -->
+
+
+<!-- Entry for STRING->KEYWORD -->
+
+<p><br>[Function]<br><a class=none name='string->keyword'><b>string->keyword</b> <i>string <tt>&amp;optional</tt> package</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for STRING->KEYWORD -->
+
+
+<!-- Entry for STRING-DICT-ADD -->
+
+<p><br>[Function]<br><a class=none name='string-dict-add'><b>string-dict-add</b> <i>keys&amp;values key value</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for STRING-DICT-ADD -->
+
+
+<!-- Entry for STRING-DICT-DEL -->
+
+<p><br>[Function]<br><a class=none name='string-dict-del'><b>string-dict-del</b> <i>keys&amp;values key</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for STRING-DICT-DEL -->
+
+
+<!-- Entry for STRING-DICT-GET -->
+
+<p><br>[Function]<br><a class=none name='string-dict-get'><b>string-dict-get</b> <i>keys&amp;values key</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for STRING-DICT-GET -->
+
+
+<!-- Entry for STRING-DICT-GET-BY-VALUE -->
+
+<p><br>[Function]<br><a class=none name='string-dict-get-by-value'><b>string-dict-get-by-value</b> <i>keys&amp;values value</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for STRING-DICT-GET-BY-VALUE -->
+
+
+<!-- Entry for STRING-SOURCE -->
+
+<p><br>[Standard class]<br><a class=none name='string-source'><b>string-source</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for STRING-SOURCE -->
+
+
+<!-- Entry for SYNTAX-ERROR -->
+
+<p><br>[Condition type]<br><a class=none name='syntax-error'><b>syntax-error</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for SYNTAX-ERROR -->
+
+
+<!-- Entry for TAG-ATTRIBUTE -->
+
+<p><br>[Accessor]<br><a class=none name='tag-attribute'><b>tag-attribute</b> <i>tag attribute</i> =&gt; <i>result</i></a>
+<br><a class=none><tt>(setf (</tt><b>tag-attribute</b> <i>tag attribute</i><tt>)</tt> <i>value</i><tt>)</tt></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for TAG-ATTRIBUTE -->
+
+
+<!-- Entry for TAG-ATTRIBUTES -->
+
+<p><br>[Generic accessor]<br><a class=none name='tag-attributes'><b>tag-attributes</b> <i>object</i> =&gt; <i>result</i></a>
+<br><a class=none><tt>(setf (</tt><b>tag-attributes</b> <i>object</i><tt>)</tt> <i>new-value</i><tt>)</tt></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for TAG-ATTRIBUTES -->
+
+
+<!-- Entry for TAG-ATTRIBUTES -->
+
+<p><br>[Specialized accessor]<br><a class=none><b>tag-attributes</b> <i>(object open-tag)</i> =&gt; <i>result</i></a>
+<br><a class=none><tt>(setf (</tt><b>tag-attributes</b> <i>(object open-tag)</i><tt>)</tt> <i>new-value</i><tt>)</tt></a>
+<blockquote><br>
+
+automatically generated reader method
+
+</blockquote>
+
+<!-- End of entry for TAG-ATTRIBUTES -->
+
+
+<!-- Entry for TAG-COUNTERPART -->
+
+<p><br>[Generic accessor]<br><a class=none name='tag-counterpart'><b>tag-counterpart</b> <i>object</i> =&gt; <i>result</i></a>
+<br><a class=none><tt>(setf (</tt><b>tag-counterpart</b> <i>object</i><tt>)</tt> <i>new-value</i><tt>)</tt></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for TAG-COUNTERPART -->
+
+
+<!-- Entry for TAG-COUNTERPART -->
+
+<p><br>[Specialized accessor]<br><a class=none><b>tag-counterpart</b> <i>(object tag)</i> =&gt; <i>result</i></a>
+<br><a class=none><tt>(setf (</tt><b>tag-counterpart</b> <i>(object tag)</i><tt>)</tt> <i>new-value</i><tt>)</tt></a>
+<blockquote><br>
+
+automatically generated reader method
+
+</blockquote>
+
+<!-- End of entry for TAG-COUNTERPART -->
+
+
+<!-- Entry for TAG-EMPTY-P -->
+
+<p><br>[Generic accessor]<br><a class=none name='tag-empty-p'><b>tag-empty-p</b> <i>object</i> =&gt; <i>result</i></a>
+<br><a class=none><tt>(setf (</tt><b>tag-empty-p</b> <i>object</i><tt>)</tt> <i>new-value</i><tt>)</tt></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for TAG-EMPTY-P -->
+
+
+<!-- Entry for TAG-EMPTY-P -->
+
+<p><br>[Specialized accessor]<br><a class=none><b>tag-empty-p</b> <i>(object open-tag)</i> =&gt; <i>result</i></a>
+<br><a class=none><tt>(setf (</tt><b>tag-empty-p</b> <i>(object open-tag)</i><tt>)</tt> <i>new-value</i><tt>)</tt></a>
+<blockquote><br>
+
+automatically generated reader method
+
+</blockquote>
+
+<!-- End of entry for TAG-EMPTY-P -->
+
+
+<!-- Entry for TAG-NAMESPACES -->
+
+<p><br>[Generic accessor]<br><a class=none name='tag-namespaces'><b>tag-namespaces</b> <i>object</i> =&gt; <i>result</i></a>
+<br><a class=none><tt>(setf (</tt><b>tag-namespaces</b> <i>object</i><tt>)</tt> <i>new-value</i><tt>)</tt></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for TAG-NAMESPACES -->
+
+
+<!-- Entry for TAG-NAMESPACES -->
+
+<p><br>[Specialized accessor]<br><a class=none><b>tag-namespaces</b> <i>(object open-tag)</i> =&gt; <i>result</i></a>
+<br><a class=none><tt>(setf (</tt><b>tag-namespaces</b> <i>(object open-tag)</i><tt>)</tt> <i>new-value</i><tt>)</tt></a>
+<blockquote><br>
+
+automatically generated reader method
+
+</blockquote>
+
+<!-- End of entry for TAG-NAMESPACES -->
+
+
+<!-- Entry for TASK -->
+
+<p><br>[Standard class]<br><a class=none name='task'><b>task</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for TASK -->
+
+
+<!-- Entry for TASK-NODE -->
+
+<p><br>[Accessor]<br><a class=none name='task-node'><b>task-node</b> <i>instance</i> =&gt; <i>result</i></a>
+<br><a class=none><tt>(setf (</tt><b>task-node</b> <i>instance</i><tt>)</tt> <i>new-value</i><tt>)</tt></a>
+<blockquote><br>
+
+@arg[extid]{A @class{extid}}
+       @return[sytemid]{puri:uri or nil}
+
+       Returns the System ID part of this External ID.
+
+</blockquote>
+
+<!-- End of entry for TASK-NODE -->
+
+
+<!-- Entry for TASK-PARAMETER -->
+
+<p><br>[Macro]<br><a class=none name='task-parameter'><b>task-parameter</b> <i>task parameter</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for TASK-PARAMETER -->
+
+
+<!-- Entry for TASK-TYPE -->
+
+<p><br>[Accessor]<br><a class=none name='task-type'><b>task-type</b> <i>instance</i> =&gt; <i>result</i></a>
+<br><a class=none><tt>(setf (</tt><b>task-type</b> <i>instance</i><tt>)</tt> <i>new-value</i><tt>)</tt></a>
+<blockquote><br>
+
+@arg[extid]{A @class{extid}}
+       @return[sytemid]{puri:uri or nil}
+
+       Returns the System ID part of this External ID.
+
+</blockquote>
+
+<!-- End of entry for TASK-TYPE -->
+
+
+<!-- Entry for TOKEN -->
+
+<p><br>[Standard class]<br><a class=none name='token'><b>token</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for TOKEN -->
+
+
+<!-- Entry for TOKEN-STRING -->
+
+<p><br>[Generic accessor]<br><a class=none name='token-string'><b>token-string</b> <i>object</i> =&gt; <i>result</i></a>
+<br><a class=none><tt>(setf (</tt><b>token-string</b> <i>object</i><tt>)</tt> <i>new-value</i><tt>)</tt></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for TOKEN-STRING -->
+
+
+<!-- Entry for TOKEN-STRING -->
+
+<p><br>[Specialized accessor]<br><a class=none><b>token-string</b> <i>(object token)</i> =&gt; <i>result</i></a>
+<br><a class=none><tt>(setf (</tt><b>token-string</b> <i>(object token)</i><tt>)</tt> <i>new-value</i><tt>)</tt></a>
+<blockquote><br>
+
+automatically generated reader method
+
+</blockquote>
+
+<!-- End of entry for TOKEN-STRING -->
+
+
+<!-- Entry for TREE-PARSER -->
+
+<p><br>[Standard class]<br><a class=none name='tree-parser'><b>tree-parser</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for TREE-PARSER -->
+
+
+<!-- Entry for TRIPLE -->
+
+<p><br>[Standard class]<br><a class=none name='triple'><b>triple</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for TRIPLE -->
+
+
+<!-- Entry for TRIPLE -->
+
+<p><br>[Function]<br><a class=none name='triple'><b>triple</b> <i>subject predicate object <tt>&amp;optional</tt> source</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for TRIPLE -->
+
+
+<!-- Entry for TRIPLE-COLLECTION-ADD -->
+
+<p><br>[Function]<br><a class=none name='triple-collection-add'><b>triple-collection-add</b> <i>collection triple</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for TRIPLE-COLLECTION-ADD -->
+
+
+<!-- Entry for TRIPLE-COLLECTION-TRIPLES -->
+
+<p><br>[Accessor]<br><a class=none name='triple-collection-triples'><b>triple-collection-triples</b> <i>instance</i> =&gt; <i>result</i></a>
+<br><a class=none><tt>(setf (</tt><b>triple-collection-triples</b> <i>instance</i><tt>)</tt> <i>new-value</i><tt>)</tt></a>
+<blockquote><br>
+
+@arg[extid]{A @class{extid}}
+       @return[sytemid]{puri:uri or nil}
+
+       Returns the System ID part of this External ID.
+
+</blockquote>
+
+<!-- End of entry for TRIPLE-COLLECTION-TRIPLES -->
+
+
+<!-- Entry for TRIPLE-OBJECT -->
+
+<p><br>[Generic accessor]<br><a class=none name='triple-object'><b>triple-object</b> <i>object</i> =&gt; <i>result</i></a>
+<br><a class=none><tt>(setf (</tt><b>triple-object</b> <i>object</i><tt>)</tt> <i>new-value</i><tt>)</tt></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for TRIPLE-OBJECT -->
+
+
+<!-- Entry for TRIPLE-OBJECT -->
+
+<p><br>[Specialized accessor]<br><a class=none><b>triple-object</b> <i>(object triple)</i> =&gt; <i>result</i></a>
+<br><a class=none><tt>(setf (</tt><b>triple-object</b> <i>(object triple)</i><tt>)</tt> <i>new-value</i><tt>)</tt></a>
+<blockquote><br>
+
+automatically generated reader method
+
+</blockquote>
+
+<!-- End of entry for TRIPLE-OBJECT -->
+
+
+<!-- Entry for TRIPLE-PREDICATE -->
+
+<p><br>[Generic function]<br><a class=none name='triple-predicate'><b>triple-predicate</b> <i>object</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for TRIPLE-PREDICATE -->
+
+
+<!-- Entry for TRIPLE-PREDICATE -->
+
+<p><br>[Method]<br><a class=none><b>triple-predicate</b> <i>(object triple)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+automatically generated reader method
+
+</blockquote>
+
+<!-- End of entry for TRIPLE-PREDICATE -->
+
+
+<!-- Entry for TRIPLE-SOURCES -->
+
+<p><br>[Generic accessor]<br><a class=none name='triple-sources'><b>triple-sources</b> <i>object</i> =&gt; <i>result</i></a>
+<br><a class=none><tt>(setf (</tt><b>triple-sources</b> <i>object</i><tt>)</tt> <i>new-value</i><tt>)</tt></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for TRIPLE-SOURCES -->
+
+
+<!-- Entry for TRIPLE-SOURCES -->
+
+<p><br>[Specialized accessor]<br><a class=none><b>triple-sources</b> <i>(object triple)</i> =&gt; <i>result</i></a>
+<br><a class=none><tt>(setf (</tt><b>triple-sources</b> <i>(object triple)</i><tt>)</tt> <i>new-value</i><tt>)</tt></a>
+<blockquote><br>
+
+automatically generated reader method
+
+</blockquote>
+
+<!-- End of entry for TRIPLE-SOURCES -->
+
+
+<!-- Entry for TRIPLE-SUBJECT -->
+
+<p><br>[Generic function]<br><a class=none name='triple-subject'><b>triple-subject</b> <i>object</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for TRIPLE-SUBJECT -->
+
+
+<!-- Entry for TRIPLE-SUBJECT -->
+
+<p><br>[Method]<br><a class=none><b>triple-subject</b> <i>(object triple)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+automatically generated reader method
+
+</blockquote>
+
+<!-- End of entry for TRIPLE-SUBJECT -->
+
+
+<!-- Entry for TRIPLE= -->
+
+<p><br>[Generic function]<br><a class=none name='triple='><b>triple=</b> <i>triple1 triple2</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for TRIPLE= -->
+
+
+<!-- Entry for TRIPLE= -->
+
+<p><br>[Method]<br><a class=none><b>triple=</b> <i>triple1 triple2</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for TRIPLE= -->
+
+
+<!-- Entry for TRIPLE= -->
+
+<p><br>[Method]<br><a class=none><b>triple=</b> <i>(triple1 triple) (triple2 triple)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for TRIPLE= -->
+
+
+<!-- Entry for UNEXPECTED-END-TAG -->
+
+<p><br>[Condition type]<br><a class=none name='unexpected-end-tag'><b>unexpected-end-tag</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for UNEXPECTED-END-TAG -->
+
+
+<!-- Entry for UNKNOWN-CHARACTER-REFERENCE -->
+
+<p><br>[Condition type]<br><a class=none name='unknown-character-reference'><b>unknown-character-reference</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for UNKNOWN-CHARACTER-REFERENCE -->
+
+
+<!-- Entry for UNKNOWN-DECLARATION -->
+
+<p><br>[Condition type]<br><a class=none name='unknown-declaration'><b>unknown-declaration</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for UNKNOWN-DECLARATION -->
+
+
+<!-- Entry for UNKNOWN-PARSETYPE -->
+
+<p><br>[Condition type]<br><a class=none name='unknown-parsetype'><b>unknown-parsetype</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for UNKNOWN-PARSETYPE -->
+
+
+<!-- Entry for URL -->
+
+<p><br>[Standard class]<br><a class=none name='url'><b>url</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for URL -->
+
+
+<!-- Entry for URL-HOST -->
+
+<p><br>[Generic function]<br><a class=none name='url-host'><b>url-host</b> <i>object</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for URL-HOST -->
+
+
+<!-- Entry for URL-HOST -->
+
+<p><br>[Method]<br><a class=none><b>url-host</b> <i>(object http-url)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+automatically generated reader method
+
+</blockquote>
+
+<!-- End of entry for URL-HOST -->
+
+
+<!-- Entry for URL-PATH -->
+
+<p><br>[Generic function]<br><a class=none name='url-path'><b>url-path</b> <i>object</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for URL-PATH -->
+
+
+<!-- Entry for URL-PATH -->
+
+<p><br>[Method]<br><a class=none><b>url-path</b> <i>(object url)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+automatically generated reader method
+
+</blockquote>
+
+<!-- End of entry for URL-PATH -->
+
+
+<!-- Entry for URL-PORT -->
+
+<p><br>[Generic function]<br><a class=none name='url-port'><b>url-port</b> <i>object</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for URL-PORT -->
+
+
+<!-- Entry for URL-PORT -->
+
+<p><br>[Method]<br><a class=none><b>url-port</b> <i>(object http-url)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+automatically generated reader method
+
+</blockquote>
+
+<!-- End of entry for URL-PORT -->
+
+
+<!-- Entry for URL-STRING -->
+
+<p><br>[Generic accessor]<br><a class=none name='url-string'><b>url-string</b> <i>object</i> =&gt; <i>result</i></a>
+<br><a class=none><tt>(setf (</tt><b>url-string</b> <i>object</i><tt>)</tt> <i>new-value</i><tt>)</tt></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for URL-STRING -->
+
+
+<!-- Entry for URL-STRING -->
+
+<p><br>[Specialized accessor]<br><a class=none><b>url-string</b> <i>(object url)</i> =&gt; <i>result</i></a>
+<br><a class=none><tt>(setf (</tt><b>url-string</b> <i>(object url)</i><tt>)</tt> <i>new-value</i><tt>)</tt></a>
+<blockquote><br>
+
+automatically generated reader method
+
+</blockquote>
+
+<!-- End of entry for URL-STRING -->
+
+
+<!-- Entry for VALUE -->
+
+<p><br>[Function]<br><a class=none name='value'><b>value</b> <i>frame <tt>&amp;rest</tt> paths</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for VALUE -->
+
+
+<!-- Entry for WALK-USING-FSA -->
+
+<p><br>[Function]<br><a class=none name='walk-using-fsa'><b>walk-using-fsa</b> <i>root fsa action db</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for WALK-USING-FSA -->
+
+
+<!-- Entry for WITH-LOCK -->
+
+<p><br>[Macro]<br><a class=none name='with-lock'><b>with-lock</b> <i>(lock <tt>&amp;rest</tt> args) declaration* statement*</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for WITH-LOCK -->
+
+
+<!-- Entry for WITH-RDF-PAGE -->
+
+<p><br>[Macro]<br><a class=none name='with-rdf-page'><b>with-rdf-page</b> <i>(stream prefixes) declaration* statement*</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for WITH-RDF-PAGE -->
+
+
+<!-- Entry for WITH-RESOURCE-FROM-POOL -->
+
+<p><br>[Macro]<br><a class=none name='with-resource-from-pool'><b>with-resource-from-pool</b> <i>(var pool) declaration* statement*</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for WITH-RESOURCE-FROM-POOL -->
+
+
+<!-- Entry for WITH-SPO-CASE -->
+
+<p><br>[Macro]<br><a class=none name='with-spo-case'><b>with-spo-case</b> <i>((sub pre obj) subject predicate object) <tt>&amp;key</tt> spo sp so s po p o all</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for WITH-SPO-CASE -->
+
+
+<!-- Entry for WITH-TAGS -->
+
+<p><br>[Macro]<br><a class=none name='with-tags'><b>with-tags</b> <i>(stream <tt>&amp;rest</tt> tags) declaration* statement*</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for WITH-TAGS -->
+
+
+<!-- Entry for WITH-TEMPS -->
+
+<p><br>[Macro]<br><a class=none name='with-temps'><b>with-temps</b> <i>(<tt>&amp;rest</tt> variables) declaration* statement*</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for WITH-TEMPS -->
+
+
+<!-- Entry for WITHOUT-CLOSURE -->
+
+<p><br>[Macro]<br><a class=none name='without-closure'><b>without-closure</b> <i>(db) declaration* statement*</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for WITHOUT-CLOSURE -->
+
+
+<!-- Entry for XHTML-PREAMBLE -->
+
+<p><br>[Function]<br><a class=none name='xhtml-preamble'><b>xhtml-preamble</b> <i>stream</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for XHTML-PREAMBLE -->
+
+
+<!-- Entry for XML-ERROR -->
+
+<p><br>[Condition type]<br><a class=none name='xml-error'><b>xml-error</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for XML-ERROR -->
+
+
+<!-- Entry for XML-FEATURE-NOT-SUPPORTED -->
+
+<p><br>[Condition type]<br><a class=none name='xml-feature-not-supported'><b>xml-feature-not-supported</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for XML-FEATURE-NOT-SUPPORTED -->
+
+
+<!-- Entry for XML-FORMATTER -->
+
+<p><br>[Standard class]<br><a class=none name='xml-formatter'><b>xml-formatter</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for XML-FORMATTER -->
+
+
+<!-- Entry for XML-PARSER -->
+
+<p><br>[Standard class]<br><a class=none name='xml-parser'><b>xml-parser</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for XML-PARSER -->
+
+
+<!-- Entry for XML-PREAMBLE -->
+
+<p><br>[Function]<br><a class=none name='xml-preamble'><b>xml-preamble</b> <i>stream</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for XML-PREAMBLE -->
+
+
+<!-- Entry for XML-WARNING -->
+
+<p><br>[Condition type]<br><a class=none name='xml-warning'><b>xml-warning</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for XML-WARNING -->
+
+
+<!-- Entry for XML-WARNING -->
+
+<p><br>[Macro]<br><a class=none name='xml-warning'><b>xml-warning</b> <i>message <tt>&amp;rest</tt> args</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for XML-WARNING -->
+
+
+<!-- Entry for XSD-URI -->
+
+<p><br>[Macro]<br><a class=none name='xsd-uri'><b>xsd-uri</b> <i>string</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for XSD-URI -->
+
+
+<!-- Entry for (SETF NODE-URI) -->
+
+<p><br>[Method]<br><a class=none><tt>(setf (</tt><b>node-uri</b> <i>(object storable-node)</i><tt>)</tt> <i>new-value</i><tt>)</tt></a><tt> :after</tt>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for (SETF NODE-URI) -->
+
+
+<!-- Entry for (SETF SAX-PRODUCER-CONSUMER) -->
+
+<p><br>[Method]<br><a class=none><tt>(setf (</tt><b>sax-producer-consumer</b> <i>(object sax-producer)</i><tt>)</tt> <i>new-value</i><tt>)</tt></a>
+<blockquote><br>
+
+automatically generated writer method
+
+</blockquote>
+
+<!-- End of entry for (SETF SAX-PRODUCER-CONSUMER) -->
+
+
+<br>&nbsp;<br><h3><a class=none name="ack">Acknowledgements</a></h3>
+
+<p>
+This documentation was prepared with <a href="http://weitz.de/documentation-template/">DOCUMENTATION-TEMPLATE</a>.
+</p>
+<p>
+$Header: /usr/local/cvsrep/documentation-template/output.lisp,v 1.17 2010/08/05 19:24:27 edi Exp $
+<p><a href="http://weitz.de/index.html">BACK TO MY HOMEPAGE</a>
+
+</body>
+</html>

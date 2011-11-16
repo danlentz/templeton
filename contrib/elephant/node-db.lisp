@@ -106,7 +106,7 @@
 (defun named-graph-db (id)
   (db-of (named-graph id)))
 
-(defun ndb (identifier)
+(defun ngdb (identifier)
   (db-of (named-graph identifier)))
 
 (defgeneric commit-graph (graph-designator))

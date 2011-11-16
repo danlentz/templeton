@@ -1,0 +1,2091 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html> 
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <title>TEMPLETON - a cool library</title>
+  <style type="text/css">
+  pre { padding:5px; background-color:#e0e0e0 }
+  h3, h4 { text-decoration: underline; }
+  a { text-decoration: none; padding: 1px 2px 1px 2px; }
+  a:visited { text-decoration: none; padding: 1px 2px 1px 2px; }
+  a:hover { text-decoration: none; padding: 1px 1px 1px 1px; border: 1px solid #000000; } 
+  a:focus { text-decoration: none; padding: 1px 2px 1px 2px; border: none; }
+  a.none { text-decoration: none; padding: 0; }
+  a.none:visited { text-decoration: none; padding: 0; } 
+  a.none:hover { text-decoration: none; border: none; padding: 0; } 
+  a.none:focus { text-decoration: none; border: none; padding: 0; } 
+  a.noborder { text-decoration: none; padding: 0; } 
+  a.noborder:visited { text-decoration: none; padding: 0; } 
+  a.noborder:hover { text-decoration: none; border: none; padding: 0; } 
+  a.noborder:focus { text-decoration: none; border: none; padding: 0; }  
+  pre.none { padding:5px; background-color:#ffffff }
+  </style>
+</head>
+
+<body bgcolor=white>
+
+<h2> TEMPLETON - a cool library</h2>
+
+<blockquote>
+<br>&nbsp;<br><h3><a name=abstract class=none>Abstract</a></h3>
+
+The code comes with
+a <a
+href="http://www.opensource.org/licenses/bsd-license.php">BSD-style
+license</a> so you can basically do with it whatever you want.
+
+<p>
+<font color=red>Download shortcut:</font> <a href="http://weitz.de/files/templeton.tar.gz">http://weitz.de/files/templeton.tar.gz</a>.
+</blockquote>
+
+<br>&nbsp;<br><h3><a class=none name="contents">Contents</a></h3>
+<ol>
+  <li><a href="#download">Download</a>
+  <li><a href="#dictionary">The TEMPLETON dictionary</a>
+    <ol>
+      <li><a href="#*graphs*"><code>*graphs*</code></a>
+      <li><a href="#all-named-graphs"><code>all-named-graphs</code></a>
+      <li><a href="#all-prefixes"><code>all-prefixes</code></a>
+      <li><a href="#ang"><code>ang</code></a>
+      <li><a href="#bnodes-of"><code>bnodes-of</code></a>
+      <li><a href="#commit"><code>commit</code></a>
+      <li><a href="#db-access-stats"><code>db-access-stats</code></a>
+      <li><a href="#db-add-namespace"><code>db-add-namespace</code></a>
+      <li><a href="#db-add-triple"><code>db-add-triple</code></a>
+      <li><a href="#db-clear"><code>db-clear</code></a>
+      <li><a href="#db-count-triples"><code>db-count-triples</code></a>
+      <li><a href="#db-del-source"><code>db-del-source</code></a>
+      <li><a href="#db-del-triple"><code>db-del-triple</code></a>
+      <li><a href="#db-find-triple"><code>db-find-triple</code></a>
+      <li><a href="#db-index-stats"><code>db-index-stats</code></a>
+      <li><a href="#db-literal-class"><code>db-literal-class</code></a>
+      <li><a href="#db-make-literal"><code>db-make-literal</code></a>
+      <li><a href="#db-make-triple"><code>db-make-triple</code></a>
+      <li><a href="#db-merge"><code>db-merge</code></a>
+      <li><a href="#db-new-container-membership-property"><code>db-new-container-membership-property</code></a>
+      <li><a href="#db-node-resolved"><code>db-node-resolved</code></a>
+      <li><a href="#db-of"><code>db-of</code></a>
+      <li><a href="#db-path-fsas"><code>db-path-fsas</code></a>
+      <li><a href="#db-query"><code>db-query</code></a>
+      <li><a href="#db-query-by-source"><code>db-query-by-source</code></a>
+      <li><a href="#db-source-descs"><code>db-source-descs</code></a>
+      <li><a href="#db-sources"><code>db-sources</code></a>
+      <li><a href="#db-triples"><code>db-triples</code></a>
+      <li><a href="#dictionary-clear"><code>dictionary-clear</code></a>
+      <li><a href="#dictionary-size"><code>dictionary-size</code></a>
+      <li><a href="#drop-all-named-graphs"><code>drop-all-named-graphs</code></a>
+      <li><a href="#drop-graph"><code>drop-graph</code></a>
+      <li><a href="#extended-db"><code>extended-db</code></a>
+      <li><a href="#get-phash"><code>get-phash</code></a>
+      <li><a href="#get-phash*"><code>get-phash*</code></a>
+      <li><a href="#graph-container"><code>graph-container</code></a>
+      <li><a href="#import-graph"><code>import-graph</code></a>
+      <li><a href="#intern-bnode"><code>intern-bnode</code></a>
+      <li><a href="#load-schema"><code>load-schema</code></a>
+      <li><a href="#make-phash"><code>make-phash</code></a>
+      <li><a href="#make-pindex"><code>make-pindex</code></a>
+      <li><a href="#map"><code>map</code></a>
+      <li><a href="#map-phash"><code>map-phash</code></a>
+      <li><a href="#merge-resolved-prefixes"><code>merge-resolved-prefixes</code></a>
+      <li><a href="#named-graph"><code>named-graph</code></a>
+      <li><a href="#named-graph-db"><code>named-graph-db</code></a>
+      <li><a href="#named-graph-db"><code>named-graph-db</code></a>
+      <li><a href="#ndb"><code>ndb</code></a>
+      <li><a href="#ng"><code>ng</code></a>
+      <li><a href="#ngdb"><code>ngdb</code></a>
+      <li><a href="#owl-cons"><code>owl-cons</code></a>
+      <li><a href="#owl-list"><code>owl-list</code></a>
+      <li><a href="#owl-parser"><code>owl-parser</code></a>
+      <li><a href="#parse-turtle-stream"><code>parse-turtle-stream</code></a>
+      <li><a href="#parse-turtle-string"><code>parse-turtle-string</code></a>
+      <li><a href="#phash"><code>phash</code></a>
+      <li><a href="#phash-help"><code>phash-help</code></a>
+      <li><a href="#phash-map"><code>phash-map</code></a>
+      <li><a href="#phash-size"><code>phash-size</code></a>
+      <li><a href="#pindex"><code>pindex</code></a>
+      <li><a href="#pindex-map"><code>pindex-map</code></a>
+      <li><a href="#prefix-db"><code>prefix-db</code></a>
+      <li><a href="#printv"><code>printv</code></a>
+      <li><a href="#put-phash"><code>put-phash</code></a>
+      <li><a href="#register-object"><code>register-object</code></a>
+      <li><a href="#rem-phash"><code>rem-phash</code></a>
+      <li><a href="#resolve-prefix"><code>resolve-prefix</code></a>
+      <li><a href="#rollback"><code>rollback</code></a>
+      <li><a href="#snapshot-commit"><code>snapshot-commit</code></a>
+      <li><a href="#snapshot-restore"><code>snapshot-restore</code></a>
+      <li><a href="#snapshot-root"><code>snapshot-root</code></a>
+      <li><a href="#snapshot-set"><code>snapshot-set</code></a>
+      <li><a href="#storable-graph"><code>storable-graph</code></a>
+      <li><a href="#storable-node"><code>storable-node</code></a>
+      <li><a href="#storable-node-dictionary"><code>storable-node-dictionary</code></a>
+      <li><a href="#turtle-db"><code>turtle-db</code></a>
+      <li><a href="#turtle-parser"><code>turtle-parser</code></a>
+      <li><a href="#turtle-parser"><code>turtle-parser</code></a>
+      <li><a href="#unregister-object"><code>unregister-object</code></a>
+    </ol>
+  <li><a href="#ack">Acknowledgements</a>
+</ol>
+
+<br>&nbsp;<br><h3><a class=none name="download">Download</a></h3>
+
+TEMPLETON together with this documentation can be downloaded from <a
+href="http://weitz.de/files/templeton.tar.gz">http://weitz.de/files/templeton.tar.gz</a>. The
+current version is 0.1.0.
+
+<br>&nbsp;<br><h3><a class=none name="dictionary">The TEMPLETON dictionary</a></h3>
+
+
+
+<!-- Entry for *GRAPHS* -->
+
+<p><br>[Special variable]<br><a class=none name='*graphs*'><b>*graphs*</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for *GRAPHS* -->
+
+
+<!-- Entry for ALL-NAMED-GRAPHS -->
+
+<p><br>[Function]<br><a class=none name='all-named-graphs'><b>all-named-graphs</b> <i></i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for ALL-NAMED-GRAPHS -->
+
+
+<!-- Entry for ALL-PREFIXES -->
+
+<p><br>[Function]<br><a class=none name='all-prefixes'><b>all-prefixes</b> <i></i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for ALL-PREFIXES -->
+
+
+<!-- Entry for ANG -->
+
+<p><br>[Function]<br><a class=none name='ang'><b>ang</b> <i></i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for ANG -->
+
+
+<!-- Entry for BNODES-OF -->
+
+<p><br>[Generic function]<br><a class=none name='bnodes-of'><b>bnodes-of</b> <i>object</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for BNODES-OF -->
+
+
+<!-- Entry for BNODES-OF -->
+
+<p><br>[Method]<br><a class=none><b>bnodes-of</b> <i>(object turtle-db)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+automatically generated reader method
+
+</blockquote>
+
+<!-- End of entry for BNODES-OF -->
+
+
+<!-- Entry for COMMIT -->
+
+<p><br>[Function]<br><a class=none name='commit'><b>commit</b> <i>id</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for COMMIT -->
+
+
+<!-- Entry for DB-ACCESS-STATS -->
+
+<p><br>[Generic function]<br><a class=none name='db-access-stats'><b>db-access-stats</b> <i>db</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-ACCESS-STATS -->
+
+
+<!-- Entry for DB-ACCESS-STATS -->
+
+<p><br>[Method]<br><a class=none><b>db-access-stats</b> <i>(db node)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-ACCESS-STATS -->
+
+
+<!-- Entry for DB-ACCESS-STATS -->
+
+<p><br>[Method]<br><a class=none><b>db-access-stats</b> <i>(db db-access-counter-mixin)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-ACCESS-STATS -->
+
+
+<!-- Entry for DB-ADD-NAMESPACE -->
+
+<p><br>[Generic function]<br><a class=none name='db-add-namespace'><b>db-add-namespace</b> <i>db prefix uri</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-ADD-NAMESPACE -->
+
+
+<!-- Entry for DB-ADD-NAMESPACE -->
+
+<p><br>[Method]<br><a class=none><b>db-add-namespace</b> <i>(db node) prefix uri</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-ADD-NAMESPACE -->
+
+
+<!-- Entry for DB-ADD-NAMESPACE -->
+
+<p><br>[Method]<br><a class=none><b>db-add-namespace</b> <i>(db db) prefix uri</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-ADD-NAMESPACE -->
+
+
+<!-- Entry for DB-ADD-TRIPLE -->
+
+<p><br>[Generic function]<br><a class=none name='db-add-triple'><b>db-add-triple</b> <i>db triple <tt>&amp;optional</tt> source</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-ADD-TRIPLE -->
+
+
+<!-- Entry for DB-ADD-TRIPLE -->
+
+<p><br>[Method]<br><a class=none><b>db-add-triple</b> <i>(db node) triple <tt>&amp;optional</tt> source</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-ADD-TRIPLE -->
+
+
+<!-- Entry for DB-ADD-TRIPLE -->
+
+<p><br>[Method]<br><a class=none><b>db-add-triple</b> <i>(db deductive-closure-db-mixin) (triple triple) <tt>&amp;optional</tt> source</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-ADD-TRIPLE -->
+
+
+<!-- Entry for DB-ADD-TRIPLE -->
+
+<p><br>[Method]<br><a class=none><b>db-add-triple</b> <i>(db locked-db-mixin) (triple triple) <tt>&amp;optional</tt> source</i> =&gt; <i>result</i></a><tt> :around</tt>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-ADD-TRIPLE -->
+
+
+<!-- Entry for DB-ADD-TRIPLE -->
+
+<p><br>[Method]<br><a class=none><b>db-add-triple</b> <i>(db indexed-db) (triple triple) <tt>&amp;optional</tt> source</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-ADD-TRIPLE -->
+
+
+<!-- Entry for DB-ADD-TRIPLE -->
+
+<p><br>[Method]<br><a class=none><b>db-add-triple</b> <i>(db fast-temporary-db) (triple triple) <tt>&amp;optional</tt> source</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-ADD-TRIPLE -->
+
+
+<!-- Entry for DB-ADD-TRIPLE -->
+
+<p><br>[Method]<br><a class=none><b>db-add-triple</b> <i>(db db) (triple triple) <tt>&amp;optional</tt> source</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-ADD-TRIPLE -->
+
+
+<!-- Entry for DB-CLEAR -->
+
+<p><br>[Generic function]<br><a class=none name='db-clear'><b>db-clear</b> <i>db</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-CLEAR -->
+
+
+<!-- Entry for DB-CLEAR -->
+
+<p><br>[Method]<br><a class=none><b>db-clear</b> <i>(db node)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-CLEAR -->
+
+
+<!-- Entry for DB-CLEAR -->
+
+<p><br>[Method]<br><a class=none><b>db-clear</b> <i>(db indexed-db)</i><tt> :after</tt>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-CLEAR -->
+
+
+<!-- Entry for DB-CLEAR -->
+
+<p><br>[Method]<br><a class=none><b>db-clear</b> <i>(db db)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-CLEAR -->
+
+
+<!-- Entry for DB-COUNT-TRIPLES -->
+
+<p><br>[Generic function]<br><a class=none name='db-count-triples'><b>db-count-triples</b> <i>db</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-COUNT-TRIPLES -->
+
+
+<!-- Entry for DB-COUNT-TRIPLES -->
+
+<p><br>[Method]<br><a class=none><b>db-count-triples</b> <i>(db node)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-COUNT-TRIPLES -->
+
+
+<!-- Entry for DB-COUNT-TRIPLES -->
+
+<p><br>[Method]<br><a class=none><b>db-count-triples</b> <i>(db db)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-COUNT-TRIPLES -->
+
+
+<!-- Entry for DB-DEL-SOURCE -->
+
+<p><br>[Generic function]<br><a class=none name='db-del-source'><b>db-del-source</b> <i>db source</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-DEL-SOURCE -->
+
+
+<!-- Entry for DB-DEL-SOURCE -->
+
+<p><br>[Method]<br><a class=none><b>db-del-source</b> <i>(db node) source</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-DEL-SOURCE -->
+
+
+<!-- Entry for DB-DEL-SOURCE -->
+
+<p><br>[Method]<br><a class=none><b>db-del-source</b> <i>(db indexed-db) (source node)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-DEL-SOURCE -->
+
+
+<!-- Entry for DB-DEL-SOURCE -->
+
+<p><br>[Method]<br><a class=none><b>db-del-source</b> <i>(db db) (source node)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-DEL-SOURCE -->
+
+
+<!-- Entry for DB-DEL-TRIPLE -->
+
+<p><br>[Generic function]<br><a class=none name='db-del-triple'><b>db-del-triple</b> <i>db triple <tt>&amp;optional</tt> source</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-DEL-TRIPLE -->
+
+
+<!-- Entry for DB-DEL-TRIPLE -->
+
+<p><br>[Method]<br><a class=none><b>db-del-triple</b> <i>(db node) triple <tt>&amp;optional</tt> source</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-DEL-TRIPLE -->
+
+
+<!-- Entry for DB-DEL-TRIPLE -->
+
+<p><br>[Method]<br><a class=none><b>db-del-triple</b> <i>(db deductive-closure-db-mixin) (triple triple) <tt>&amp;optional</tt> source</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-DEL-TRIPLE -->
+
+
+<!-- Entry for DB-DEL-TRIPLE -->
+
+<p><br>[Method]<br><a class=none><b>db-del-triple</b> <i>(db locked-db-mixin) (triple triple) <tt>&amp;optional</tt> source</i> =&gt; <i>result</i></a><tt> :around</tt>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-DEL-TRIPLE -->
+
+
+<!-- Entry for DB-DEL-TRIPLE -->
+
+<p><br>[Method]<br><a class=none><b>db-del-triple</b> <i>(db indexed-db) (triple triple) <tt>&amp;optional</tt> source</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-DEL-TRIPLE -->
+
+
+<!-- Entry for DB-DEL-TRIPLE -->
+
+<p><br>[Method]<br><a class=none><b>db-del-triple</b> <i>(db fast-temporary-db) (triple triple) <tt>&amp;optional</tt> source</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-DEL-TRIPLE -->
+
+
+<!-- Entry for DB-DEL-TRIPLE -->
+
+<p><br>[Method]<br><a class=none><b>db-del-triple</b> <i>(db db) (triple triple) <tt>&amp;optional</tt> source</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-DEL-TRIPLE -->
+
+
+<!-- Entry for DB-FIND-TRIPLE -->
+
+<p><br>[Generic function]<br><a class=none name='db-find-triple'><b>db-find-triple</b> <i>db triple</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-FIND-TRIPLE -->
+
+
+<!-- Entry for DB-FIND-TRIPLE -->
+
+<p><br>[Method]<br><a class=none><b>db-find-triple</b> <i>(db node) triple</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-FIND-TRIPLE -->
+
+
+<!-- Entry for DB-FIND-TRIPLE -->
+
+<p><br>[Method]<br><a class=none><b>db-find-triple</b> <i>(db indexed-db) (triple triple)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-FIND-TRIPLE -->
+
+
+<!-- Entry for DB-FIND-TRIPLE -->
+
+<p><br>[Method]<br><a class=none><b>db-find-triple</b> <i>(db db) (triple triple)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-FIND-TRIPLE -->
+
+
+<!-- Entry for DB-INDEX-STATS -->
+
+<p><br>[Generic function]<br><a class=none name='db-index-stats'><b>db-index-stats</b> <i>indexed-db</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-INDEX-STATS -->
+
+
+<!-- Entry for DB-INDEX-STATS -->
+
+<p><br>[Method]<br><a class=none><b>db-index-stats</b> <i>(indexed-db node)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-INDEX-STATS -->
+
+
+<!-- Entry for DB-INDEX-STATS -->
+
+<p><br>[Method]<br><a class=none><b>db-index-stats</b> <i>(indexed-db indexed-db)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-INDEX-STATS -->
+
+
+<!-- Entry for DB-LITERAL-CLASS -->
+
+<p><br>[Generic function]<br><a class=none name='db-literal-class'><b>db-literal-class</b> <i>db</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-LITERAL-CLASS -->
+
+
+<!-- Entry for DB-LITERAL-CLASS -->
+
+<p><br>[Method]<br><a class=none><b>db-literal-class</b> <i>(db node)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-LITERAL-CLASS -->
+
+
+<!-- Entry for DB-LITERAL-CLASS -->
+
+<p><br>[Method]<br><a class=none><b>db-literal-class</b> <i>(db db)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+automatically generated reader method
+
+</blockquote>
+
+<!-- End of entry for DB-LITERAL-CLASS -->
+
+
+<!-- Entry for DB-MAKE-LITERAL -->
+
+<p><br>[Generic function]<br><a class=none name='db-make-literal'><b>db-make-literal</b> <i>db string <tt>&amp;rest</tt> options <tt>&amp;key</tt> property datatype language language datatype property <tt>&amp;allow-other-keys</tt></i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-MAKE-LITERAL -->
+
+
+<!-- Entry for DB-MAKE-LITERAL -->
+
+<p><br>[Method]<br><a class=none><b>db-make-literal</b> <i>(db node) string <tt>&amp;rest</tt> options <tt>&amp;key</tt> property datatype language language datatype property <tt>&amp;allow-other-keys</tt></i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-MAKE-LITERAL -->
+
+
+<!-- Entry for DB-MAKE-LITERAL -->
+
+<p><br>[Method]<br><a class=none><b>db-make-literal</b> <i>(db literal-transform-db-mixin) string <tt>&amp;rest</tt> options <tt>&amp;key</tt> property datatype language language datatype property <tt>&amp;allow-other-keys</tt></i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-MAKE-LITERAL -->
+
+
+<!-- Entry for DB-MAKE-LITERAL -->
+
+<p><br>[Method]<br><a class=none><b>db-make-literal</b> <i>(db interned-literal-db-mixin) string <tt>&amp;rest</tt> options <tt>&amp;key</tt> property datatype language language datatype property <tt>&amp;allow-other-keys</tt></i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-MAKE-LITERAL -->
+
+
+<!-- Entry for DB-MAKE-LITERAL -->
+
+<p><br>[Method]<br><a class=none><b>db-make-literal</b> <i>(db db) string <tt>&amp;rest</tt> options <tt>&amp;key</tt> property datatype language language datatype property <tt>&amp;allow-other-keys</tt></i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-MAKE-LITERAL -->
+
+
+<!-- Entry for DB-MAKE-TRIPLE -->
+
+<p><br>[Generic function]<br><a class=none name='db-make-triple'><b>db-make-triple</b> <i>db subject predicate object <tt>&amp;optional</tt> source</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-MAKE-TRIPLE -->
+
+
+<!-- Entry for DB-MAKE-TRIPLE -->
+
+<p><br>[Method]<br><a class=none><b>db-make-triple</b> <i>(db node) subject predicate object <tt>&amp;optional</tt> source</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-MAKE-TRIPLE -->
+
+
+<!-- Entry for DB-MAKE-TRIPLE -->
+
+<p><br>[Method]<br><a class=none><b>db-make-triple</b> <i>(db db) subject predicate object <tt>&amp;optional</tt> source</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-MAKE-TRIPLE -->
+
+
+<!-- Entry for DB-MERGE -->
+
+<p><br>[Generic function]<br><a class=none name='db-merge'><b>db-merge</b> <i>to from <tt>&amp;optional</tt> source</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-MERGE -->
+
+
+<!-- Entry for DB-MERGE -->
+
+<p><br>[Method]<br><a class=none><b>db-merge</b> <i>(to node) from <tt>&amp;optional</tt> source</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-MERGE -->
+
+
+<!-- Entry for DB-MERGE -->
+
+<p><br>[Method]<br><a class=none><b>db-merge</b> <i>to (from node) <tt>&amp;optional</tt> source</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-MERGE -->
+
+
+<!-- Entry for DB-MERGE -->
+
+<p><br>[Method]<br><a class=none><b>db-merge</b> <i>(to deductive-closure-db-mixin) (from db) <tt>&amp;optional</tt> source</i><tt> :after</tt>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-MERGE -->
+
+
+<!-- Entry for DB-MERGE -->
+
+<p><br>[Method]<br><a class=none><b>db-merge</b> <i>(to locked-db-mixin) (from db) <tt>&amp;optional</tt> source</i> =&gt; <i>result</i></a><tt> :around</tt>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-MERGE -->
+
+
+<!-- Entry for DB-MERGE -->
+
+<p><br>[Method]<br><a class=none><b>db-merge</b> <i>(to db) (from db) <tt>&amp;optional</tt> source</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-MERGE -->
+
+
+<!-- Entry for DB-NEW-CONTAINER-MEMBERSHIP-PROPERTY -->
+
+<p><br>[Generic function]<br><a class=none name='db-new-container-membership-property'><b>db-new-container-membership-property</b> <i>db property</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-NEW-CONTAINER-MEMBERSHIP-PROPERTY -->
+
+
+<!-- Entry for DB-NEW-CONTAINER-MEMBERSHIP-PROPERTY -->
+
+<p><br>[Method]<br><a class=none><b>db-new-container-membership-property</b> <i>(db node) property</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-NEW-CONTAINER-MEMBERSHIP-PROPERTY -->
+
+
+<!-- Entry for DB-NEW-CONTAINER-MEMBERSHIP-PROPERTY -->
+
+<p><br>[Method]<br><a class=none><b>db-new-container-membership-property</b> <i>(db deductive-closure-db-mixin) (property node)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-NEW-CONTAINER-MEMBERSHIP-PROPERTY -->
+
+
+<!-- Entry for DB-NEW-CONTAINER-MEMBERSHIP-PROPERTY -->
+
+<p><br>[Method]<br><a class=none><b>db-new-container-membership-property</b> <i>(db db) (property node)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-NEW-CONTAINER-MEMBERSHIP-PROPERTY -->
+
+
+<!-- Entry for DB-NODE-RESOLVED -->
+
+<p><br>[Generic function]<br><a class=none name='db-node-resolved'><b>db-node-resolved</b> <i>db node old-name</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-NODE-RESOLVED -->
+
+
+<!-- Entry for DB-NODE-RESOLVED -->
+
+<p><br>[Method]<br><a class=none><b>db-node-resolved</b> <i>(db node) node old-name</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-NODE-RESOLVED -->
+
+
+<!-- Entry for DB-NODE-RESOLVED -->
+
+<p><br>[Method]<br><a class=none><b>db-node-resolved</b> <i>(db db) (node node) old-name</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-NODE-RESOLVED -->
+
+
+<!-- Entry for DB-NODE-RESOLVED -->
+
+<p><br>[Method]<br><a class=none><b>db-node-resolved</b> <i>(db null) (node node) old-name</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-NODE-RESOLVED -->
+
+
+<!-- Entry for DB-OF -->
+
+<p><br>[Generic accessor]<br><a class=none name='db-of'><b>db-of</b> <i>graph-designator</i> =&gt; <i>result</i></a>
+<br><a class=none><tt>(setf (</tt><b>db-of</b> <i>container</i><tt>)</tt> <i>db</i><tt>)</tt></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-OF -->
+
+
+<!-- Entry for DB-OF -->
+
+<p><br>[Specialized accessor]<br><a class=none><b>db-of</b> <i>(graph-designator storable-graph)</i> =&gt; <i>result</i></a>
+<br><a class=none><tt>(setf (</tt><b>db-of</b> <i>(container storable-graph)</i><tt>)</tt> <i>db</i><tt>)</tt></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-OF -->
+
+
+<!-- Entry for DB-PATH-FSAS -->
+
+<p><br>[Generic function]<br><a class=none name='db-path-fsas'><b>db-path-fsas</b> <i>db</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-PATH-FSAS -->
+
+
+<!-- Entry for DB-PATH-FSAS -->
+
+<p><br>[Method]<br><a class=none><b>db-path-fsas</b> <i>(db node)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-PATH-FSAS -->
+
+
+<!-- Entry for DB-PATH-FSAS -->
+
+<p><br>[Method]<br><a class=none><b>db-path-fsas</b> <i>(db db)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+automatically generated reader method
+
+</blockquote>
+
+<!-- End of entry for DB-PATH-FSAS -->
+
+
+<!-- Entry for DB-QUERY -->
+
+<p><br>[Generic function]<br><a class=none name='db-query'><b>db-query</b> <i>db subject predicate obect</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-QUERY -->
+
+
+<!-- Entry for DB-QUERY -->
+
+<p><br>[Method]<br><a class=none><b>db-query</b> <i>(db node) subject predicate obect</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-QUERY -->
+
+
+<!-- Entry for DB-QUERY -->
+
+<p><br>[Method]<br><a class=none><b>db-query</b> <i>(db db-access-counter-mixin) subject predicate obect</i><tt> :after</tt>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-QUERY -->
+
+
+<!-- Entry for DB-QUERY -->
+
+<p><br>[Method]<br><a class=none><b>db-query</b> <i>(db indexed-db) subject predicate obect</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-QUERY -->
+
+
+<!-- Entry for DB-QUERY -->
+
+<p><br>[Method]<br><a class=none><b>db-query</b> <i>(db db) subject predicate obect</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-QUERY -->
+
+
+<!-- Entry for DB-QUERY-BY-SOURCE -->
+
+<p><br>[Generic function]<br><a class=none name='db-query-by-source'><b>db-query-by-source</b> <i>db source</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-QUERY-BY-SOURCE -->
+
+
+<!-- Entry for DB-QUERY-BY-SOURCE -->
+
+<p><br>[Method]<br><a class=none><b>db-query-by-source</b> <i>(db node) source</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-QUERY-BY-SOURCE -->
+
+
+<!-- Entry for DB-QUERY-BY-SOURCE -->
+
+<p><br>[Method]<br><a class=none><b>db-query-by-source</b> <i>(db indexed-db) (source node)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-QUERY-BY-SOURCE -->
+
+
+<!-- Entry for DB-QUERY-BY-SOURCE -->
+
+<p><br>[Method]<br><a class=none><b>db-query-by-source</b> <i>(db db) (source node)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-QUERY-BY-SOURCE -->
+
+
+<!-- Entry for DB-SOURCE-DESCS -->
+
+<p><br>[Generic accessor]<br><a class=none name='db-source-descs'><b>db-source-descs</b> <i>db</i> =&gt; <i>result</i></a>
+<br><a class=none><tt>(setf (</tt><b>db-source-descs</b> <i>object</i><tt>)</tt> <i>new-value</i><tt>)</tt></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-SOURCE-DESCS -->
+
+
+<!-- Entry for DB-SOURCE-DESCS -->
+
+<p><br>[Method]<br><a class=none><b>db-source-descs</b> <i>(db node)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-SOURCE-DESCS -->
+
+
+<!-- Entry for DB-SOURCE-DESCS -->
+
+<p><br>[Specialized accessor]<br><a class=none><b>db-source-descs</b> <i>(db db)</i> =&gt; <i>result</i></a>
+<br><a class=none><tt>(setf (</tt><b>db-source-descs</b> <i>(object db)</i><tt>)</tt> <i>new-value</i><tt>)</tt></a>
+<blockquote><br>
+
+automatically generated reader method
+
+</blockquote>
+
+<!-- End of entry for DB-SOURCE-DESCS -->
+
+
+<!-- Entry for DB-SOURCES -->
+
+<p><br>[Generic function]<br><a class=none name='db-sources'><b>db-sources</b> <i>db</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-SOURCES -->
+
+
+<!-- Entry for DB-SOURCES -->
+
+<p><br>[Method]<br><a class=none><b>db-sources</b> <i>(db node)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-SOURCES -->
+
+
+<!-- Entry for DB-SOURCES -->
+
+<p><br>[Method]<br><a class=none><b>db-sources</b> <i>(db indexed-db)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-SOURCES -->
+
+
+<!-- Entry for DB-SOURCES -->
+
+<p><br>[Method]<br><a class=none><b>db-sources</b> <i>(db db)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-SOURCES -->
+
+
+<!-- Entry for DB-TRIPLES -->
+
+<p><br>[Generic accessor]<br><a class=none name='db-triples'><b>db-triples</b> <i>db</i> =&gt; <i>result</i></a>
+<br><a class=none><tt>(setf (</tt><b>db-triples</b> <i>object</i><tt>)</tt> <i>new-value</i><tt>)</tt></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-TRIPLES -->
+
+
+<!-- Entry for DB-TRIPLES -->
+
+<p><br>[Method]<br><a class=none><b>db-triples</b> <i>(db node)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DB-TRIPLES -->
+
+
+<!-- Entry for DB-TRIPLES -->
+
+<p><br>[Specialized accessor]<br><a class=none><b>db-triples</b> <i>(db db)</i> =&gt; <i>result</i></a>
+<br><a class=none><tt>(setf (</tt><b>db-triples</b> <i>(object db)</i><tt>)</tt> <i>new-value</i><tt>)</tt></a>
+<blockquote><br>
+
+automatically generated reader method
+
+</blockquote>
+
+<!-- End of entry for DB-TRIPLES -->
+
+
+<!-- Entry for DICTIONARY-CLEAR -->
+
+<p><br>[Function]<br><a class=none name='dictionary-clear'><b>dictionary-clear</b> <i></i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DICTIONARY-CLEAR -->
+
+
+<!-- Entry for DICTIONARY-SIZE -->
+
+<p><br>[Function]<br><a class=none name='dictionary-size'><b>dictionary-size</b> <i><tt>&amp;optional</tt> dict</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DICTIONARY-SIZE -->
+
+
+<!-- Entry for DROP-ALL-NAMED-GRAPHS -->
+
+<p><br>[Function]<br><a class=none name='drop-all-named-graphs'><b>drop-all-named-graphs</b> <i></i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DROP-ALL-NAMED-GRAPHS -->
+
+
+<!-- Entry for DROP-GRAPH -->
+
+<p><br>[Generic function]<br><a class=none name='drop-graph'><b>drop-graph</b> <i>id</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DROP-GRAPH -->
+
+
+<!-- Entry for DROP-GRAPH -->
+
+<p><br>[Method]<br><a class=none><b>drop-graph</b> <i>(id node)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DROP-GRAPH -->
+
+
+<!-- Entry for DROP-GRAPH -->
+
+<p><br>[Method]<br><a class=none><b>drop-graph</b> <i>(id string)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for DROP-GRAPH -->
+
+
+<!-- Entry for EXTENDED-DB -->
+
+<p><br>[Standard class]<br><a class=none name='extended-db'><b>extended-db</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for EXTENDED-DB -->
+
+
+<!-- Entry for GET-PHASH -->
+
+<p><br>[Function]<br><a class=none name='get-phash'><b>get-phash</b> <i>key phash</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for GET-PHASH -->
+
+
+<!-- Entry for GET-PHASH* -->
+
+<p><br>[Function]<br><a class=none name='get-phash*'><b>get-phash*</b> <i>key phash otherwise-put</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for GET-PHASH* -->
+
+
+<!-- Entry for GRAPH-CONTAINER -->
+
+<p><br>[Standard class]<br><a class=none name='graph-container'><b>graph-container</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for GRAPH-CONTAINER -->
+
+
+<!-- Entry for IMPORT-GRAPH -->
+
+<p><br>[Generic function]<br><a class=none name='import-graph'><b>import-graph</b> <i>src dst</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for IMPORT-GRAPH -->
+
+
+<!-- Entry for IMPORT-GRAPH -->
+
+<p><br>[Method]<br><a class=none><b>import-graph</b> <i>(src uri) (dst string)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for IMPORT-GRAPH -->
+
+
+<!-- Entry for INTERN-BNODE -->
+
+<p><br>[Function]<br><a class=none name='intern-bnode'><b>intern-bnode</b> <i>db id</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for INTERN-BNODE -->
+
+
+<!-- Entry for LOAD-SCHEMA -->
+
+<p><br>[Function]<br><a class=none name='load-schema'><b>load-schema</b> <i>uri-designator</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for LOAD-SCHEMA -->
+
+
+<!-- Entry for MAKE-PHASH -->
+
+<p><br>[Function]<br><a class=none name='make-phash'><b>make-phash</b> <i><tt>&amp;optional</tt> name</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for MAKE-PHASH -->
+
+
+<!-- Entry for MAKE-PINDEX -->
+
+<p><br>[Function]<br><a class=none name='make-pindex'><b>make-pindex</b> <i><tt>&amp;optional</tt> name</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for MAKE-PINDEX -->
+
+
+<!-- Entry for MAP -->
+
+<p><br>[Function]<br><a class=none name='map'><b>map</b> <i>result-type function first-sequence <tt>&amp;rest</tt> more-sequences</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for MAP -->
+
+
+<!-- Entry for MAP-PHASH -->
+
+<p><br>[Function]<br><a class=none name='map-phash'><b>map-phash</b> <i>fn phash</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for MAP-PHASH -->
+
+
+<!-- Entry for MERGE-RESOLVED-PREFIXES -->
+
+<p><br>[Function]<br><a class=none name='merge-resolved-prefixes'><b>merge-resolved-prefixes</b> <i></i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for MERGE-RESOLVED-PREFIXES -->
+
+
+<!-- Entry for NAMED-GRAPH -->
+
+<p><br>[Generic function]<br><a class=none name='named-graph'><b>named-graph</b> <i>identifier</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for NAMED-GRAPH -->
+
+
+<!-- Entry for NAMED-GRAPH -->
+
+<p><br>[Method]<br><a class=none><b>named-graph</b> <i>(identifier storable-graph)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for NAMED-GRAPH -->
+
+
+<!-- Entry for NAMED-GRAPH -->
+
+<p><br>[Method]<br><a class=none><b>named-graph</b> <i>(identifier node)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for NAMED-GRAPH -->
+
+
+<!-- Entry for NAMED-GRAPH -->
+
+<p><br>[Method]<br><a class=none><b>named-graph</b> <i>(identifier string)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for NAMED-GRAPH -->
+
+
+<!-- Entry for NAMED-GRAPH-DB -->
+
+<p><br>[Standard class]<br><a class=none name='named-graph-db'><b>named-graph-db</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for NAMED-GRAPH-DB -->
+
+
+<!-- Entry for NAMED-GRAPH-DB -->
+
+<p><br>[Function]<br><a class=none name='named-graph-db'><b>named-graph-db</b> <i>id</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for NAMED-GRAPH-DB -->
+
+
+<!-- Entry for NDB -->
+
+<p><br>[Function]<br><a class=none name='ndb'><b>ndb</b> <i>identifier</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for NDB -->
+
+
+<!-- Entry for NG -->
+
+<p><br>[Function]<br><a class=none name='ng'><b>ng</b> <i>id</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for NG -->
+
+
+<!-- Entry for NGDB -->
+
+<p><br>[Function]<br><a class=none name='ngdb'><b>ngdb</b> <i>identifier</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for NGDB -->
+
+
+<!-- Entry for OWL-CONS -->
+
+<p><br>[Function]<br><a class=none name='owl-cons'><b>owl-cons</b> <i>first rest <tt>&amp;optional</tt> uri</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for OWL-CONS -->
+
+
+<!-- Entry for OWL-LIST -->
+
+<p><br>[Function]<br><a class=none name='owl-list'><b>owl-list</b> <i><tt>&amp;rest</tt> items</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for OWL-LIST -->
+
+
+<!-- Entry for OWL-PARSER -->
+
+<p><br>[Standard class]<br><a class=none name='owl-parser'><b>owl-parser</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for OWL-PARSER -->
+
+
+<!-- Entry for PARSE-TURTLE-STREAM -->
+
+<p><br>[Function]<br><a class=none name='parse-turtle-stream'><b>parse-turtle-stream</b> <i>parser stream locator</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for PARSE-TURTLE-STREAM -->
+
+
+<!-- Entry for PARSE-TURTLE-STRING -->
+
+<p><br>[Function]<br><a class=none name='parse-turtle-string'><b>parse-turtle-string</b> <i>turtle-string</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for PARSE-TURTLE-STRING -->
+
+
+<!-- Entry for PHASH -->
+
+<p><br>[Standard class]<br><a class=none name='phash'><b>phash</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for PHASH -->
+
+
+<!-- Entry for PHASH-HELP -->
+
+<p><br>[Function]<br><a class=none name='phash-help'><b>phash-help</b> <i></i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for PHASH-HELP -->
+
+
+<!-- Entry for PHASH-MAP -->
+
+<p><br>[Generic accessor]<br><a class=none name='phash-map'><b>phash-map</b> <i>object</i> =&gt; <i>result</i></a>
+<br><a class=none><tt>(setf (</tt><b>phash-map</b> <i>object</i><tt>)</tt> <i>new-value</i><tt>)</tt></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for PHASH-MAP -->
+
+
+<!-- Entry for PHASH-MAP -->
+
+<p><br>[Specialized accessor]<br><a class=none><b>phash-map</b> <i>(object phash)</i> =&gt; <i>result</i></a>
+<br><a class=none><tt>(setf (</tt><b>phash-map</b> <i>(object phash)</i><tt>)</tt> <i>new-value</i><tt>)</tt></a>
+<blockquote><br>
+
+automatically generated reader method
+
+</blockquote>
+
+<!-- End of entry for PHASH-MAP -->
+
+
+<!-- Entry for PHASH-SIZE -->
+
+<p><br>[Function]<br><a class=none name='phash-size'><b>phash-size</b> <i>phash</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for PHASH-SIZE -->
+
+
+<!-- Entry for PINDEX -->
+
+<p><br>[Standard class]<br><a class=none name='pindex'><b>pindex</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for PINDEX -->
+
+
+<!-- Entry for PINDEX-MAP -->
+
+<p><br>[Generic accessor]<br><a class=none name='pindex-map'><b>pindex-map</b> <i>object</i> =&gt; <i>result</i></a>
+<br><a class=none><tt>(setf (</tt><b>pindex-map</b> <i>object</i><tt>)</tt> <i>new-value</i><tt>)</tt></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for PINDEX-MAP -->
+
+
+<!-- Entry for PINDEX-MAP -->
+
+<p><br>[Specialized accessor]<br><a class=none><b>pindex-map</b> <i>(object pindex)</i> =&gt; <i>result</i></a>
+<br><a class=none><tt>(setf (</tt><b>pindex-map</b> <i>(object pindex)</i><tt>)</tt> <i>new-value</i><tt>)</tt></a>
+<blockquote><br>
+
+automatically generated reader method
+
+</blockquote>
+
+<!-- End of entry for PINDEX-MAP -->
+
+
+<!-- Entry for PREFIX-DB -->
+
+<p><br>[Function]<br><a class=none name='prefix-db'><b>prefix-db</b> <i></i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for PREFIX-DB -->
+
+
+<!-- Entry for PRINTV -->
+
+<p><br>[Macro]<br><a class=none name='printv'><b>printv</b> <i><tt>&amp;rest</tt> forms</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for PRINTV -->
+
+
+<!-- Entry for PUT-PHASH -->
+
+<p><br>[Function]<br><a class=none name='put-phash'><b>put-phash</b> <i>key value phash</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for PUT-PHASH -->
+
+
+<!-- Entry for REGISTER-OBJECT -->
+
+<p><br>[Generic function]<br><a class=none name='register-object'><b>register-object</b> <i>object set</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for REGISTER-OBJECT -->
+
+
+<!-- Entry for REGISTER-OBJECT -->
+
+<p><br>[Method]<br><a class=none><b>register-object</b> <i>object (set snapshot-set)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for REGISTER-OBJECT -->
+
+
+<!-- Entry for REGISTER-OBJECT -->
+
+<p><br>[Method]<br><a class=none><b>register-object</b> <i>(object hash-table) (set snapshot-set)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+Adds a hash table to the snapshot set and registers any standard objects
+   stored as values that are not already part of the snapshot.  Must call commit
+   to persist.
+
+</blockquote>
+
+<!-- End of entry for REGISTER-OBJECT -->
+
+
+<!-- Entry for REGISTER-OBJECT -->
+
+<p><br>[Method]<br><a class=none><b>register-object</b> <i>(object standard-object) (set snapshot-set)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+Register a standard object.  Not recorded until commit is called on db
+
+</blockquote>
+
+<!-- End of entry for REGISTER-OBJECT -->
+
+
+<!-- Entry for REM-PHASH -->
+
+<p><br>[Function]<br><a class=none name='rem-phash'><b>rem-phash</b> <i>key phash</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for REM-PHASH -->
+
+
+<!-- Entry for RESOLVE-PREFIX -->
+
+<p><br>[Function]<br><a class=none name='resolve-prefix'><b>resolve-prefix</b> <i>string</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for RESOLVE-PREFIX -->
+
+
+<!-- Entry for ROLLBACK -->
+
+<p><br>[Function]<br><a class=none name='rollback'><b>rollback</b> <i>id</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for ROLLBACK -->
+
+
+<!-- Entry for SNAPSHOT-COMMIT -->
+
+<p><br>[Generic function]<br><a class=none name='snapshot-commit'><b>snapshot-commit</b> <i>set</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for SNAPSHOT-COMMIT -->
+
+
+<!-- Entry for SNAPSHOT-COMMIT -->
+
+<p><br>[Method]<br><a class=none><b>snapshot-commit</b> <i>(set snapshot-set)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+Saves all objects in the set (and any objects reachable from the
+   current set of objects) to the persistent store
+
+</blockquote>
+
+<!-- End of entry for SNAPSHOT-COMMIT -->
+
+
+<!-- Entry for SNAPSHOT-RESTORE -->
+
+<p><br>[Generic function]<br><a class=none name='snapshot-restore'><b>snapshot-restore</b> <i>set</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for SNAPSHOT-RESTORE -->
+
+
+<!-- Entry for SNAPSHOT-RESTORE -->
+
+<p><br>[Method]<br><a class=none><b>snapshot-restore</b> <i>(set snapshot-set)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+Snapshot-Restores a snapshot by setting the snapshot-set state to the last snapshot.
+   If this is used during runtime, the user needs to drop all references
+   to objects and retrieve again from the snapshot set.  Also used to initialize
+   the set state when a set is created, for example pulled from the root of a
+   store-controller, unless :lazy-load is specified
+
+</blockquote>
+
+<!-- End of entry for SNAPSHOT-RESTORE -->
+
+
+<!-- Entry for SNAPSHOT-ROOT -->
+
+<p><br>[Generic accessor]<br><a class=none name='snapshot-root'><b>snapshot-root</b> <i>set</i> =&gt; <i>result</i></a>
+<br><a class=none><tt>(setf (</tt><b>snapshot-root</b> <i>set</i><tt>)</tt> <i>value</i><tt>)</tt></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for SNAPSHOT-ROOT -->
+
+
+<!-- Entry for SNAPSHOT-ROOT -->
+
+<p><br>[Specialized accessor]<br><a class=none><b>snapshot-root</b> <i>(set snapshot-set)</i> =&gt; <i>result</i></a>
+<br><a class=none><tt>(setf (</tt><b>snapshot-root</b> <i>(set snapshot-set)</i><tt>)</tt> <i>value</i><tt>)</tt></a>
+<blockquote><br>
+
+Get the snapshot root object
+
+</blockquote>
+
+<!-- End of entry for SNAPSHOT-ROOT -->
+
+
+<!-- Entry for SNAPSHOT-SET -->
+
+<p><br>[Standard class]<br><a class=none name='snapshot-set'><b>snapshot-set</b></a>
+<blockquote><br>
+
+Keeps track of a set of standard objects allowing a
+  single snapshot call to update the store controller with the latest
+  state of all objects registered with this set
+
+</blockquote>
+
+<!-- End of entry for SNAPSHOT-SET -->
+
+
+<!-- Entry for STORABLE-GRAPH -->
+
+<p><br>[Standard class]<br><a class=none name='storable-graph'><b>storable-graph</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for STORABLE-GRAPH -->
+
+
+<!-- Entry for STORABLE-NODE -->
+
+<p><br>[Standard class]<br><a class=none name='storable-node'><b>storable-node</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for STORABLE-NODE -->
+
+
+<!-- Entry for STORABLE-NODE-DICTIONARY -->
+
+<p><br>[Standard class]<br><a class=none name='storable-node-dictionary'><b>storable-node-dictionary</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for STORABLE-NODE-DICTIONARY -->
+
+
+<!-- Entry for TURTLE-DB -->
+
+<p><br>[Standard class]<br><a class=none name='turtle-db'><b>turtle-db</b></a>
+<blockquote><br>
+
+un-indexed temporary db not suitable for general purpose use
+
+</blockquote>
+
+<!-- End of entry for TURTLE-DB -->
+
+
+<!-- Entry for TURTLE-PARSER -->
+
+<p><br>[Special variable]<br><a class=none name='turtle-parser'><b>turtle-parser</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for TURTLE-PARSER -->
+
+
+<!-- Entry for TURTLE-PARSER -->
+
+<p><br>[Standard class]<br><a class=none name='turtle-parser'><b>turtle-parser</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for TURTLE-PARSER -->
+
+
+<!-- Entry for UNREGISTER-OBJECT -->
+
+<p><br>[Generic function]<br><a class=none name='unregister-object'><b>unregister-object</b> <i>object set</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for UNREGISTER-OBJECT -->
+
+
+<!-- Entry for UNREGISTER-OBJECT -->
+
+<p><br>[Method]<br><a class=none><b>unregister-object</b> <i>object (set snapshot-set)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+Drops the object from the cache and backing store
+
+</blockquote>
+
+<!-- End of entry for UNREGISTER-OBJECT -->
+
+
+<br>&nbsp;<br><h3><a class=none name="ack">Acknowledgements</a></h3>
+
+<p>
+This documentation was prepared with <a href="http://weitz.de/documentation-template/">DOCUMENTATION-TEMPLATE</a>.
+</p>
+<p>
+$Header: /usr/local/cvsrep/documentation-template/output.lisp,v 1.17 2010/08/05 19:24:27 edi Exp $
+<p><a href="http://weitz.de/index.html">BACK TO MY HOMEPAGE</a>
+
+</body>
+</html>
