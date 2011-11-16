@@ -222,6 +222,7 @@
                       :serial t
                       :components ((:file "package")
                                     (:file "phash")
+                                    (:file "storable")
                                     (:file "snapshot")
                                     (:file "node-db")
                                     (:file "node-db-api")))

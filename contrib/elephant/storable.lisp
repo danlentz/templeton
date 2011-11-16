@@ -2,18 +2,36 @@
 ;;;;;
 ;;;;;
 
-(in-package :wilbur)
+(in-package :templeton)
 
-(defclass storable-graph-container (graph-container)
-  (name container-classname
-    (last-state :initarg :last-state :accessor last-state-of)
-    (db :initarg db :transient t :accessor db-of))
-  (:metaclass ele:persistent-metaclass))
 
-(defmethod (setf db-of) :after ((db wilbur:db) (container storable-graph-container))
-  (setf (last-state-of container) db))
+;; (defvar *storable-nodes* nil)
+;; (get-from-root '*storable-nodes*)
 
-(defmethod initialize-instance :after ((container storable-graph-container) &rest args)
+(defclass storable-node (node)
+  ((w::uri :transient t)
+    (last-uri :initarg :last-uri :index t :accessor last-uri-of))
+  (:metaclass ele:persistent-metaclass)
+  (:default-initargs :uri (unicly:uuid-as-urn-string nil (unicly:make-v4-uuid))))
+
+(defmethod (setf node-uri) :after ((uri string) (node storable-node))
+  (setf (last-uri-of node) uri))
+
+(defmethod initialize-instance :after ((node storable-node) &rest args)
   (declare (ignore args))
-  (when (slot-boundp container 'last-state)
-    (setf (db-of container) (last-state-of container))))
+  (if (slot-boundp node 'last-uri)
+    (setf (slot-value node 'w::uri) (last-uri-of node))
+    (setf (slot-value node 'last-uri) (node-uri node))))
+
+(defclass storable-node-dictionary (dictionary)
+  ()
+  (:default-initargs :node-class 'storable-node))
+
+(defun dictionary-clear ()
+  (setf *nodes* (make-instance 'storable-node-dictionary)))
+
+
+
+(when (and ele:*store-controller* (not (typep *nodes* 'storable-node-dictionary)))
+  (dictionary-clear))
+

@@ -21,20 +21,21 @@
 (unless w:*db*
   (setf w:*db* (make-instance 'extended-db)))
 
-(defclass graph-container ()
+(defclass graph-container (w:node)
   ())
 
-(defclass named-graph-db (w::interned-literal-indexed-db                      
+(defclass named-graph-db (w::indexed-db
+                           ;; w::interned-literal-indexed-db                      
                            w::literal-transform-db-mixin
-                           ttl:turtle-db
+                          ;; ttl:turtle-db
                           w::db-access-counter-mixin)
-  ()
-  (:default-initargs :emptyp t :blank-node-uri-prefix "_:"))
+  ((started :initform (local-time:now) :reader db-started-at))
+  (:default-initargs :emptyp t)) ;; :blank-node-uri-prefix "_:"))
 
 (defgeneric find-graph (identifier &optional errorp))
 (defgeneric put-graph (container identifier))
 
-(defclass storable-graph (w:node graph-container snapshot-set)
+(defclass storable-graph (graph-container snapshot-set)
   ((wilbur::uri :index t))
   (:metaclass ele:persistent-metaclass))
 
