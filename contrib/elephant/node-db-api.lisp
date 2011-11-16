@@ -5,14 +5,18 @@
 (in-package :templeton)
 
 
-(let ((db-api '(w::db-add-namespace w::db-node-resolved w::db-triples w::db-add-triple w::db-del-triple
+(let ((db-api '(w::db-add-namespace w::db-node-resolved w::db-triples w::db-add-triple 
                  w::db-find-triple w::db-make-triple w::db-count-triples w::db-path-fsas w::db-clear
                  w::db-merge w::db-query w::db-query-by-source w::db-sources w::db-source-descs
                  w::db-del-source w::db-literal-class w::db-new-container-membership-property
-                 w::db-make-literal w::owl-list w::owl-parser w::owl-cons w::db-access-stats w::db-index-stats
+                 w::db-make-literal w::owl-list w::owl-parser w::owl-cons w::db-access-stats
+                 w::db-index-stats w::db-del-triple w::db-find-cbd
                  )))
   (mapc #'import db-api)
   (export db-api *package*))
+
+(defmethod w::db-find-cbd ((db node) node)
+  (w::db-find-cbd (named-graph-db db) node))
 
 (defmethod w::db-access-stats ((db node))
   (w::db-access-stats (named-graph-db db)))
@@ -84,3 +88,27 @@
   (apply #'w::db-make-literal
     (append (list (named-graph-db db) string) 
       (list :property property :datatype datatype :language language))))
+
+(def (with-macro* e) with-graph (node)
+  (let* ((w:*db* (named-graph-db node))
+          (result (-with-macro/body-)))
+    (values *db* node result)))
+
+(def (with-macro* e) with-merged-graphs (&rest nodes)
+  (let ((*db* (make-instance 'extended-db :emptyp t)))
+    (dolist (node (alexandria:ensure-list nodes))
+      (db-merge *db* node))
+    (let ((result (-with-macro/body-)))
+    (values *db* nodes result))))
+
+
+
+
+
+#|
+
+ (with-merged-graphs (!rdf: !skos:)
+   (pprint (own-slots !rdf:Statement))
+   (describe *db*)) 
+ (!rdf:type !rdfs:isDefinedBy !rdfs:label !rdfs:subClassOf !rdfs:comment)
+|#
