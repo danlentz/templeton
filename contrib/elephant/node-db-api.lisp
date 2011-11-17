@@ -89,10 +89,18 @@
     (append (list (named-graph-db db) string) 
       (list :property property :datatype datatype :language language))))
 
+
+
 (defun db-ntriples (graph-designator &optional stream)
   (let ((out  (with-output-to-string (s)
                 (w::dump-as-ntriples (db-triples graph-designator) (or stream s)))))
     (unless stream out)))
 
-(db-ntriples *db*)
+
+(defun db-rdfxml (graph-designator &optional stream)
+  (let ((out  (with-output-to-string (s)
+                (w::dump-as-rdf/xml (db-triples graph-designator) (or stream s) nil))))
+    (unless stream out)))
+
+
     

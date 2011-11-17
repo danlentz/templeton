@@ -231,7 +231,9 @@
                       :components ((:file "prefix")))
                     (:module :misc
                       :serial t
-                      :components ((:file "printv")))
+                      :components ((:file "printv")
+                                    (:file "uptime")
+                                    ))
                     ))                                                         
     ))
 
