@@ -15,25 +15,6 @@
 
 (in-package :templeton)
 
-;; (export (list 'snapshot-set
-;;           'register-object
-;;           'unregister-object
-;;           'snapshot-root
-;;           'map-set
-;;           'snapshot-commit
-;;           'snapshot-restore
-;;           'clear-cache
-;;           'get-cache-entries
-;;           'drop-cached-object
-;;           'lookup-cached-object
-;;           'touch
-;;           'clear-touched
-;;           'collect-untouched
-;;           'run-snapshot-tests))
-  
-;; (def logger snapshot ())
-;; (unless ele:*store-controller* (ele:open-store trip:*graph-storage-space*))
-
 (defclass snapshot-set ()
   ((index
      :initform (ele:make-btree)
@@ -59,6 +40,13 @@
 (defmethod initialize-instance :after ((set snapshot-set) &key lazy-load &allow-other-keys)
   (unless lazy-load (snapshot-restore set)))
 
+;; new
+(defmethod describe-object :after ((o snapshot-set) stream)
+  (declare (ignore stream))
+  (terpri)
+  (format t "Root Object:~%~A~%~%" (snapshot-root o))
+  (btree-info (snapshot-set-index o))
+  (terpri))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -84,6 +72,17 @@
     (let ((id (incf (snapshot-set-next-id set))))
       (cache-snapshot-object id hash set)
       (values hash id))))
+
+
+;; new
+
+(defmethod register-object ((object structure-object) (set snapshot-set))
+  "Register a struct.  Not recorded until commit is called on db"
+  (ele::aif (lookup-cached-id object set)
+    (values object ele::it)
+    (let ((id (incf (snapshot-set-next-id set))))
+      (cache-snapshot-object id object set)
+      (values object id))))
 
 
 (defmethod register-object ((default t) (set snapshot-set))
@@ -193,6 +192,9 @@
 (defun standard-object-subclass-p (obj)
   (subtypep (type-of obj) 'standard-object))
 
+(defun structure-object-subtype-p (obj)
+  (subtypep (type-of obj) 'structure-object))
+
 (defun touch (id set)
   (vector-push-extend id (snapshot-set-touched set) 50))
 
@@ -208,15 +210,16 @@
   (unless (touched id set)
     (touch id set)
     (setf (ele:get-value id (snapshot-set-index set))
-      (cond ((standard-object-subclass-p obj)
-              (save-proxy-object obj set))
-        ((hash-table-p obj)
-          (save-proxy-hash obj set))
+      (cond
+        ((standard-object-subclass-p obj) (save-proxy-object obj set))
+        ((structure-object-subtype-p obj) (save-proxy-struct obj set))
+        ((hash-table-p obj)               (save-proxy-hash obj set))
         (t (error "Can only snapshot standard-objects and hash-tables")))))
   id)
 
 
 (defun save-proxy-object (obj set)
+  (printv :ff "standard-object" obj)
   (let ((svs (ele::subsets 2 (ele::slots-and-values obj))))
     (if (some #'reify-class-p (mapcar #'second svs))
       (let ((proxy (make-instance (type-of obj))))
@@ -228,8 +231,26 @@
         proxy)
       obj)))
 
+(defun save-proxy-struct (obj set)
+  (printv :ff "struct" obj)
+  (if (hash-table-p obj)
+    (printv :hr (save-proxy-hash obj set))
+ ;;   (printv
+      (let ((svs (ele::subsets 2 (ele::struct-slots-and-values obj))))
+        (if (some #'reify-class-p (mapcar #'second svs))
+          (let ((proxy (funcall (ele::struct-constructor (type-of obj)))))
+            (loop for (slotname value) in svs do
+              (setf (slot-value proxy slotname)
+                (if (reify-class-p value)
+                  (reify-value value set)
+                  value)))
+            proxy)
+          obj))))
+;;)          
+      
 
 (defun save-proxy-hash (hash set)
+  (printv :ff "hash" hash)
   (let ((proxy (make-hash-table)))
     (maphash (lambda (key value)
 	       (setf (gethash key proxy)
@@ -242,8 +263,10 @@
 
 (defgeneric reify-class-p (obj)
   (:method ((obj t)) nil)
-  (:method ((obj standard-object)) t)
-  (:method ((obj hash-table)) t))
+  (:method ((obj sb-thread:mutex)) nil)
+  (:method ((obj standard-object))  t)
+  (:method ((obj structure-object)) t)
+  (:method ((obj hash-table))       t))
 
 
 (defun reify-value (obj set)
@@ -268,10 +291,10 @@
 
 (defun load-snapshot-object (id object set)
   (let ((object (ele::ifret object (ele:get-value id (snapshot-set-index set)))))
-    (cond ((standard-object-subclass-p object)
-            (load-proxy-object id object set))
-      ((hash-table-p object)
-        (load-proxy-hash id object set))
+    (cond
+      ((standard-object-subclass-p object) (load-proxy-object id object set))
+      ((structure-object-subtype-p object) (load-proxy-struct id object set))      
+      ((hash-table-p object)               (load-proxy-hash id object set))
       (t (error "Unrecognized type ~A for id ~A in set ~A" (type-of object) id set)))))
 
 
@@ -287,7 +310,20 @@
               (load-snapshot-object (snapshot-set-reference-id value) nil set)))))
       obj)))
 
-		   
+
+(defun load-proxy-struct (id obj set)
+  "create placeholder, then populate slots"
+  (ele::ifret (lookup-cached-object id set)
+    (progn
+      (cache-snapshot-object id obj set)
+      (let ((svs (ele::subsets 2 (ele::struct-slots-and-values obj))))
+        (loop for (slotname value) in svs do
+          (when (setrefp value)
+            (setf (slot-value obj slotname)
+              (load-snapshot-object (snapshot-set-reference-id value) nil set)))))
+      obj)))
+
+
 (defun load-proxy-hash (id hash set)
   (ele::ifret (lookup-cached-object id set)
     (progn
@@ -354,31 +390,3 @@
 
 
 
-;; (run-snapshot-tests)
-
-#|
-|gs/user/|> (ss:run-snapshot-tests)
-
-;;   (SETF (TRIPLE-SPACED.SNAPSHOT::SNAPSHOT-SET-ROOT SET) TRIPLE-SPACED.SNAPSHOT::HASH) => #<HASH-TABLE :TEST EQL :COUNT 4 {1004BECF61}>
-;;   (ADD-TO-ROOT 'TRIPLE-SPACED.SNAPSHOT::SNAP-TEST-SET SET) => #<SNAPSHOT-SET oid:1302>
-;;   (TRIPLE-SPACED.SNAPSHOT:SNAPSHOT-COMMIT SET) => #<SNAPSHOT-SET oid:1302>; T
-;;   (SETF SET NIL) => NIL
-;;   (SETF TRIPLE-SPACED.SNAPSHOT::HASH NIL) => NIL
-;;   (FLUSH-INSTANCE-CACHE *STORE-CONTROLLER*) => #<HASH-TABLE :TEST EQL :COUNT 0 {1005A56F11}>
-;;   (SB-EXT:GC) => NIL
-;;   (SETF SET (GET-FROM-ROOT 'TRIPLE-SPACED.SNAPSHOT::SNAP-TEST-SET)) => #<SNAPSHOT-SET oid:1302>
-;;   (SETF TRIPLE-SPACED.SNAPSHOT::HASH
-             (TRIPLE-SPACED.SNAPSHOT::SNAPSHOT-SET-ROOT
-              (GET-FROM-ROOT 'TRIPLE-SPACED.SNAPSHOT::SNAP-TEST-SET))) => #<HASH-TABLE :TEST EQL :COUNT 4 {10036C4D31}>
-;;   (LET ((TRIPLE-SPACED.SNAPSHOT::T1 (GETHASH 1 TRIPLE-SPACED.SNAPSHOT::HASH))
-           (TRIPLE-SPACED.SNAPSHOT::T2 (GETHASH 2 TRIPLE-SPACED.SNAPSHOT::HASH))
-           (TRIPLE-SPACED.SNAPSHOT::T3 (GETHASH 3 TRIPLE-SPACED.SNAPSHOT::HASH))
-           (TRIPLE-SPACED.SNAPSHOT::T4 (GETHASH 4 TRIPLE-SPACED.SNAPSHOT::HASH)))
-       (VALUES (EQ 1 (TRIPLE-SPACED.SNAPSHOT::SLOT1 TRIPLE-SPACED.SNAPSHOT::T1))
-               (EQ 20 (TRIPLE-SPACED.SNAPSHOT::SLOT2 TRIPLE-SPACED.SNAPSHOT::T2))
-               (EQ (TRIPLE-SPACED.SNAPSHOT::SLOT2 TRIPLE-SPACED.SNAPSHOT::T3)
-                   (TRIPLE-SPACED.SNAPSHOT::SLOT2 TRIPLE-SPACED.SNAPSHOT::T4)))) => T; T; T
-T
-T
-T
-|#
