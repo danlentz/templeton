@@ -160,11 +160,13 @@
   :description "Efficient, durable 'graph prevalence' for WILBUR2 and ELEPHANT"
   :depends-on (#+mcl :de.setf.utility.bsd
                 #+sbcl :usocket
+                :alexandria
                 :elephant
                 :named-readtables
                 :local-time
                 :yacc
                 :unicly
+                :swank
                 :hu.dwim.def
                 :hu.dwim.defclass-star
                 :hu.dwim.stefil)
@@ -198,16 +200,30 @@
                      :depends-on (:nox :core))))
     (:module :contrib
       :serial t
-      :components ((:module :db
-                     :serial t
-                     :components ((:file "db-protocol")
-                                   (:file "db-statistics")))
+      :components ((:file "package")
+                    (:file "parameters")
+                    (:file "suite")
+
+                    (:module :misc  :serial t
+                      :components ((:file "printv")
+                                    (:file "uptime")
+                                    (:file "pp")
+                                    (:file "pp-histogram")
+                                    (:file "pp-columnar")
+                                    (:file "clos")))
+                    
+                    (:module :tries :serial t
+                      :components ((:file "tries")))
+
+                    (:module :db    :serial t
+                      :components ((:file "db-protocol")
+                                    (:file "db-statistics")
+                                    (:file "hashset-db")))
+
                     (:module :owl
                       :serial t
                       :components ((:file "owl-parser")))
-                    (:module :tries
-                      :serial t
-                      :components ((:file "tries")))
+
                     (:module :turtle
                       :serial t
                       :components ((:file "package")
@@ -218,24 +234,20 @@
                                     (:file "grammar")
                                     (:file "turtle")
                                     (:file "test")))
+
                     (:module :elephant
                       :serial t
-                      :components ((:file "package")
+                      :components ((:file "btree-utilities")
                                     (:file "phash")
                                     (:file "storable")
                                     (:file "snapshot")
                                     (:file "node-db")
-                                    (:file "node-db-api")))
+                                    (:file "node-db-api")
+                                    (:file "frame-api" )))
+
                     (:module :prefix
                       :serial t
-                      :components ((:file "prefix")))
-                    (:module :misc
-                      :serial t
-                      :components ((:file "printv")
-                                    (:file "uptime")
-                                    ))
-                    ))                                                         
-    ))
+                      :components ((:file "prefix")))))))
 
 
 ;;; --------------------------------------------------------------------------------------
