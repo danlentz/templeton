@@ -1,0 +1,495 @@
+<!DOCTYPE html PUBLIC "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta name="generator" content="HTML Tidy, see www.w3.org">
+<meta name="GENERATOR" content="Mozilla/4.7 (Macintosh; I; PPC) [Netscape]">
+<title>Wilbur Query Language Comparison</title>
+<link rel="STYLESHEET" href="http://wilbur-rdf.sourceforge.net/styles/basic.css" type="text/css">
+<style type="text/css">
+<!--
+TD {
+  text-align: center;
+  vertical-align: top;
+  font-size: 12px;
+}
+TH {
+  text-align: left;
+  vertical-align: top;
+  font-size: 12px;
+}
+
+TD.example {
+  text-align: left;
+}
+SPAN.query {
+  color: blue;
+}
+SPAN.notyet {
+  color: red;
+}
+SPAN.script {
+}
+-->
+</style>
+</head>
+<body>
+<h1>Wilbur Query Language Comparison</h1>
+
+<p><b>Ora Lassila</b><br>Nokia Research Center<br>$Id: 11-comparison.shtml,v 1.2 2004/05/13 03:20:50 ora Exp $</p>
+
+<h2>Introduction</h2>
+
+<p>This document is the first draft of an attempt to compare the Wilbur Query Language (WQL, the query language of the Nokia Research Center's <a href="http://purl.org/net/wilbur/">&quot;Wilbur&quot; Semantic Web toolkit</a>) to other RDF query languages. The comparison is based on the <a href="http://www.aifb.uni-karlsruhe.de/WBS/pha/rdf-query/">recently published comparison of some RDF query languages</a>.</p>
+
+<h2>Summary of Comparison Results</h2>
+
+<p>Two query languages are discussed:</p>
+<ul>
+<li>&quot;Plain&quot; WQL is understood to be anything that can be achieved with a call to one of Wilbur's three query invocation functions: <tt>ALL-VALUES</tt>, <tt>VALUE</tt>, <tt>RELATEDP</tt> (the <a href="http://purl.org/net/wilbur/docs/ivanhoe.html">query API</a> is described in <a href="http://purl.org/net/wilbur/docs/">Wilbur's documentation</a>).</li>
+<li>WQL+CL is understood to be &quot;Plain&quot; WQL plus (simple) Common Lisp expressions.</li>
+</ul>
+
+<p>Combining the &quot;plain&quot; query language with Common Lisp makes sense, since WQL was originally designed to be integrated with the programming language, and to be used for providing more expressive <em>data access</em> for programmers. Since Common Lisp can be dynamically interpreted at run time (via the standard function <tt>EVAL</tt>), it is not unreasonable to think of using CL as parts of queries. Think of it as a scripting language...</p>
+
+<table border="1" align="center">
+<tr>
+  <th>Test</th>
+  <th>&quot;Plain&quot; WQL</th>
+  <th>WQL+CL</th>
+</tr>
+
+<tr>
+  <th>Path Expression</th>
+  <td><a href="#path-expression">Yes</a></td>
+  <td><a href="#path-expression">Yes</a></td>
+</tr>
+
+<tr>
+  <th>Optional Path</th>
+  <td>No</td>
+  <td><a href="#optional-path">Yes</a></td>
+</tr>
+
+<tr>
+  <th>Union</th>
+  <td>No</td>
+  <td><a href="#union">Yes</a></td>
+</tr>
+
+<tr>
+  <th>Difference</th>
+  <td>No</td>
+  <td><a href="#difference">Yes</a></td>
+</tr>
+
+<tr>
+  <th>Quantification</th>
+  <td>No</td>
+  <td><a href="#quantification">Yes</a></td>
+</tr>
+
+<tr>
+  <th>Aggregation</th>
+  <td>No</td>
+  <td><a href="#aggregation">Yes</a></td>
+</tr>
+
+<tr>
+  <th>Recursion</th>
+  <td><a href="#recursion">Yes</a></td>
+  <td><a href="#recursion">Yes</a></td>
+</tr>
+
+<tr>
+  <th>Reification</th>
+  <td><a href="#reification">Restricted</a></td>
+  <td><a href="#reification">Yes</a></td>
+  <td style="text-align: left">&quot;Plain&quot; WQL case restricted just like RDQL etc.</td>
+</tr>
+
+<tr>
+  <th>Collections and Containers</th>
+  <td><a href="#collections-and-containers">Yes</a></td>
+  <td><a href="#collections-and-containers">Yes</a></td>
+</tr>
+
+<tr>
+  <th>Namespace</th>
+  <td>No</td>
+  <td><a href="#namespace">Yes</a></td>
+</tr>
+
+<tr>
+  <th>Language</th>
+  <td>No</td>
+  <td><a href="#language">Restricted</a></td>
+  <td style="text-align: left">Will work after a bug in <tt>xml:lang</tt> support is fixed</td>
+</tr>
+
+<tr>
+  <th>Lexical Space</th>
+  <td>No</td>
+  <td><a href="#lexical-space">Yes</a></td>
+</tr>
+
+<tr>
+  <th>Value Space</th>
+  <td>No</td>
+  <td><a href="#value-space">Restricted</a></td>
+  <td style="text-align: left">Will work w/ inference once datatype support is completed</td>
+</tr>
+
+<tr>
+  <th>Entailment</th>
+  <td><a href="#entailment">Yes</a></td>
+  <td><a href="#entailment">Yes</a></td>
+</tr>
+</table>
+
+<h2>Query Details</h2>
+
+Note that many &quot;Plain&quot; WQL and WQL+CL queries contain a path expression <tt>(:inv (:seq !rdf:type (:rep* !rdfs:subClassOf)))</tt>. This is because Wilbur, out-of-the-box, does not support inference/entailment, and the particular query expression allows one to reach all instances of all subclasses of a class. Because of this, we have added query expressions for something called WQL+CL+inference; this language is basically the same as WQL+CL except that the queries are run against a tuple store that supports the &quot;hidden inference&quot; as described in <a href="http://www.lassila.org/publications/2002/lassila-iswc2002-abstract.shtml">our paper in ISWC 2002</a>.</p>
+
+<p>Also note that the correct treatment of sub-properties is not included in queries for &quot;Plain&quot; WQL or WQL+CL (although it would be possible, using a similar technique as described above). WQL+CL+inference supports sub-properties without any additional attention from the programmer.</p>
+
+<p>In the following query examples, <span class="query">&quot;plain&quot; queries</span> and <span class="notyet">&quot;buggy&quot; features</span> (that is, features not functioning properly in the <em>current release</em>) are highlighted in color. It is also assumed that the following Common Lisp forms are evaluated prior to issuing any of the test queries:</p>
+
+<pre>
+(setf *db* (make-instance 'db))
+
+(load-db (make-url "http://www.aifb.uni-karlsruhe.de/WBS/pha/rdf-query/queries/sample.rdf")
+         :locator "http://www.aifb.uni-karlsruhe.de/WBS/pha/rdf-query/sample.rdf")
+
+(add-namespace "q" "http://www.aifb.uni-karlsruhe.de/WBS/pha/rdf-query/sample.rdf")
+</pre>
+
+<p>Wilbur &quot;harvests&quot; (during the execution of <tt>LOAD-DB</tt>) all the other namespace prefixes used.</p>
+
+<a name="path-expression"><h3>1. Path Expression</h3></a>
+
+<table border="1">
+<tr>
+  <th>&quot;Plain&quot; WQL:</th>
+  <td class="example"><pre>
+<span class="query">(all-values !q:Paper '(:seq !q:author :members))</span></pre></td>
+</tr>
+<tr>
+  <th>WQL+CL:</th>
+  <td class="example">same as &quot;Plain&quot; WQL</td>
+</tr>
+<tr>
+  <th>WQL+CL+inference:</th>
+  <td class="example">same as &quot;Plain&quot; WQL</td>
+</tr>
+</table>
+
+<a name="optional-path"><h3>2. Optional Path</h3></a>
+
+<table border="1">
+<tr>
+  <th>&quot;Plain&quot; WQL:</th>
+  <td class="example">n/a</td>
+</tr>
+<tr>
+  <th>WQL+CL:</th>
+  <td class="example"><pre>
+<span class="script">(mapcar #'(lambda (author)
+            (cons author <span class="query">(value author !q:email)</span>))
+        <span class="query">(all-values !q:Paper '(:seq !q:author :members))</span>)</span></pre></td>
+</tr>
+<tr>
+  <th>WQL+CL+inference:</th>
+  <td class="example">same as WQL+CL</td>
+</tr>
+</table>
+
+<a name="union"><h3>3. Union</h3></a>
+
+<table border="1">
+<tr>
+  <th>&quot;Plain&quot; WQL:</th>
+  <td class="example">n/a</td>
+</tr>
+<tr>
+  <th>WQL+CL:</th>
+  <td class="example"><pre>
+<span class="script">(union <span class="query">(all-values !acm:Topic
+                   '(:seq (:inv (:seq !rdf:type (:rep* !rdfs:subClassOf))) !rdfs:label))
+       (all-values !q:Publication
+                   '(:seq (:inv (:seq !rdf:type (:rep* !rdfs:subClassOf))) !q:title))</span>
+       :test #'literal=)</span></pre></td>
+</tr>
+<tr>
+  <th>WQL+CL+inference:</th>
+  <td class="example"><pre>
+<span class="script">(union <span class="query">(all-values !acm:Topic '(:seq (:inv !rdf:type) !rdfs:label))
+       (all-values !q:Publication '(:seq (:inv !rdf:type) !q:title))</span>
+       :test #'literal=)</span></pre></td>
+</tr>
+</table>
+
+<a name="difference"><h3>4. Difference</h3></a>
+
+<table border="1">
+<tr>
+  <th>&quot;Plain&quot; WQL:</th>
+  <td class="example">n/a</td>
+</tr>
+<tr>
+  <th>WQL+CL:</th>
+  <td class="example"><pre>
+<span class="script">(difference <span class="query">(all-values !acm:Topic
+                        '(:seq (:inv (:seq !rdf:type (:rep* !rdfs:subClassOf))) !rdfs:label))
+            (all-values !q:Publication
+                        '(:seq (:inv (:seq !rdf:type (:rep* !rdfs:subClassOf))) !q:title))</span>
+            :test #'literal=)</span></pre></td>
+</tr>
+<tr>
+  <th>WQL+CL+inference:</th>
+  <td class="example"><pre>
+<span class="script">(difference <span class="query">(all-values !acm:Topic '(:seq (:inv !rdf:type) !rdfs:label))
+            (all-values !q:Publication '(:seq (:inv !rdf:type) !q:title))</span>
+            :test #'literal=)</span></pre></td>
+</tr>
+</table>
+
+<a name="quantification"><h3>5. Quantification</h3></a>
+
+<table border="1">
+<tr>
+  <th>&quot;Plain&quot; WQL:</th>
+  <td class="example">n/a</td>
+</tr>
+<tr>
+  <th>WQL+CL:</th>
+  <td class="example"><pre>
+<span class="script">(let ((pubs <span class="query">(all-values !q:Publication '(:inv (:seq !rdf:type (:rep* !rdfs:subClassOf))))</span>))
+  (remove-if-not #'(lambda (person)
+                     (every #'(lambda (pub)
+                                <span class="query">(relatedp pub '(:seq !q:author :members) person)</span>)
+                            pubs))
+                 <span class="query">(all-values !q:Publication
+                             '(:seq (:inv (:seq !rdf:type (:rep* !rdfs:subClassOf)))
+                                    !q:author :members))</span>))</span></pre></td>
+</tr>
+<tr>
+  <th>WQL+CL+inference:</th>
+  <td class="example"><pre>
+<span class="script">(let ((pubs <span class="query">(all-values !q:Publication '(:inv !rdf:type))</span>))
+  (remove-if-not #'(lambda (person)
+                     (every #'(lambda (pub)
+                                <span class="query">(relatedp pub '(:seq !q:author :members) person)</span>)
+                            pubs))
+                 <span class="query">(all-values !q:Publication '(:seq (:inv !rdf:type) !q:author :members))</span>))</span></pre></td>
+</tr>
+</table>
+
+<a name="aggregation"><h3>6. Aggregation</h3></a>
+
+<table border="1">
+<tr>
+  <th>&quot;Plain&quot; WQL:</th>
+  <td class="example">n/a</td>
+</tr>
+<tr>
+  <th>WQL+CL:</th>
+  <td class="example"><pre>
+<span class="script">(length <span class="query">(all-values !q:Paper '(:seq !q:author :members))</span>)</span></pre></td>
+</tr>
+<tr>
+  <th>WQL+CL+inference:</th>
+  <td class="example">same as WQL+CL</td>
+</tr>
+</table>
+
+<a name="recursion"><h3>7. Recursion</h3></a>
+
+<table border="1">
+<tr>
+  <th>&quot;Plain&quot; WQL:</th>
+  <td class="example"><pre>
+<span class="query">(all-values
+  !"http://www.aifb.uni-karlsruhe.de/WBS/pha/rdf-query/sample.rdf#ACMTopic/Information_Systems"
+  '(:rep* !acm:SubTopic))</span></pre></td>
+</tr>
+<tr>
+  <th>WQL+CL:</th>
+  <td class="example">same as &quot;Plain&quot; WQL</td>
+</tr>
+<tr>
+  <th>WQL+CL+inference:</th>
+  <td class="example">same as &quot;Plain&quot; WQL</td>
+</tr>
+</table>
+
+<a name="reification"><h3>8. Reification</h3></a>
+
+<table border="1">
+<tr>
+  <th>&quot;Plain&quot; WQL:</th>
+  <td class="example"><pre>
+<span class="query">(all-values !q:Paper '(:seq (:inv !rdf:subject) !dc:creator))</span></pre></td>
+</tr>
+<tr>
+  <th>WQL+CL:</th>
+  <td class="example"><pre>
+<span class="script">(mapcan #'(lambda (statement)
+            (when (eq <span class="query">(value statement !rdf:predicate)</span> !q:isAbout)
+              (list <span class="query">(value statement !dc:creator)</span>)))
+        <span class="query">(all-values !q:Paper '(:inv !rdf:subject))</span>)</span></pre></td>
+</tr>
+<tr>
+  <th>WQL+CL+inference:</th>
+  <td class="example">same as WQL+CL</td>
+</tr>
+</table>
+
+<a name="collections-and-containers"><h3>9. Collections and Containers</h3></a>
+
+<table border="1">
+<tr>
+  <th>&quot;Plain&quot; WQL:</th>
+  <td class="example"><pre>
+<span class="query">(value !q:Paper '(:seq !q:author :members))</span></pre></td>
+</tr>
+<tr>
+  <th>WQL+CL:</th>
+  <td class="example">same as &quot;Plain&quot; WQL</td>
+</tr>
+<tr>
+  <th>WQL+CL+inference:</th>
+  <td class="example">same as &quot;Plain&quot; WQL</td>
+</tr>
+</table>
+
+<a name="namespace"><h3>10. Namespace</h3></a>
+
+<table border="1">
+<tr>
+  <th>&quot;Plain&quot; WQL:</th>
+  <td class="example">n/a</td>
+</tr>
+<tr>
+  <th>WQL+CL:</th>
+  <td class="example"><pre>
+<span class="script">(dictionary-apropos-list *nodes* "http://aifb.uni-karlsruhe.de/")</span></pre></td>
+</tr>
+<tr>
+  <th>WQL+CL+inference:</th>
+  <td class="example">same as &quot;Plain&quot; WQL</td>
+</tr>
+</table>
+
+<p>The Wilbur API includes the function <tt>dictionary-apropos-list</tt> which can be used for satisfying this test. The current implementation is not particularly efficient.</p>
+
+<a name="language"><h3>11. Language</h3></a>
+
+<table border="1">
+<tr>
+  <th>&quot;Plain&quot; WQL:</th>
+  <td class="example">n/a</td>
+</tr>
+<tr>
+  <th>WQL+CL:</th>
+  <td class="example"><pre>
+<span class="script">(dolist (topic <span class="query">(all-values !acm:Topic (:inv (:seq !rdf:type (:rep* !rdfs:subClassOf))))</span>)
+  (let ((labels <span class="query">(all-values topic !rdfs:label)</span>))
+    (when (find-if #'(lambda (label)
+                       (and (string= <span class="notyet">(literal-language label)</span> "en")
+                            (string= (literal-string label) "Database Management")))
+                   labels)
+      (return (find "de" labels :test #'string= :key #'literal-language)))))</span></pre></td>
+</tr>
+<tr>
+  <th>WQL+CL+inference:</th>
+  <td class="example"><pre>
+<span class="script">(dolist (topic <span class="query">(all-values !acm:Topic (:inv !rdf:type))</span>)
+  (let ((labels <span class="query">(all-values topic !rdfs:label)</span>))
+    (when (find-if #'(lambda (label)
+                       (and (string= <span class="notyet">(literal-language label)</span> "en")
+                            (string= (literal-string label) "Database Management")))
+                   labels)
+      (return (find "de" labels :test #'string= :key #'literal-language)))))</span></pre></td>
+</tr>
+</table>
+
+<p>These examples are cumbersome, as they require linear searches and string comparisons, but they illustrate that even this test can be satisfied.</p>
+
+<a name="lexical-space"><h3>12. Lexical Space</h3></a>
+
+<table border="1">
+<tr>
+  <th>&quot;Plain&quot; WQL:</th>
+  <td class="example">n/a</td>
+</tr>
+<tr>
+  <th>WQL+CL:</th>
+  <td class="example"><pre>
+<span class="script">(remove-if-not #'(lambda (resource)
+                   (string= (literal-string <span class="query">(value resource !q:pages)</span>) "08"))
+               <span class="query">(all-values !q:Publication
+                           '(:inv (:seq !rdf:type (:rep* !rdfs:subClassOf))))</span>)</span></pre></td>
+</tr>
+<tr>
+  <th>WQL+CL+inference:</th>
+  <td class="example"><pre>
+<span class="script">(remove-if-not #'(lambda (resource)
+                   (string= (literal-string <span class="query">(value resource !q:pages)</span>) "08"))
+               <span class="query">(all-values !q:Publication '(:inv !rdf:type))</span>)</span></pre></td>
+</tr>
+</table>
+
+<a name="value-space"><h3>13. Value Space</h3></a>
+
+<table border="1">
+<tr>
+  <th>&quot;Plain&quot; WQL:</th>
+  <td class="example">n/a</td>
+</tr>
+<tr>
+  <th>WQL+CL:</th>
+  <td class="example">n/a</td>
+</tr>
+<tr>
+  <th>WQL+CL+inference:</th>
+  <td class="example"><pre>
+<span class="script">(remove-if-not #'(lambda (resource)
+                   (= <span class="notyet">(literal-value <span class="query">(value resource !q:pages)</span>)</span> 8))
+               <span class="query">(all-values !q:Publication '(:inv !rdf:type))</span>)</span></pre></td>
+</tr>
+</table>
+
+<a name="entailment"><h3>14. Entailment</h3></a>
+
+<table border="1">
+<tr>
+  <th>&quot;Plain&quot; WQL:</th>
+  <td class="example"><pre>
+<span class="query">(all-values !q:Publication '(:inv (:seq !rdf:type (:rep* !rdfs:subClassOf))))</span></pre></td>
+<tr>
+<tr>
+  <th>WQL+CL:</th>
+  <td class="example">same as &quot;Plain&quot; WQL</td>
+<tr>
+<tr>
+  <th>WQL+CL+inference:</th>
+  <td class="example"><pre>
+<span class="query">(all-values !q:Publication '(:inv !rdf:type))</span></pre></td>
+<tr>
+</table>
+
+<h2>Bibliography</h2>
+
+<ul>
+<li>Ora Lassila:
+&quot;<a href="http://www.lassila.org/publications/2001/swws-01-abstract.shtml">Enabling
+Semantic Web Programming by Integrating RDF and Common Lisp</a>&quot;, Proceedings of
+the First Semantic Web Working Symposium (SWWS'01),  Stanford University,
+July 2001</li>
+<li>Ora Lassila: &quot;<a href="http://www.lassila.org/publications/2002/lassila-iswc2002-abstract.shtml">Taking the RDF Model Theory Out for a Spin</a>&quot;, in: Ian Horrocks &amp; James Hendler (eds.): &quot;The Semantic Web - ISWC 2002&quot;, Lecture Notes in Computer Science 2342, pp.307-317, Springer Verlag, 2002</li>
+</ul>
+
+<!--#include virtual="/styles/footer.shtml" -->
+</body>
+</html>

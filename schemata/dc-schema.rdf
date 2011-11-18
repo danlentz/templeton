@@ -1,0 +1,130 @@
+<?xml version="1.0"?>
+
+<!--
+      This is a definition of the Dublin Core schema, written in a way that
+      allows this file reside anywhere (i.e., it does not have to be fetched
+      from the "real" DC URI).
+
+      Author: Ora Lassila
+
+      Copyright 2001 Nokia Research Center. All Rights Reserved.
+
+      $Id: dc-schema.rdf,v 1.2 2004/11/28 23:18:23 ora Exp $
+-->
+
+<!DOCTYPE uridef [
+  <!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+  <!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#">
+  <!ENTITY dc "http://purl.org/dc/elements/1.1/">
+]>
+
+<rdf:RDF xmlns:rdf="&rdf;"
+         xmlns:rdfs="&rdfs;"
+         xmlns:dc="&dc;">
+
+  <rdf:Property
+     rdf:about="&dc;title" 
+     rdfs:label="Title" 
+     rdfs:comment="The name given to the resource. Typically, a name by which the resource is formally known.">
+    <rdfs:isDefinedBy rdf:resource="&dc;"/> 
+  </rdf:Property>
+
+  <rdf:Property
+     rdf:about="&dc;creator" 
+     rdfs:label="Creator"
+     rdfs:comment="An entity primarily responsible for making the content of the resource."> 
+    <rdfs:isDefinedBy rdf:resource="&dc;"/>
+  </rdf:Property>
+
+  <rdf:Property 
+     rdf:about="&dc;subject" 
+     rdfs:label="Subject and Keywords" 
+     rdfs:comment="The topic of the content of the resource.">
+    <rdfs:isDefinedBy rdf:resource="&dc;"/> 
+  </rdf:Property>
+
+  <rdf:Property 
+     rdf:about="&dc;description" 
+     rdfs:label="Description" 
+     rdfs:comment="An account of the content of the resource.">
+    <rdfs:isDefinedBy rdf:resource="&dc;"/> 
+  </rdf:Property>
+
+  <rdf:Property
+     rdf:about="&dc;publisher" 
+     rdfs:label="Publisher" 
+     rdfs:comment="The entity responsible for making the resource available.">
+    <rdfs:isDefinedBy rdf:resource="&dc;"/> 
+  </rdf:Property>
+
+  <rdf:Property
+     rdf:about="&dc;contributor" 
+     rdfs:label="Contributor" 
+     rdfs:comment="An entity responsible for making contributions to the content of the resource.">
+    <rdfs:isDefinedBy rdf:resource="&dc;"/> 
+  </rdf:Property>
+
+  <rdf:Property
+     rdf:about="&dc;date" 
+     rdfs:label="Date" 
+     rdfs:comment="A date associated with an event in the life cycle of the resource."> 
+    <rdfs:isDefinedBy rdf:resource="&dc;"/>
+  </rdf:Property>
+
+  <rdf:Property
+     rdf:about="&dc;type" 
+     rdfs:label="Resource Type" 
+     rdfs:comment="The nature or genre of the content of the resource.">
+    <rdfs:isDefinedBy rdf:resource="&dc;"/> 
+  </rdf:Property>
+
+  <rdf:Property
+     rdf:about="&dc;format" 
+     rdfs:label="Format" 
+     rdfs:comment="The physical or digital manifestation of the resource.">
+    <rdfs:isDefinedBy rdf:resource="&dc;"/> 
+  </rdf:Property>
+
+  <rdf:Property
+     rdf:about="&dc;identifier" 
+     rdfs:label="Resource Identifier" 
+     rdfs:comment="An unambiguous reference to the resource within a given context."> 
+    <rdfs:isDefinedBy rdf:resource="&dc;"/>
+  </rdf:Property>
+
+  <rdf:Property
+     rdf:about="&dc;source" 
+     rdfs:label="Source" 
+     rdfs:comment="A Reference to a resource from which the present resource is derived."> 
+    <rdfs:isDefinedBy rdf:resource="&dc;"/>
+  </rdf:Property>
+
+  <rdf:Property
+     rdf:about="&dc;language" 
+     rdfs:label="Language" 
+     rdfs:comment="A language of the intellectual content of the resource.">
+    <rdfs:isDefinedBy rdf:resource="&dc;"/> 
+  </rdf:Property>
+
+  <rdf:Property
+     rdf:about="&dc;relation" 
+     rdfs:label="Relation" 
+     rdfs:comment="A reference to a related resource.">
+    <rdfs:isDefinedBy rdf:resource="&dc;"/> 
+  </rdf:Property>
+
+  <rdf:Property
+     rdf:about="&dc;coverage" 
+     rdfs:label="Coverage" 
+     rdfs:comment="The extent or scope of the content of the resource.">
+    <rdfs:isDefinedBy rdf:resource="&dc;"/> 
+  </rdf:Property>
+
+  <rdf:Property
+     rdf:about="&dc;rights" 
+     rdfs:label="Rights Management" 
+     rdfs:comment="Information about rights held in and over the resource.">
+    <rdfs:isDefinedBy rdf:resource="&dc;"/> 
+  </rdf:Property>
+
+</rdf:RDF>

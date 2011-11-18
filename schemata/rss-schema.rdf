@@ -1,0 +1,120 @@
+<?xml version="1.0" ?> 
+
+<!--
+      This is a definition of the RSS 1.0, written in a way that allows this
+      file reside anywhere (i.e., it does not have to be fetched from the
+      "real" RSS URI). In addition to the RSS Core, also the syndication
+      module has been included.
+
+      Author: Ora Lassila
+
+      Copyright 2001 Nokia Research Center. All Rights Reserved.
+
+      $Id: rss-schema.rdf,v 1.2 2004/11/28 23:18:36 ora Exp $
+-->
+
+<!DOCTYPE uridef [
+  <!ENTITY rdf  "http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+  <!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#">
+  <!ENTITY rss  "http://purl.org/rss/1.0/">
+  <!ENTITY dc   "http://purl.org/dc/elements/1.1/">
+  <!ENTITY sy   "http://purl.org/rss/modules/syndication/">
+]>
+
+<rdf:RDF xmlns:rdf="&rdf;"
+         xmlns:rdfs="&rdfs;"
+         xmlns:rss="&rss;"
+         xmlns:dc="&dc;"
+         xmlns:sy="&sy;">
+
+<!-- RSS Core -->
+
+  <rdfs:Class rdf:about="&rss;thing">
+    <rdfs:subClassOf rdf:resource="&rdfs;Resource"/>
+    <rdfs:isDefinedBy rdf:resource="&rss;"/> 
+  </rdfs:Class>
+
+  <rdf:Property rdf:about="&rss;title">
+    <rdfs:subPropertyOf rdf:resource="&dc;title"/>
+    <rdfs:domain rdf:resource="&rss;thing"/>
+    <rdfs:isDefinedBy rdf:resource="&rss;"/> 
+  </rdf:Property>
+
+  <rdf:Property rdf:about="&rss;link">
+    <rdfs:subPropertyOf rdf:resource="&dc;identifier"/> 
+    <rdfs:domain rdf:resource="&rss;thing"/>
+    <rdfs:isDefinedBy rdf:resource="&rss;"/> 
+  </rdf:Property>
+
+  <rdf:Property rdf:about="&rss;description">
+    <rdfs:subPropertyOf rdf:resource="&dc;description"/> 
+    <rdfs:domain rdf:resource="&rss;thing"/>
+    <rdfs:isDefinedBy rdf:resource="&rss;"/> 
+  </rdf:Property>
+
+  <rdfs:Class rdf:about="&rss;channel">
+    <rdfs:subClassOf rdf:resource="&rss;thing"/>
+    <rdfs:isDefinedBy rdf:resource="&rss;"/> 
+  </rdfs:Class>
+
+  <rdf:Property rdf:about="&rss;image">
+    <rdfs:isDefinedBy rdf:resource="&rss;"/> 
+    <rdfs:domain rdf:resource="&rss;channel"/>
+  </rdf:Property>
+
+  <rdf:Property rdf:about="&rss;items">
+    <rdfs:isDefinedBy rdf:resource="&rss;"/> 
+    <rdfs:domain rdf:resource="&rss;channel"/>
+    <rdfs:range rdf:resource="&rdf;Seq"/>
+  </rdf:Property>
+
+  <rdf:Property rdf:about="&rss;textinput">
+    <rdfs:isDefinedBy rdf:resource="&rss;"/> 
+    <rdfs:domain rdf:resource="&rss;channel"/>
+  </rdf:Property>
+
+  <rdfs:Class rdf:about="&rss;image">
+    <!-- previously defined as an rdf:Property -->
+    <rdfs:subClassOf rdf:resource="&rss;thing"/>
+  </rdfs:Class>
+
+  <rdf:Property rdf:about="&rss;url">
+    <rdfs:subPropertyOf rdf:resource="&dc;identifier"/> 
+    <rdfs:domain rdf:resource="&rss;image"/>
+    <rdfs:isDefinedBy rdf:resource="&rss;"/> 
+  </rdf:Property>
+
+  <rdfs:Class rdf:about="&rss;item">
+    <rdfs:subClassOf rdf:resource="&rss;thing"/>
+    <rdfs:isDefinedBy rdf:resource="&rss;"/> 
+  </rdfs:Class>
+
+  <rdfs:Class rdf:about="&rss;textinput">
+    <!-- previously defined as an rdf:Property -->
+    <rdfs:subClassOf rdf:resource="&rss;thing"/>
+  </rdfs:Class>
+
+  <rdf:Property rdf:about="&rss;name">
+    <rdfs:subPropertyOf rdf:resource="&dc;identifier"/> 
+    <rdfs:domain rdf:resource="&rss;textinput"/>
+    <rdfs:isDefinedBy rdf:resource="&rss;"/> 
+  </rdf:Property>
+
+<!-- RSS Syndication module -->
+
+  <rdf:Property rdf:about="&sy;updatePeriod">
+    <rdfs:domain rdf:resource="&rss;channel"/>
+    <rdfs:isDefinedBy rdf:resource="&sy;"/> 
+  </rdf:Property>
+
+  <rdf:Property rdf:about="&sy;updateFrequency">
+    <rdfs:domain rdf:resource="&rss;channel"/>
+    <rdfs:isDefinedBy rdf:resource="&sy;"/> 
+  </rdf:Property>
+
+  <rdf:Property rdf:about="&sy;updateBase">
+    <rdfs:domain rdf:resource="&rss;channel"/>
+    <rdfs:isDefinedBy rdf:resource="&sy;"/> 
+  </rdf:Property>
+
+</rdf:RDF>
