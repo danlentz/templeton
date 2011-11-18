@@ -1,0 +1,375 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="GENERATOR" content="Mozilla/4.75 (Macintosh; U; PPC) [Netscape]">
+   <title>Wilbur -- RDF Data API</title>
+<link rel="STYLESHEET" href="wilbur.css" type="text/css" />
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+            xmlns:dc = "http://purl.org/dc/elements/1.1/">
+<rdf:Description rdf:about=""
+       dc:title="Wilbur: RDF Data API"
+       dc:creator="Ora Lassila"
+       dc:description="Documentation of the RDF Data API in Wilbur"
+       dc:date="2001-03-12"
+       dc:format="text/html"
+       dc:language="en"/>
+<dc:publisher rdf:resource="http://www.nokia.com/"/>
+<dc:relation rdf:resource="index.html"/>
+<dc:rights rdf:resource="LICENSE-NOKOS.html"/>
+</rdf:RDF>
+</head>
+<body>
+
+<h1>
+Wilbur: RDF Data API</h1>
+
+<ol>
+<li>
+<a href="#top-level-api">Top-Level API</a></li>
+
+<li>
+<a href="#uri-syntax">Abbreviated Syntax for URIs</a></li>
+
+<li>
+<a href="#nodes">Nodes</a></li>
+
+<li>
+<a href="#dictionaries">Dictionaries</a></li>
+
+<li>
+<a href="#triples">Triples</a></li>
+
+<li>
+<a href="#databases">Databases</a></li>
+</ol>
+
+<h2>
+<a NAME="top-level-api"></a>1. Top-Level API</h2>
+The RDF Data API allows the creation and manipulation of RDF graphs. The
+API is layered, consisting of a simple "top-level" API, and details lower-level
+APIs for the four different principal types of objects: <a href="#nodes">nodes</a>
+(which represent URIs and thus nodes in an RDF graph), <a href="#dictionaries">dictionaries</a>
+(which are essentially like symbol tables for nodes; they map URIs to nodes),
+<a href="#triples">triples</a>
+(which represent RDF triples or arcs of an RDF graph), and <a href="#databases">databases</a>
+(which represent sets of triples, and allow simple querying). In addition,
+the data manager also contains a <a href="#uri-syntax">simplified syntax
+for URIs</a>, based on the XML namespace idea.
+<h3>
+<a NAME="node-Function"></a>node (<i>thing</i>) [Function]</h3>
+Creates a <tt><a href="#node-Class">node</a></tt> instance and, if the
+node is named, stores it in the current <a href="#dictionaries">node dictionary</a>.
+The parameter <i>thing</i> can be a URI string which names the node; if
+a node with that name already exists, then that node is returned. If <i>thing</i>
+is a node, then it is returned. If <i>thing</i> is <tt>nil</tt>, an anonymous
+node is created.
+<h3>
+<a NAME="triple-Function"></a>triple (<i>subject predicate object</i> &amp;optional
+<i>source</i>)
+[Function]</h3>
+Creates a <tt><a href="#triple-Class">triple</a></tt> instance (but does
+not store it in any <a href="#databases">triple database</a>). Parameters
+<i>subject</i>
+and <i>predicate</i> must be <tt>node</tt> instances, <i>object</i> can
+be anything (typically either a string or a <tt><a href="#node-Class">node</a></tt>
+instance). The optional parameter <i>source</i> should be a node representing
+the source document of the triple (typically with a file URI or an http
+URI).
+<h3>
+<a NAME="add-triple-Function"></a>add-triple (<i>triple</i>) [Function]</h3>
+Add a <tt><a href="#triple-Class">triple</a></tt> instance into the current
+<a href="#databases">triple
+database</a>. The triple is returned.
+<h3>
+<a NAME="del-triple-Function"></a>del-triple (<i>triple</i>) [Function]</h3>
+Deletes a <tt><a href="#triple-Class">triple</a></tt> instance from the
+current <a href="#databases">triple database</a>. The triple is returned.
+<h3>
+<a NAME="query-Function"></a>query (<i>subject predicate object</i>) [Function]</h3>
+Queries the current <a href="#databases">triple database</a>. Parameters
+<i>subject</i>,
+<i>predicate</i>
+and <i>object</i> can either be filled or <tt>nil</tt>, and they represent
+a (potentially partially filled) triple. All triples matching the parameters
+are returned (as a list); <tt>nil</tt> parameter values represent wildcards.
+<h3>
+<a NAME="reify-Function"></a>reify (<i>triple</i> &amp;key <i>statement-uri
+source</i>) [Function]</h3>
+Reifies (according to the RDF M+S definition) a triple, and stores the
+resulting new triples in the current <a href="#databases">triple database</a>.
+The node representing the statement is returned; this node is named with
+the URI passed in the parameter <i>statement-uri</i> (it defaults to <tt>nil</tt>,
+i.e., an anonymous node). The <i>source</i> parameter is passed as the
+source parameter to the <tt><a href="#triple-Function">triple</a></tt>
+function.
+<h3>
+<a NAME="add-namespace-Function"></a>add-namespace (<i>prefix uri</i>)
+[Function]</h3>
+Adds a namespace mapping to the current <a href="#dictionaries">node dictionary</a>.
+This mapping is used when reading in and printing out nodes: the parameter
+<i>prefix</i>
+gets substituted for the URI <i>uri</i> when node names are printed. See
+the section titled "<a href="#uri-syntax">Abbreviated Syntax for URIs</a>"
+for more information.
+<p>The namespace mappings do not affect parsing in any way.
+<h3>
+<a NAME="del-namespace-Function"></a>del-namespace (<i>prefix</i>) [Function]</h3>
+Deletes a namespace mapping (identified by <i>prefix</i>) from the current
+<a href="#dictionaries">node
+dictionary</a>.
+<h3>
+<a NAME="namespaces-Function"></a>namespaces [Function]</h3>
+Returns a list of current namespace mapping prefixes.
+<h2>
+<a NAME="uri-syntax"></a>2. Abbreviated Syntax for URIs</h2>
+URIs are used everywhere in the Wilbur system. In order to avoid having
+to write (and read) full URIs which typically are rather long, the system
+provides an abbreviated syntax for reading and printing URIs. This abbreviated
+syntax is based on the same idea as namespace-qualified names in XML. Given
+that we have called <tt><a href="#add-namespace-Function">add-namespace</a></tt>
+to add <tt>"foo"</tt> as the prefix for the URI <tt>"http://foo.com/schema#"</tt>,
+then the name <tt>"foo:bar"</tt> would be an abbreviation for <tt>"http://foo.com/schema#bar"</tt>.
+<a href="#dictionaries">Node
+dictionaries</a> maintain prefix-to-URI mappings (these are manipulated
+using functions <tt><a href="#add-namespace-Function">add-namespace</a></tt>
+and <tt><a href="#del-namespace-Function">del-namespace</a></tt> or their
+lower-level counterparts <a href="#dictionary-add-namespace-Generic-function">dictionary-add-namespace</a>
+and <a href="#dictionary-remove-namespace-Generic-function">dictionary-remove-namespace</a>).
+<p>When nodes are printed, the current namespace mappings are examined
+and node URIs are (potentially) converted to the abbreviated form in output.
+For node input, the reader macro <tt>!</tt> has been established. Writing
+<tt>!foo:bar</tt>
+causes the reader to create a <tt><a href="#node-Class">node</a></tt> instance
+whose name (if we follow the previous example) is <tt>"http://foo.com/schema#bar"</tt>.
+One can also write this node as <tt>!"http://foo.com/schema#bar"</tt>.
+If one writes <tt>!foo:bar</tt> and the prefix <tt>"foo"</tt> has not been
+defined, no error is signaled; instead, the node is created with an "unresolved"
+name (see the function <tt><a href="#node-name-resolved-p-Generic-function">node-name-resolved-p</a></tt>).
+The node dictionary keeps track of unresolved nodes, and once a prefix
+is established, resolves and converts all unresolved nodes. This mechanism
+allows one to use the <tt>!</tt>-syntax in source files, compile these
+files, and expect the right thing to happen when the compiled files are
+later loaded into the system.
+<p>Note that by default all node dictionaries establish the mappings from
+<tt>"rdf"</tt>
+to <tt><a href="rdf-parser.html#constants">-rdf-uri-</a></tt> and from
+<tt>"rdfs"</tt>
+to <tt><a href="rdf-parser.html#constants">-rdfs-uri-</a></tt>.
+<p>For example, assuming that the prefix <tt>"rdf"</tt> has been defined
+but the prefix <tt>"foo"</tt> has not, the following illustrates how the
+node input/output mechanism works (this is a <tt>dribble</tt> file from
+MCL, the character <tt>?</tt> is the listener prompt):
+<blockquote class="CodeExample">? (node-uri !rdf:type) <i>; resolved</i>
+<br>"http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+<br>? (node-uri !foo:type) <i>; not resolved</i>
+<br>"foo:type"
+<br>? (add-namespace "foo" "http://foo.com/schema#")
+<br>"foo"
+<br>? (node-uri !foo:type) <i>; just got resolved</i>
+<br>"http://foo.com/schema#type"
+<br>? (node nil)
+<br>#&lt;node #xA6779A6>
+<br>? (node-uri *) <i>; anonymous</i>
+<br>nil
+<br>? (node "http://www.w3.org/1999/02/22-rdf-syntax-ns#type")
+<br>!rdf:type
+<br>? !"http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+<br>!rdf:type</blockquote>
+
+<h2>
+<a NAME="nodes"></a>3. Nodes</h2>
+
+<h3>
+<a NAME="node-uri-Generic-function"></a>node-uri (<i>node</i>) [Generic
+function]</h3>
+Accesses the URI of a <tt><a href="#node-Class">node</a></tt> instance.
+<h3>
+<a NAME="node-name-resolved-p-Generic-function"></a>node-name-resolved-p
+(node) [Generic function]</h3>
+Accesses the flag in a <tt><a href="#node-Class">node</a></tt> instance
+which indicates whether the node name was already resolved (i.e., a <i>prefix:name</i>
+form was turned into a real URI).
+<h3>
+<a NAME="node-Class"></a>node [Class]<br>
+<i>:uri</i> [Initarg]<br>
+<i>:name-resolved-p</i> [Initarg]</h3>
+Instances of this class represent nodes in an RDF graph.
+<h3>
+<a NAME="index-uri-Function"></a>index-uri (<i>index</i>) [Function]</h3>
+Returns an RDF collection index URI (a string) with the specified <i>index</i>.
+It is an error to call this function repeatedly and specify indices out
+of order, unless these URIs have already been created (by calling this
+function earlier).
+<h2>
+<a NAME="dictionaries"></a>4. Dictionaries</h2>
+Node dictionaries provide a mapping between URI strings and node instances
+(in this respect, they are a lot like Common Lisp symbol tables).
+<h3>
+<a NAME="dictionary-node-class-Generic-function"></a>dictionary-node-class
+(<i>dictionary</i>) [Generic function]</h3>
+Accesses the class from which new nodes are instantiated for a particular
+dictionary.
+<h3>
+<a NAME="dictionary-add-namespace-Generic-function"></a>dictionary-add-namespace
+(<i>dictionary prefix uri</i>) [Generic function]</h3>
+Adds a namespace mapping to a dictionary. Used to implement <tt><a href="#add-namespace-Function">add-namespace</a></tt>.
+<h3>
+<a NAME="dictionary-remove-namespace-Generic-function"></a>dictionary-remove-namespace
+(<i>dictionary prefix</i>) [Generic function]</h3>
+Removes a namespace mapping from a dictionary. Used to implement <tt><a href="#del-namespace-Function">del-namespace</a>.</tt>
+<h3>
+<a NAME="dictionary-rename-namespace-Generic-function"></a>dictionary-rename-namespace
+(<i>dictionary old-prefix new-prefix</i>) [Generic function]</h3>
+Renames the prefix of a namespace mapping for a dictionary. No counterpart
+in the top-level API.
+<h3>
+<a NAME="find-node-Generic-function"></a>find-node (<i>dictionary uri</i>)
+[Generic function]</h3>
+Finds a node with the given URI in a dictionary. If no node exists, <tt>nil</tt>
+is returned.
+<h3>
+<a NAME="find-short-name-Generic-function"></a>find-short-name (<i>dictionary
+uri</i>) [Generic function]</h3>
+Maps a URI into a "short form" name (of the form <i>prefix:name</i>).
+<h3>
+<a NAME="find-long-name-Generic-function"></a>find-long-name (<i>dictionary
+name</i>) [Generic function]</h3>
+Maps a name (of the form <i>prefix:name</i>) into the corresponding full
+URI.
+<h3>
+<a NAME="dictionary-apropos-list-Generic-function"></a>dictionary-apropos-list
+(<i>dictionary pattern</i>) [Generic function]</h3>
+Finds all nodes from a dictionary whose URI contains the string <i>pattern</i>.
+Think of this function as the dictionary counterpart of the Common Lisp
+function <tt>apropos-list</tt>.
+<h3>
+<a NAME="dictionary-Class"></a>dictionary [Class]<br>
+<i>:node-class</i> [Initarg]</h3>
+Base class of all dictionaries. Currently the implementation does not have
+subclasses of this class.
+<h3>
+<a NAME="*nodes*-Variable"></a>*nodes* [Variable]</h3>
+This global variable contains the current node dictionary. It is initialized
+when the system is loaded. Since a node dictionary is just like the Common
+Lisp symbol table, one can typically use the one and the same node dictionary
+even if one uses multiple <a href="#databases">triple databases</a>.
+<h2>
+<a NAME="triples"></a>5. Triples</h2>
+Triples are used to represent RDF statements in the underlying RDF graph.
+One can think of them either as the vertices of the graph (with associated
+endpoints), or as object-attribute-value triplets (which is useful connection
+of the frame system interface). Triples are actually quadruples, if you
+think about it, since they also record their source document (as a node).
+<h3>
+<a NAME="triple-subject-Generic-function"></a>triple-subject (<i>triple</i>)
+[Generic function]</h3>
+Accesses the <i>subject</i> component of a triple (a node).
+<h3>
+<a NAME="triple-predicate-Generic-function"></a>triple-predicate (<i>triple</i>)
+[Generic function]</h3>
+Accesses the <i>predicate</i> component of a triple (a node).
+<h3>
+<a NAME="triple-object-Generic-function"></a>triple-object (<i>triple</i>)
+[Generic function]</h3>
+Accesses the <i>object</i> component of a triple.
+<h3>
+<a NAME="setf-triple-object-Generic-function"></a>(setf triple-object)
+(<i>value triple</i>) [Generic function]</h3>
+Assigns the <i>object</i> component of a triple.
+<h3>
+<a NAME="triple-source-Generic-function"></a>triple-source (<i>triple</i>)
+[Generic function]</h3>
+Accesses the <i>source</i> component of a triple (a node).
+<h3>
+<a NAME="triple-Class"></a>triple [Class]</h3>
+Base class of all triples. Use the function <tt><a href="#triple-Function">triple</a></tt>
+to create triples.
+<h2>
+<a NAME="databases"></a>6. Databases</h2>
+Databases are used to store triples. The system can have an arbitrary number
+of databases, but only one can be current at any given time (the default
+database in the top-level API operations).
+<h3>
+<a NAME="db-triples-Generic-function"></a>db-triples (<i>db</i>) [Generic
+function]</h3>
+Returns a list of all triples in a database. It is an error to destructively
+modify this list.
+<h3>
+<a NAME="db-add-triple-Generic-function"></a>db-add-triple (<i>db triple</i>)
+[Generic function]</h3>
+Add a triple to a database. Used to implement the top-level function <tt><a href="#add-triple-Function">add-triple</a></tt>.
+<h3>
+<a NAME="db-del-triple-Generic-function"></a>db-del-triple (<i>db triple</i>)
+[Generic function]</h3>
+Removes a triple from a database. Used to implement the top-level function
+<tt><a href="#del-triple-Function">del-triple</a></tt>.
+<h3>
+<a NAME="db-query-Generic-function"></a>db-query (<i>db subject predicate
+object</i>) [Generic function]</h3>
+Queries a database for triples. Used to implement the top-level function
+<tt><a href="#query-Function">query</a></tt>
+(see this function for an explanation of how querying works).
+<h3>
+<a NAME="db-reify-Generic-function"></a>db-reify (<i>triple db</i> &amp;optional
+<i>statement-uri
+source</i>) [Generic function]</h3>
+Reifies a triple. Used to implement the top-level function <tt><a href="#reify-Function">reify</a></tt>
+(see this function for an explanation of the reification functionality).
+<h3>
+<a NAME="db-del-source-Generic-function"></a>db-del-source (<i>db source</i>)
+[Generic function]</h3>
+Deletes all triples corresponding to a given source from a database. No
+counterpart in the top-level API.
+<h3>
+<a NAME="db-sources-Generic-function"></a>db-sources (<i>db</i>) [Generic
+function]</h3>
+Returns a list (of nodes) of all sources of a given database. No counterpart
+in the top-level API.
+<h3>
+<a NAME="db-query-by-source-Generic-function"></a>db-query-by-source (<i>db
+source</i>) [Generic function]</h3>
+Returns a list of triples corrsponding to the current source (a node).
+It is an error to destructively modify this list.
+<h3>
+<a NAME="is-container-p-Generic-function"></a>is-container-p (<i>db node</i>
+&amp;optional <i>errorp</i>) [Generic function]</h3>
+Returns true if <i>node</i> represents an RDF container (a Bag, a Seq,
+or an Alt) in the database <i>db</i>. If <i>errorp</i> is true (default
+is false), a continuable error is signalled if <tt>is-container-p</tt>
+would return false (the error is instantiated from the condition class
+<tt>container-required</tt>).
+<h3>
+<a NAME="db-merge-Generic-function"></a>db-merge (<i>to from</i>) [Generic
+function]</h3>
+Copies all triples from the database <i>from</i> into the database <i>to</i>.
+<h3>
+<a NAME="db-allow-merge-p-Generic-function"></a>db-allow-merge-p (<i>to
+from</i>) [Generic function]</h3>
+Returns true is merging from the database <i>from</i> to the database <i>to</i>
+is allowed. If false is returned, a second return value is a string indicating
+the reason why merging is not allowed. This function is used by <tt><a href="#db-merge-Generic-function">db-merge
+</a></tt>who will signal a continuable error (an instance of <tt><a href="file:///Pumpkin/work/Wilbur/wilbur/docs/rdf-parser.html#cannot-merge-Condition-class">cannot-merge</a></tt>)
+in case the merge attempt fails.
+<h3>
+<a NAME="db-Class"></a>db [Class]<br>
+<i>:emptyp</i> [Initarg]<br>
+<i>:rdf-schema-pathname</i> [Initarg]</h3>
+This is the base class of all databases. The initarg <i>emptyp</i> when
+false (the default) causes the system to initialize the database by reading
+in a schema whose file system pathname is specified using the initarg <i>rdf-schema-pathname</i>
+(it defaults to the logical pathname <tt>"wilbur:schemata;rdf-schema.rdf"</tt>).
+<h3>
+<a NAME="*db*-Variable"></a>*db* [Variable]</h3>
+This variable holds the current database. It is not initialized when the
+system is loaded, but has to be assigned separately, typically by something
+like
+<blockquote class="CodeExample">(setf *db* (make-instance 'db))</blockquote>
+
+<hr>
+
+<p class="EndMatter">Copyright &copy; 2001 Nokia. All Rights Reserved.
+<br>Subject to the <a href="LICENSE-NOKOS.html">NOKOS License version 1.0</a>
+<br>Author: Ora Lassila (<a href="mailto:ora.lassila@nokia.com">ora.lassila@nokia.com</a>)
+</body>
+</html>

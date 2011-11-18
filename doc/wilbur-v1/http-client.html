@@ -1,0 +1,203 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="GENERATOR" content="Mozilla/4.75 (Macintosh; U; PPC) [Netscape]">
+   <title>Wilbur -- HTTP Client</title>
+   <link rel="STYLESHEET" href="wilbur.css" type="text/css" />
+   <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+            xmlns:dc = "http://purl.org/dc/elements/1.1/">
+     <rdf:Description rdf:about=""
+       dc:title="Wilbur: HTTP Client"
+       dc:creator="Ora Lassila"
+       dc:description="Documentation of HTTP support in Wilbur"
+       dc:date="2001-03-12"
+       dc:format="text/html"
+       dc:language="en"/>
+      <dc:publisher rdf:resource="http://www.nokia.com/"/>
+      <dc:relation rdf:resource="index.html"/>
+      <dc:rights rdf:resource="LICENSE-NOKOS.html"/>
+     </rdf:RDF>
+</head>
+<body>
+
+<h1>
+Wilbur: HTTP Client</h1>
+
+<ol>
+<li>
+<a href="#urls">URL API</a></li>
+
+<li>
+<a href="#streams">HTTP Stream API</a></li>
+
+<li>
+<a href="#dates">Date Input and Output</a></li>
+</ol>
+
+<h2>
+<a NAME="urls"></a>1. URL API</h2>
+The URL object API exists for the benefit of the HTTP client code; other
+parts of the toolkit (the XML and RDF parsers) represent URLs as strings.
+<h3>
+<a NAME="make-url-Function"></a>make-url (<i>string</i>) [Function]</h3>
+Parses the URL in <i>string</i> (a <tt>string</tt>) and returns an <tt><a href="#url-Class">url</a></tt>
+instance (the class <tt><a href="#url-Class">url</a></tt> is abstract,
+an instance of some subclass is returned). The function will signal <tt><a href="xml-parser.html#malformed-url-Class">malformed-url</a></tt>
+if the parsing fails.
+<h3>
+<a NAME="url-Class"></a>url [Class]</h3>
+Abstract base class of URLs.
+<h3>
+<a NAME="url-string-Generic-function"></a>url-string (<i>url</i>) [Generic
+function]</h3>
+Returns a <tt>string</tt> rendition of the URL.
+<h3>
+<a NAME="url-path-Generic-function"></a>url-path (<i>url</i>) [Generic
+function]</h3>
+Returns the path component of the URL (as a <tt>string</tt>).
+<h3>
+<a NAME="file-url-Class"></a>file-url [Class]</h3>
+Concrete class (subclass of <tt><a href="#url-Class">url</a></tt>) of file-URLs
+(these URLs only have a path component). Do not instantiate this class
+directly, instead use <tt><a href="#make-url-Function">make-url</a></tt>.
+<h3>
+<a NAME="http-url-Class"></a>http-url [Class]</h3>
+Concrete class (subclass of <tt><a href="#url-Class">url</a></tt>) of http-URLs
+(these URLs have a host and a port component in addition to the path component).
+Do not instantiate this class directly, instead use <tt><a href="#make-url-Function">make-url</a></tt>.
+<h3>
+<a NAME="url-host-Generic-function"></a>url-host (<i>http-url</i>) [Generic
+function]</h3>
+Returns the host component of an <tt><a href="#http-url-Class">http-url</a></tt>
+instance (as a <tt>string</tt>).
+<h3>
+<a NAME="url-port-Generic-function"></a>url-port (<i>http-url</i>) [Generic
+function]</h3>
+Returns the port component of an <tt><a href="#http-url-Class">http-url</a></tt>
+instance (as an <tt>integer</tt>).
+<h2>
+<a NAME="streams"></a>2. HTTP Stream API</h2>
+<p><a href="http://www.digitool.com/"><img src="images/mcl-made-1.gif" alt="Made with MCL" BORDER=0 align=RIGHT></a>
+In the current version of Wilbur the HTTP streams functionality is only avaible
+on the Macintosh Common Lisp (due to the fact that <a href="#open-http-stream-Generic-function">
+open-http-stream</a> uses an MCL-specific implementation of the socket interface).
+<h3>
+<a NAME="open-http-stream-Generic-function"></a>open-http-stream (<i>url
+proxy</i>) [Generic function]</h3>
+Opens and returns a bidirectional stream for requesting the URL <i>url</i>
+(an instance of some subclass of <tt><a href="#url-Class">url</a></tt>),
+possibly via the HTTP proxy <i>proxy</i> (an <tt><a href="#http-url-Class">http-url</a></tt>
+instance).
+<h3>
+<a NAME="open-http-stream-Method"></a>open-http-stream ((<i>url</i> http-url)
+(<i>proxy</i> null)) [Method]</h3>
+An implementation of <tt><a href="#open-http-stream-Generic-function">open-http-stream</a></tt>
+for regular HTTP URLs without an HTTP proxy.
+<h3>
+<a NAME="open-http-stream-proxy-Method"></a>open-http-stream ((<i>url</i>
+http-url) (<i>proxy</i> http-url)) [Method]</h3>
+An implementation of <tt><a href="#open-http-stream-Generic-function">open-http-stream</a></tt>
+for regular HTTP URLs with requests going through an HTTP proxy. Proxies
+are specified as HTTP URLs, the system will merely ignore any path component.
+<h3>
+<a NAME="http-message-Class"></a>http-message [Class]</h3>
+This class represents HTTP response messages.
+<h3>
+<a NAME="http-status-Generic-function"></a>http-status (<i>http-message</i>)
+[Generic function]</h3>
+Returns the status code of the HTTP response (as an <tt>integer</tt>).
+<h3>
+<a NAME="http-version-Generic-function"></a>http-version (<i>http-message</i>)
+[Generic function]</h3>
+Returns the version string of the HTTP response.
+<h3>
+<a NAME="http-headers-Generic-function"></a>http-headers (<i>http-message</i>)
+[Generic function]</h3>
+Returns an a-list (in the <a href="xml-parser.html#string-dict">string
+dictionary</a> format) of HTTP response headers.
+<h3>
+<a NAME="http-body-Generic-function"></a>http-body (<i>http-message</i>)
+[Generic function]</h3>
+Returns an open input stream which, when read, will yield the body of the
+HTTP response to "GET".
+<h3>
+<a NAME="get-header-Generic-function"></a>get-header (<i>http-message header</i>)
+[Generic function]</h3>
+Returns the HTTP header named by the string <i>header</i> from the HTTP
+response <i>http-message</i> (an <tt><a href="#http-message-Class">http-message</a></tt>
+instance), or <tt>nil</tt> if no header with that name is found.
+<h3>
+<a NAME="http-head-Generic-function"></a>http-head (<i>url</i> &amp;key
+<i>proxy</i>)
+[Generic function]</h3>
+Performs an HTTP "HEAD" request to the URL <i>url</i> (possibly via the
+HTTP proxy <i>proxy</i>), and returns an HTTP response (an instance of
+<tt><a href="#http-message-Class">http-message</a></tt>).
+The response has a null body, i.e. the function <tt><a href="#http-body-Generic-function">http-body</a></tt>
+will return <tt>nil</tt>.
+<h3>
+<a NAME="http-get-Generic-function"></a>http-get (<i>url</i> &amp;optional
+<i>proxy</i>)
+[Generic function]</h3>
+Performs an HTTP "GET" request to the URL <i>url</i> (possibly via the
+HTTP proxy <i>proxy</i>), and returns an HTTP response (an instance of
+<tt><a href="#http-message-Class">http-message</a></tt>).
+The body of the response can be read from an input stream which can be
+accessed via the function <tt><a href="#http-body-Generic-function">http-body</a></tt>.
+<h3>
+<a NAME="with-http-response-Macro"></a>with-http-response ((<i>response
+body-input-stream url</i> &amp;optional <i>proxy</i>) &amp;body <i>body</i>)
+[Macro]</h3>
+Performs an HTTP "GET" request to the URL <i>url</i> (possibly via the
+HTTP proxy <i>proxy</i>), and for the execution of the forms in <i>body</i>
+binds the variable <i>response</i> to the HTTP response object (an instance
+of <tt><a href="#http-message-Class">http-message</a></tt>) and the variable
+<i>body-input-stream</i>
+to an input stream which will yield the response body (see the function
+<tt><a href="#http-body-Generic-function">http-body</a></tt>
+for an explanation). Regardless of how the execution of <i>body</i> ends,
+the input stream is closed on exit.
+<h2>
+<a NAME="dates"></a>3. Date Input and Output</h2>
+
+<h3>
+<a NAME="parse-http-date-Function"></a>parse-http-date (<i>string</i>)
+[Function]</h3>
+This function parses the string <i>string</i> according to the date syntax(es)
+specified in RFC 2616 (HTTP/1.1):
+<ul>
+<li>
+RFC 1123</li>
+
+<li>
+RFC 850 (with the assumption of 21st century)</li>
+
+<li>
+ASC Time</li>
+</ul>
+<p>The parser is non-dogmatic about the formats, and merely returns
+<tt>nil</tt>
+if it detects something in such violation of the standards that it would
+make reliable parsing impossible. Successfully parsed time is returned
+in the Common Lisp universal-time format.
+<h3>
+<a NAME="parse-iso8601-date-Function"></a>parse-iso8601-date (<i>string</i>)
+[Function]</h3>
+This function parses the string <i>string</i> assuming it contains an ISO
+8601 -formatted date. Successfully parsed time is returned in Common Lisp
+universal-time format; otherwise <tt>nil</tt> is returned.
+<h3>
+<a NAME="iso8601-date-string-Function"></a>iso8601-date-string (<i>universal-time</i>)
+[Function]</h3>
+This function takes an integer <i>universal-time</i> (assumed to contain
+a date in universal-time format) and returns a string with the date formatted
+according to the ISO 8601 standard. The current time zone is assumed.
+<p>
+<hr>
+
+<p class="EndMatter">Copyright &copy; 2001 Nokia. All Rights Reserved.
+<br>Subject to the <a href="LICENSE-NOKOS.html">NOKOS License version 1.0</a>
+<br>Author: Ora Lassila (<a href="mailto:ora.lassila@nokia.com">ora.lassila@nokia.com</a>)
+</body>
+</html>

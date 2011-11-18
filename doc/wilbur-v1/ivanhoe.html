@@ -1,0 +1,436 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="GENERATOR" content="Mozilla/4.75 (Macintosh; U; PPC) [Netscape]">
+   <title>Ivanhoe -- an RDF-Based Frame System</title>
+<link rel="STYLESHEET" href="wilbur.css" type="text/css" />
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+            xmlns:dc = "http://purl.org/dc/elements/1.1/">
+<rdf:Description rdf:about=""
+       dc:title="Ivanhoe: an RDF-Based Frame System"
+       dc:creator="Ora Lassila"
+       dc:description="Documentation of the Ivanhoe frame system"
+       dc:date="2001-03-12"
+       dc:format="text/html"
+       dc:language="en"/>
+<dc:publisher rdf:resource="http://www.nokia.com/"/>
+<dc:relation rdf:resource="index.html"/>
+<dc:rights rdf:resource="LICENSE-NOKOS.html"/>
+</rdf:RDF>
+<style type="text/css">
+BODY {
+  background: url("images/ivanhoe.jpg");
+  background-repeat: no-repeat;
+  background-color: white;
+}
+</style>
+</head>
+<body>
+
+<h1>
+Ivanhoe: an RDF-Based Frame System</h1>
+
+<ol>
+<li>
+<a href="#about">About the Frame System</a></li>
+
+<li>
+<a href="#abstract-api">Abstract Frame API</a></li>
+
+<li>
+<a href="#path-grammar">Path Grammar</a></li>
+
+<li>
+<a href="#paths">Paths</a></li>
+
+<li>
+<a href="#frames">Frames</a></li>
+
+<li>
+<a href="#examples">Appendix A: Examples</a></li>
+
+<li>
+<a href="#notes">Appendix B: Notes</a></li>
+</ol>
+
+<h2>
+<a NAME="about"></a>1. About the Frame System</h2>
+Ivanhoe<sup>[<a href="#ivanhoe-name-note">name note</a>]</sup> is essentially
+an API that makes the underlying Wilbur system look like a frame-based
+representation system, based on the simple idea that RDF graphs can be
+interpreted (through a node-centric view) as frames, slots, and fillers.
+Ivanhoe consists of a simple, <a href="#abstract-api">abstract frame API</a>
+which is implemented through several low-level, more detailed, APIs. The
+APIs and the implementation are partially based on the BEEF frame system<sup>[<a href="#beef-reference-note">BEEF
+note</a>]</sup>.
+<p>Frames in Ivanhoe are nodes of an RDF graph, and are thus represented
+by instances of the class <tt><a href="rdf-data.html#node-Class">node</a></tt>.
+Slots are the arc labels of an RDF graph, and are thus also represented
+by <tt><a href="rdf-data.html#node-Class">node</a></tt> instances. Fillers
+(slot values) can be <tt><a href="rdf-data.html#node-Class">node</a></tt>
+instances (i.e., other frames) or any other data used by Wilbur (current
+implementation allows any Common Lisp objects, but the parser can only
+produce <tt>string</tt>s).
+<p>Ivanhoe generalizes on the notion of a slot, and allows expressions
+of a <a href="#path-grammar">path grammar</a> to be used in all slot access
+functions (a slot name is just a simple special case of an access path).
+<p>OKBC support is considered for the next version of Ivanhoe.
+<h2>
+<a NAME="abstract-api"></a>2. Abstract Frame API</h2>
+The abstract frame API represents...
+<h3>
+<a NAME="frame-Function"></a>frame (<i>uri</i> &amp;rest <i>slot/value-pairs</i>)
+[Generic function]</h3>
+Creates a frame (a <tt><a href="rdf-data.html#node-Class">node</a></tt>
+instance) named by the URI string <i>uri</i>, and initializes slots from
+<i>slot/value-pairs</i>
+(dotted pairs of slot &amp; value).
+<h3>
+<a NAME="own-slots-Function"></a>own-slots (<i>frame</i>) [Generic function]</h3>
+Returns a list of a frame's own slots (a list of <tt><a href="rdf-data.html#node-Class">node</a></tt>
+instances, that is)
+<h3>
+<a NAME="value-Function"></a>value (<i>frame</i> &amp;rest <i>paths</i>)
+[Generic function]</h3>
+Accesses a value reachable from frame via a path. Returns multiple values,
+one for each path supplied.
+<h3>
+<a NAME="all-values-Function"></a>all-values (<i>frame</i> &amp;rest
+<i>paths</i>)
+[Generic function]</h3>
+Accesses all values reachable from a frame via a path, returning the values
+as a list. Returns multiple lists, one for each path supplied.
+<h3>
+<a NAME="add-value-Function"></a>add-value (<i>frame slot value</i>) [Generic
+function]</h3>
+Adds <i>value</i> (any object) to <i>slot</i> (named by a node) in <i>frame</i>
+(a node). Corresponds to the addition of a single triple to the underlying
+RDF model (graph).
+<h3>
+<a NAME="del-value-Function"></a>del-value (<i>frame slot</i> &amp;optional
+<i>value</i>)
+[Generic function]</h3>
+Deletes <i>value</i> (any object) from <i>slot</i> (named by a node) in
+<i>frame</i>
+(a node). If <i>value</i> is not specified or is <tt>nil</tt>, deletes
+all values from <i>slot</i>. Corresponds to the deletion of one (or more)
+triples from the underlying RDF model (graph); essentially the triple (or
+triples) are found by executing
+<blockquote class="CodeExample">(db-query *db* <i>frame slot value</i>)</blockquote>
+
+<h3>
+<a NAME="relatedp-Function"></a>relatedp (<i>source path sink</i> &amp;optional
+<i>action</i>)
+[Generic function]</h3>
+Returns true if <i>sink</i> (a frame, i.e., a node) is reachable from <i>source</i>
+(also a frame) via <i>path</i>. If supplied, calls <i>action</i> on each
+frame encountered along the path.
+<h3>
+<a NAME="load-db-Generic-function"></a>load-db (<i>url</i> &amp;rest <i>options</i>
+&amp;key <i>error-handling merge-results-p</i>) [Generic function]</h3>
+Loads and parses the contents of the URL <i>url</i>. If the parameter
+<i>merge-results-p</i>
+is true, the results (the resulting triples, i.e., slot filler assignments)
+are merged to the default database (the one bound to the variable <tt><a href="rdf-data.html#*db*-Variable">*db*</a></tt>).
+Other options are the same as for the function <tt><a href="rdf-parser.html#parse-db-from-stream-Function">parse-db-from-stream</a></tt>.
+The default value for <i>merge-results-p</i> is
+<blockquote class="CodeExample">(eq <i>error-handling</i> :signal)</blockquote>
+Method implementations of <tt>load-db</tt> exists for <tt>string</tt>,
+<tt><a href="http-client.html#file-url-Class">file-url</a></tt>
+and <tt><a href="http-client.html#http-url-Class">http-url</a></tt> specializations
+of <i>url</i>.
+<h3>
+<a NAME="*http-proxy*-Variable"></a>*http-proxy* [Variable]</h3>
+When loading data from HTTP URLs (instances of <tt><a href="http-client.html#http-url-Class">http-url</a></tt>),
+<tt><a href="#load-db-Generic-function">load-db</a></tt>
+uses the value of this variable as the HTTP proxy (as passed to the function
+<tt><a href="http-client.html#http-get-Generic-function">http-get</a></tt>).
+Proxies are instances of <tt><a href="http-client.html#http-url-Class">http-url</a></tt>
+(the <i>path</i> component is ignored).
+<h2>
+<a NAME="path-grammar"></a>3. Path Grammar</h2>
+Relation paths can be described using regular expressions. These expressions
+obey the Common Lisp syntax (that is, prefix notation) and use a set of
+operators. Traversing a relation actually means matching the relation path
+to a path grammar pattern; the path grammar operators are used in constructing
+these patterns. Slot names are used as the atomic elements of path grammar.
+<p>The path grammar is based on the one in the graph pattern matcher of
+the BEEF frame system<sup>[<a href="#beef-reference-note">BEEF note</a>]</sup>.
+<p>See <a href="#examples">Appendix A</a> for examples of the path grammar.
+<h3>
+<a NAME="seq-operator"></a>:seq &amp;rest <i>expressions</i> [Path Grammar
+Operator]</h3>
+This constructor is satisfied by a relation path if it consists of subpaths
+satisfying expressions in order. An example: the path grammar expression
+<blockquote class="CodeExample">(:seq !x !y)</blockquote>
+defines a relation path where one first traverses over an <tt>!x</tt> slot
+link and then over a <tt>!y</tt> slot link. The utterance "traversing over
+a slot link" here means moving from one frame to another frame which is
+a value of an own slot of the first frame.
+<h3>
+<a NAME="seq-plus-operator"></a>:seq+ &amp;rest <i>expressions</i> [Path
+Grammar Operator]</h3>
+This constructor resembles sequence, but also allows the satisfaction of
+sub-sequences. One may think that
+<blockquote class="CodeExample">(:seq+ !x !y)</blockquote>
+is equivalent to
+<blockquote class="CodeExample">(:or !x (:seq !x !y))</blockquote>
+
+<h3>
+<a NAME="or-operator"></a>:or &amp;rest <i>expressions</i> [Path Grammar
+Operator]</h3>
+This constructor is satisfied if any of the patterns in expressions matches
+the relation path. An example: the path grammar expression
+<blockquote class="CodeExample">(:or !x !y)</blockquote>
+defines a relation path where one either traverses over an <tt>!x</tt>
+slot link or over a <tt>!y</tt> slot link.
+<h3>
+<a NAME="rep-star-operator"></a>:rep* <i>expression</i> [Path Grammar Operator]</h3>
+This constructor is always satisfied when expression can matched to the
+relation path any number of times in sequence (including zero). Satisfaction
+of this operator implise the computation of the transitive closure of <i>expression</i>,
+and can be costly.
+<h3>
+<a NAME="rep-plus-operator"></a>:rep+ <i>expression</i> [Path Grammar Operator]</h3>
+This constructor is always satisfied when expression can matched to the
+relation path any number of times in sequence (not including zero).
+<h3>
+<a NAME="inv-operator"></a>:inv <i>expression</i> [Path Grammar Operator]</h3>
+This constructor effectively inverts the path described by <i>expression</i>,
+that is, it is satisfied if <i>expression</i> can be matched with a path
+traversed "backwards".
+<h3>
+<a NAME="members-atom"></a>:members [Path Grammar Atom]</h3>
+Can be used in a path grammar expression to denote any of the index URIs
+of RDF containers (<tt>rdf:_1</tt>, <tt>rdf_2</tt>, etc.). Consequently,
+if <tt>!foo</tt> is a frame which has a slot <tt>!x</tt> whose value is
+an RDF container (say, <tt>rdf:Bag</tt>), then
+<blockquote class="CodeExample">(all-values !foo '(:seq !x :members))</blockquote>
+returns a Common Lisp list of all the items of the bag.
+<h3>
+<a NAME="any-atom"></a>:any [Path Grammar Atom]</h3>
+Can be used in a path grammar expression to denote any slot name. For example,
+if frame <tt>!foo</tt> has own slots <tt>!x</tt> and <tt>!y</tt> (and no
+other own slots), then
+<blockquote class="CodeExample">(all-values !foo :any)</blockquote>
+will be the same as
+<blockquote class="CodeExample">(all-values !foo '(:or !x !y))</blockquote>
+
+<h2>
+<a NAME="paths"></a>4. Paths</h2>
+
+<h3>
+<a NAME="path-Class"></a>path [Class]</h3>
+Instances of this class represent path grammar expressions. In the current
+implementation, expressions are actually pre-processed into finite-state
+automate (FSAs) and cached.
+<h3>
+<a NAME="path-expression-Generic-function"></a>path-expression (<i>path</i>)
+[Generic function]</h3>
+Accesses the actual path expression (an s-expression, i.e., a Common Lisp
+list).
+<h3>
+<a NAME="path-fsa-Generic-function"></a>path-fsa (<i>path</i>) [Generic
+function]</h3>
+Accesses the low-level implementation of the FSA generated by pre-processing
+the path expression.
+<h3>
+<a NAME="invert-Generic-function"></a>invert (<i>path</i>) [Generic function]</h3>
+Returns an instance of <a href="#path-Class">path</a> which represents
+the inverse path of the <a href="#path-Class">path</a> instance <i>path</i>.
+<h3>
+<a NAME="walk-using-fsa-Function"></a>walk-using-fsa (<i>root fsa action</i>)
+[Function]</h3>
+This function takes a "root node" (parameter <i>root</i>) and a low-level
+FSA object (parameter <i>fsa</i>; see the function <a href="#path-fsa-Generic-function">path-fsa</a>),
+and walks the RDF graph using the FSA calling the function <i>action</i>
+on every node at the end of those paths matched by the FSA. The function
+returns either when the FSA is exhausted or when <i>action</i> returns
+a non-<tt>nil</tt> value.
+<h3>
+<a NAME="collect-using-fsa-Function"></a>collect-using-fsa (<i>root fsa</i>)
+[Function]</h3>
+Walks the RDF graph, starting from the node <i>root</i>, using the FSA
+<i>fsa</i>,
+and collects all nodes (as a list) at the ends of those paths which are
+matched by the FSA.
+<h2>
+<a NAME="frames"></a>5. Frames</h2>
+Frames in Ivanhoe are represented by a <a href="rdf-data.html#node-Class">node</a>
+instance, hence all <a href="rdf-data.html#node-Class">node</a> methods
+apply. Four generic functions have been added to the API for slot access.
+Generally these methods differ from the abstract API by taking an explicit
+database parameter, whereas the abstract API relies on the default database
+bound to the variable <a href="rdf-data.html#*db*-Variable">*db*</a>. The
+following table shows the correspondence of the abstract frame API and
+the lower-level APIs:
+<center><table CELLPADDING=2 >
+<tr>
+<th>Abstract API</th>
+
+<th>Lower-level API</th>
+</tr>
+
+<tr>
+<td><tt><a href="#frame-Function">frame</a></tt></td>
+
+<td><tt><a href="rdf-data.html#node-Function">node</a></tt> (and uses <tt><a href="#add-value-Function">add-value</a></tt>)</td>
+</tr>
+
+<tr>
+<td><tt><a href="#own-slots-Function">own-slots</a></tt></td>
+
+<td>(uses <tt><a href="rdf-data.html#db-query-Generic-function">db-query</a></tt>)</td>
+</tr>
+
+<tr>
+<td><tt><a href="#value-Function">value</a></tt></td>
+
+<td><tt><a href="#get-value-Generic-function">get-value</a></tt></td>
+</tr>
+
+<tr>
+<td><tt><a href="#all-values-Function">all-values</a></tt></td>
+
+<td><tt><a href="#get-all-values-Generic-function">get-all-values</a></tt></td>
+</tr>
+
+<tr>
+<td><tt><a href="#get-all-values-Generic-function">add-value</a></tt></td>
+
+<td><tt><a href="rdf-data.html#db-add-triple-Generic-function">db-add-triple</a></tt></td>
+</tr>
+
+<tr>
+<td><tt><a href="#del-value-Function">del-value</a></tt></td>
+
+<td><tt><a href="rdf-data.html#db-del-triple-Generic-function">db-del-triple</a></tt></td>
+</tr>
+
+<tr>
+<td><tt><a href="#relatedp-Function">relatedp</a></tt></td>
+
+<td><tt><a href="#frames-related-p-Generic-function">frames-related-p</a></tt>
+(which uses <tt><a href="#walk-using-fsa-Function">walk-using-fsa</a></tt>)</td>
+</tr>
+</table></center>
+
+<h3>
+<a NAME="get-value-Generic-function"></a>get-value (<i>frame path db</i>)
+[Generic function]</h3>
+Accesses a single value (a node or other slot filler) reachable from the
+node <i>frame</i> via the path <i>path</i>. Note that methods exist for
+<tt>get-value</tt>
+where path can be a <a href="#path-Class">path</a> instance, a path grammar
+expression (a <tt>cons</tt>), or a simple slot (named by a node). The method
+specialized for "simple" slots (i.e., where the specializer for <i>path</i>
+is <tt><a href="rdf-data.html#node-Class">node</a></tt>) returns
+<blockquote class="CodeExample">(get-value-when-failed <i>frame path db</i>)</blockquote>
+if it otherwise were to return <tt>nil</tt>.
+<h3>
+<a NAME="get-all-values-Generic-function"></a>get-all-values (<i>frame
+path db</i>) [Generic function]</h3>
+Accesses all values (nodes or other slot fillers) reachable from the node
+<i>frame</i>
+via the path path. Note that methods exist for <tt>get-all-values</tt>
+where path can be a <a href="#path-Class">path</a> instance, a path grammar
+expression (a <tt>cons</tt>), a simple slot (named by a node), or one of
+the keywords (path grammar atoms) <tt><a href="#members-atom">:members</a></tt>
+or <tt><a href="#any-atom">:any</a></tt>. The method specialized for "simple"
+slots (i.e., where the specializer for <i>path</i> is <tt><a href="rdf-data.html#node-Class">node</a></tt>)
+returns
+<blockquote class="CodeExample">(list (get-value-when-failed <i>frame path
+db</i>))</blockquote>
+if it otherwise were to return <tt>nil</tt>.
+<h3>
+<a NAME="get-value-when-failed-Generic-function"></a>get-value-when-failed
+(<i>frame path db</i>) [Generic function]</h3>
+This function is called if <tt><a href="#get-value-Generic-function">get-value</a></tt>
+would return <tt>nil</tt>. The default method will also return <tt>nil</tt>,
+unless path is the node <tt>!rdf:type</tt>, in which case <tt>!rdfs:Resource</tt>
+is returned. Extensions of the frame system are free to introduce new methods
+for <tt>get-value-when-failed</tt>. The signature for the default method
+is <tt>(node node db)</tt>.
+<h3>
+<a NAME="frames-related-p-Generic-function"></a>frames-related-p (<i>source
+path sink db action</i>) [Generic function]</h3>
+Returns true if <i>sink</i> (a frame, i.e., a node) is reachable from <i>source</i>
+(also a frame) via <i>path</i>. If not <tt>nil</tt>, calls <i>action</i>
+on each frame encountered along the path.
+<p>
+<hr>
+<h2>
+<a NAME="examples"></a>Appendix B: Examples</h2>
+The list of all classes a frame (here denoted by x) is an instance of:
+<blockquote class="CodeExample">
+<pre>(all-values x
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; '(:seq !rdf:type
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (:rep* !rdfs:subClassOf)))</pre>
+</blockquote>
+All instances of a class (here denoted by c), including instances of all
+subclasses:
+<blockquote class="CodeExample">
+<pre>(all-values c
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; '(:inv (:seq !rdf:type
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (:rep* !rdfs:subClassOf))))</pre>
+</blockquote>
+Turning a DAML list (here denoted by x) into a Common Lisp list:
+<blockquote class="CodeExample">
+<pre>(all-values x
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; '(:seq (:rep* !daml:rest)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; !daml:first))</pre>
+</blockquote>
+Finding out whether a slot value (here denoted by x) satisfies the (disjunctive)
+range constraints of a property (here denoted by p):
+<blockquote class="CodeExample">
+<pre>(relatedp x
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; '(:seq !rdf:type
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; '(:rep* !rdfs:subClassOf)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (:inv !rdfs:range)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (:rep* (:inv !rdfs:subPropertyOf)))
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; p)</pre>
+</blockquote>
+The previous example but with the assumption that range constraints are
+conjunctive (non-optimized implementation):
+<blockquote class="CodeExample">
+<pre>(every #'(lambda (c)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (relatedp x
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; '(:seq !rdf:type
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (:rep* !rdfs:subClassOf))
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; c))
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (all-values p
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; '(:seq (:rep* !rdfs:subPropertyOf)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; !rdfs:range)))</pre>
+</blockquote>
+
+<h2>
+<a NAME="notes"></a>Appendix B: Notes</h2>
+<a NAME="ivanhoe-name-note"></a><b>Name note</b>: Why is this system called
+"Ivanhoe"? It started out as an acronym play: "<font color="#FF0000">Wil</font>bur
+<font color="#FF0000">Fr</font>am<font color="#FF0000">e</font>
+System for <font color="#FF0000">D</font>AML" or "WilFreD". Oh well...
+(but I do like good medieval stories).
+<p><a NAME="beef-reference-note"></a><b>BEEF note</b>: BEEF (or "BOSS's
+Extremely Elegant Frame system") is a frame system originally developed
+for the Helsinki University of Technology's "BOSS" distributed knowledge-based
+production scheduling system. BEEF is described in the following publications:
+<ul>
+<li>
+Ora Lassila: "BEEF Reference Manual - A Programmer's Guide to the BEEF
+Frame System", Second Version, Report HTKK-TKO-C46, Otaniemi (Finland),
+Department of Computer Science, Helsinki University of Technology, 1991</li>
+
+<li>
+Juha Hynynen and Ora Lassila: "On the Use of Object-Oriented Paradigm in
+a Distributed Problem Solver", AI Communications 2(3): 142-151 (1989)</li>
+</ul>
+
+<p><br>
+<hr>
+
+<p class="EndMatter">Copyright &copy; 2001 Nokia. All Rights Reserved.
+<br>Subject to the <a href="LICENSE-NOKOS.html">NOKOS License version 1.0</a>
+<br>Author: Ora Lassila (<a href="mailto:ora.lassila@nokia.com">ora.lassila@nokia.com</a>)
+</body>
+</html>

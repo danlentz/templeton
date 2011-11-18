@@ -1,0 +1,209 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="GENERATOR" content="Mozilla/4.75C-CCK-MCD {C-UDP; EBM-APPLE} (Macintosh; U; PPC) [Netscape]">
+   <title>Wilbur</title>
+<link rel="STYLESHEET" href="wilbur.css" type="text/css" />
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:dc = "http://purl.org/dc/elements/1.1/">
+<rdf:Description rdf:about=""
+       dc:title="Wilbur"
+       dc:creator="Ora Lassila"
+       dc:description="Cover and table-of-contents for the Wilbur documentation"
+       dc:date="2001-03-12"
+       dc:format="text/html"
+       dc:language="en"/>
+<dc:publisher rdf:resource="http://www.nokia.com/"/>
+<dc:rights rdf:resource="LICENSE-NOKOS.html"/>
+</rdf:RDF>
+</head>
+<body>
+
+<h1>
+Wilbur: Nokia's RDF Toolkit for CLOS</h1>
+Ora Lassila (<a href="mailto:ora.lassila@nokia.com">ora.lassila@nokia.com</a>)
+<br>Agent Technology Group, Nokia Research Center
+<p>$Id: index.html,v 1.5 2001/07/17 19:14:27 ora Exp $
+<p>
+<hr>
+<h2>
+Abstract</h2>
+Wilbur is a toolkit for writing RDF-enabled software. Wilbur is written
+in CLOS, and includes an RDF parser, a DAML parser, an XML parser, an API
+for managing "RDF data", and a simple HTTP client; it also includes a simple
+(and at this point experimental) frame system on top of RDF &amp; DAML.
+<h2>
+Status of This Document</h2>
+This document represents the first public (open source) release of the
+Wilbur toolkit. It should be considered "alpha" software. Bear with us
+if the documentation turns out to be slightly out of sync with the source...
+As always, any comments are welcome.
+<h2>
+Modules</h2>
+
+<ul>
+<li>
+<a href="rdf-data.html">RDF Data API</a></li>
+
+<ol>
+<li>
+<a href="rdf-data.html#top-level-api">Top-Level API</a></li>
+
+<li>
+<a href="rdf-data.html#uri-syntax">Abbreviated Syntax for URIs</a></li>
+
+<li>
+<a href="rdf-data.html#nodes">Nodes</a></li>
+
+<li>
+<a href="rdf-data.html#dictionaries">Dictionaries</a></li>
+
+<li>
+<a href="rdf-data.html#triples">Triples</a></li>
+
+<li>
+<a href="rdf-data.html#databases">Databases</a></li>
+</ol>
+
+<li>
+<a href="rdf-parser.html">RDF Parser</a></li>
+
+<ol>
+<li>
+<a href="rdf-parser.html#usage">Using the RDF Parser</a></li>
+
+<li>
+<a href="rdf-parser.html#parser-api">RDF Parser API</a></li>
+
+<li>
+<a href="rdf-parser.html#conditions">Condition Classes</a></li>
+
+<li>
+<a href="rdf-parser.html#constants">URI Constants</a></li>
+</ol>
+
+<li>
+<a href="daml-parser.html">DAML Parser</a></li>
+
+<ol>
+<li>
+<a href="daml-parser.html#parser">DAML Parser as an Extension of the RDF
+Parser</a></li>
+
+<li>
+<a href="daml-parser.html#functions">Constructing DAML Lists</a></li>
+
+<li>
+<a href="daml-parser.html#constants">URI Constants</a></li>
+</ol>
+
+<li>
+<a href="xml-parser.html">XML Parser</a></li>
+
+<ol>
+<li>
+<a href="xml-parser.html#usage">Using the XML Parser</a></li>
+
+<li>
+<a href="xml-parser.html#parser-api">XML Parser API</a></li>
+
+<li>
+<a href="xml-parser.html#sax">Producer/Consumer API ("SAX-like")</a></li>
+
+<li>
+<a href="xml-parser.html#tokens">Token Classes</a></li>
+
+<li>
+<a href="xml-parser.html#conditions">Condition Classes</a></li>
+
+<li>
+<a href="xml-parser.html#auxiliary">Auxiliary Parser Functionality</a></li>
+
+<li>
+<a href="xml-parser.html#string-dict">Simple String Dictionaries</a></li>
+</ol>
+
+<li>
+<a href="http-client.html">HTTP Client</a></li>
+
+<ol>
+<li>
+<a href="http-client.html#urls">URL API</a></li>
+
+<li>
+<a href="http-client.html#streams">HTTP Stream API</a></li>
+
+<li>
+<a href="http-client.html#dates">Date Input and Output</a></li>
+</ol>
+
+<li>
+<a href="ivanhoe.html">Ivanhoe: an RDF-based Frame System</a></li>
+</ul>
+
+<h2>
+Notes on Installation and Usage</h2>
+The system relies on the logical pathname host <tt>"wilbur"</tt> to be
+defined. Here's an example of how the pathname translations could be set
+up:
+<blockquote class="CodeExample">(("core;*.lisp"&nbsp; "wilbur:base;source;*.*")
+<br>&nbsp;("core;*.pfsl"&nbsp; "wilbur:base;binaries;*.*")
+<br>&nbsp;("core;*.*"&nbsp;&nbsp;&nbsp;&nbsp; "wilbur:base;source;*.*")
+<br>&nbsp;("schemata;*.*" "wilbur:base;schemata;*.*")
+<br>&nbsp;("base;**;*.*"&nbsp; "Pumpkin:work:experiments:Wilbur:**:*.*"))</blockquote>
+This definition is for MCL on a Macintosh, but one gets the general idea.
+<p>The system definition file assumes the CMU Defsystem tool (by Mark Kantrowitz),
+but it can be relatively easily translated to work with other Defsystem
+tools as well. If you have the CMU Defsystem, you can build the system
+as follows:
+<blockquote class="CodeExample">(load-logical-pathname-translations "wilbur")
+<br>(load "wilbur:core;wilbur.system")
+<br>(make:compile-system :wilbur)</blockquote>
+The toolkit uses three packages: the <tt>"NOX"</tt> package contains the
+XML parser and related functionality, and the <tt>"WILBUR"</tt> package
+contains all other modules (except that some "helper" functionality is
+in the
+<tt>"WILBUR-UTILITIES"</tt> package). <tt>"WILBUR"</tt> uses <tt>"NOX"</tt>
+by explicitly making references to <tt>"NOX"</tt> symbols (except for the
+<a href="rdf-parser.html#constants">URI
+constants</a> which are imported, then re-exported from the <tt>"WILBUR"</tt>
+package). The <tt>"WILBUR"</tt> package can be used either by importing
+(via <tt>use-package</tt>) or by making explicit references to the exported
+symbols.
+<p>Before loading the system, users of Macintosh Common Lisp will have
+to load the ANSI CL -compatible <tt>make-load-form</tt> implementation
+(this is for portability reasons):
+<blockquote class="CodeExample">(load "ccl:library;load-form")</blockquote>
+
+<h2>
+Credits, Attributions, and Acknowledgements</h2>
+The Wilbur development work at Nokia Research Center was supported in part
+by Nokia Mobile Phones (NMP) and Nokia Ventures Organization (NVO), as
+well as Nokia Venture Partners, LP.
+<p>The <a href="mailto:ora.lassila@nokia.com">author</a> wishes to express
+his gratitude to the following individuals for advice, comments, criticism,
+etc.: Dan Brickley (University of Bristol), Stefan Decker (Stanford/DB),
+Jessica Jenkins (Stanford/KSL), Deborah McGuinness (Stanford/KSL), Sergey
+Melnik (Stanford/DB), Eric Miller (OCLC and now W3C), Ralph Swick (W3C),
+Dietmar Tallroth (Nokia Research Center) and Louis Theran (Nokia Research
+Center and now UMass/Amherst).
+<p>The class diagrams in this documentation were automatically generated
+using PowerGrapher, a CLOS-based toolkit for drawing trees and other graphs
+(see the publication "PowerGrapher Reference Manual - A Programmer's Guide
+to the PowerGrapher Tree Visualization Toolkit" by Ora Lassila, Report
+HTKK-TKO-C56, Department of Computer Science, Helsinki University of Technology,
+1992).
+<p><a href="http://www.digitool.com/"><img SRC="images/mcl-made-1.gif"
+ALT="Made with MCL" BORDER=0 align=RIGHT></a>
+The Wilbur toolkit was developed entirely using <a href="http://www.digitool.com/">Digitool's
+Macintosh Common Lisp</a> version 4.3 (which I consider to be a fantastic
+software development environment).
+<p>
+<hr>
+
+<p class="EndMatter">Copyright &copy; 2001 Nokia. All Rights Reserved.
+<br>Subject to the <a href="LICENSE-NOKOS.html">NOKOS License version 1.0</a>
+<br>Author: Ora Lassila (<a href="mailto:ora.lassila@nokia.com">ora.lassila@nokia.com</a>)
+</body>
+</html>

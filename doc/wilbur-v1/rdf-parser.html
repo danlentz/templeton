@@ -1,0 +1,497 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="GENERATOR" content="Mozilla/4.75 (Macintosh; U; PPC) [Netscape]">
+   <title>Wilbur -- RDF Parser</title>
+<link rel="STYLESHEET" href="wilbur.css" type="text/css" />
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+            xmlns:dc = "http://purl.org/dc/elements/1.1/">
+<rdf:Description rdf:about=""
+       dc:title="Wilbur: RDF Parser"
+       dc:creator="Ora Lassila"
+       dc:description="Documentation of the Wilbur RDF Parser"
+       dc:date="2001-03-12"
+       dc:format="text/html"
+       dc:language="en"/>
+<dc:publisher rdf:resource="http://www.nokia.com/"/>
+<dc:relation rdf:resource="index.html"/>
+<dc:relation rdf:resource="http://www.w3.org/TR/REC-rdf-syntax"/>
+<dc:relation rdf:resource="http://www.w3.org/TR/rdf-schema"/>
+<dc:rights rdf:resource="LICENSE-NOKOS.html"/>
+</rdf:RDF>
+</head>
+<body>
+
+<h1>
+Wilbur: RDF Parser</h1>
+
+<ol>
+<li>
+<a href="#usage">Using the RDF Parser</a></li>
+
+<li>
+<a href="#parser-api">RDF Parser API</a></li>
+
+<li>
+<a href="#conditions">Condition Classes</a></li>
+
+<li>
+<a href="#constants">URI Constants</a></li>
+</ol>
+
+<h2>
+<a NAME="usage"></a>1. Using the RDF Parser</h2>
+Invoking the RDF parser is done using either the function <tt><a href="#parse-db-from-file-Function">parse-db-from-file</a></tt>
+or the function <tt><a href="#parse-db-from-stream-Function">parse-db-from-stream</a></tt>.
+Underneath, the parser itself is implemented by an instance of the class
+<tt><a href="#rdf-parser-Class">rdf-parser</a></tt>;
+an API is provided that allows the extension of this class, in case one
+wants to add syntactic features or other functionality (the Wilbur <a href="daml-parser.html">DAML
+parser</a> is implemented as a subclass of the RDF parser). During parsing,
+the parser may signal various <a href="#conditions">conditions</a> to indicate
+that something unexpected has happened (such as some syntax error, for
+example). All RDF-related errors are continuable, and can be caught and
+silently ignored if desirable; <a href="xml-parser.html#conditions">XML-related
+errors</a> typically are not continuable.
+<h3>
+<a NAME="parse-db-from-file-Function"></a>parse-db-from-file (<i>file</i>
+&amp;rest <i>options</i> &amp;key <i>parser-class error-handling</i>) [Function]</h3>
+This function will read the specified file (the parameter <i>file</i> should
+be a string or a pathname, generally anything acceptable to the Common
+Lisp function <tt>open</tt>) and parse its contents. The parser is created
+from the class passed in the parameter <i>parser-class</i> (it defaults
+to <tt><a href="#rdf-parser-Class">rdf-parser</a></tt>). The function returns
+three values: the parser's triple database, the node denoting the source
+of the generated triples, and a list of error instances (in case the parameter
+<i>error-handling</i>
+had the value <tt>:collect</tt>; it defaults to <tt>:signal</tt>, indicating
+that errors should be signaled and the system should break execution).
+Other keyword parameters (parameter
+<i>options</i>) are passed to <tt>make-instance</tt>
+when the parser is instantiated. This function is implemented using <tt><a href="#parse-db-from-stream-Function">parse-db-from-stream</a></tt>.
+<p>Normally, instantiating an RDF Parser (instance of class <tt><a href="#rdf-parser-Class">rdf-parser</a></tt>)
+will create a new triple database (instance of class <tt>db</tt>). However,
+passing the <tt>:db</tt> option with an existing database to <tt>parse-db-from-file</tt>
+will prevent the creation of a new database.
+<h3>
+<a NAME="parse-db-from-stream-Function"></a>parse-db-from-stream (<i>stream
+locator</i> &amp;rest <i>options</i> &amp;key
+<i>parser-class error-handling</i>)
+[Function]</h3>
+This function is similar to <tt><a href="#parse-db-from-file-Function">parse-db-from-file</a>,</tt>
+except that it takes an open input stream and a document <i>locator</i>
+(a URI string) instead of a file pathname.
+<h2>
+<a NAME="parser-api"></a>2. RDF Parser API</h2>
+The following generic functions form the core API of RDF parsers (base
+class <tt><a href="#rdf-parser-Class">rdf-parser</a></tt>, described below).
+<h3>
+<a NAME="parser-db-Generic-function"></a>parser-db (<i>rdf-parser</i>)
+[Generic function]</h3>
+This function accesses the <a href="rdf-data.html#databases">triple database</a>
+of an RDF parser.
+<h3>
+<a NAME="make-container-Generic-function"></a>make-container (<i>parser
+elements</i> &amp;optional <i>container-uri container-type-uri</i>) [Generic
+function]</h3>
+This function creates an RDF container from the nodes or other objects
+passed as the list <i>elements</i>. The optional parameter <i>container-uri</i>
+will be the name of the container node, and <i>container-type-uri</i> (a
+string) will name the node that will be the value of the <tt>rdf:type</tt>
+property of the container node (the parameter defaults to <tt><a href="#constants">-rdf-bag-uri-</a></tt>).
+The container node is returned.
+<h3>
+<a NAME="attach-to-parent-Generic-function"></a>attach-to-parent (<i>parser
+parent child</i>) [Generic function]</h3>
+This function will create a triple which "attaches" a parent node to a
+child node. It is up to the parser to determine which predicate is used
+(typically this is evident from the parser's dynamic state). The default
+method will merely create one triple and use the most recently parsed property
+as the predicate.
+<h3>
+<a NAME="parse-using-parsetype-Generic-function"></a>parse-using-parsetype
+(<i>parser node property parsetype</i>) [Generic function]</h3>
+This function will handle the parsing of the different parse types (indicated
+using different values to the attribute <tt>rdf:parseType</tt>). The idea
+of this function is that by overriding it one can introduce more parsetypes.
+The parameter <i>node</i> is the current description, the parameter <i>property</i>
+is the element where the <tt>rdf:parseType</tt> attribute was encountered,
+and <i>parsetype</i> is the value of that attribute (a string).
+<h3>
+<a NAME="defer-task-Generic-function"></a>defer-task (<i>parser type node</i>
+&amp;rest <i>args</i>) [Generic function]</h3>
+Creates a deferred task (an instance of the structure class <tt><a href="#task-Class">task</a></tt>),
+to be "execute" later (when the enclosing XML element is closed, during
+the execution of the <tt><a href="xml-parser.html#end-element-Generic-function">nox:end-element</a></tt>
+method). Tasks are executed by methods of <tt><a href="#execute-deferred-task-Generic-function">execute-deferred-task</a></tt>.
+See the description of the structure class for a definition of the <i>type</i>,
+<i>node</i>
+and <i>args</i> parameters. Note that a task is only added to the deferred
+tasks if it is distinct from the tasks already in the queue (tasks are
+considered not to be distinct if their <i>type</i> components are <tt>eq</tt>
+and their <i>node</i> components are <tt>eq</tt>).
+<h3>
+<a NAME="execute-deferred-task-Generic-function"></a>execute-deferred-task
+(<i>parser task type</i>) [Generic function]</h3>
+Executes a deferred task (an instance of the structure class <tt><a href="#task-Class">task</a></tt>
+created by calling <tt><a href="#defer-task-Generic-function">defer-task</a></tt>).
+The <i>type</i> parameter gets passed the value of <tt>(<a href="#task-type-Function">task-type</a></tt><i>task</i><tt>)</tt>,
+methods can thus be <tt>eql</tt>-specialized for various task types. The
+default method executes tasks of type <tt>:container</tt> (for checking
+that a node is an RDF container), <tt>:abouteach</tt> (for "exploding"
+an <tt>"rdf:aboutEach"</tt> reference), and <tt>:bagid</tt> (for reifying
+statements following an <tt>"rdf:bagID"</tt> declaration). Subclasses of
+<tt><a href="#rdf-parser-Class">rdf-parser</a></tt>
+can add new task types.
+<h3>
+<a NAME="rdf-parser-Class"></a>rdf-parser [Class]<br>
+<i>:db</i> [Initarg]</h3>
+This is the base class of RDF parsers, and a subclass of <tt><a href="xml-parser.html#sax-consumer-Class">nox:sax-consumer</a></tt>.
+The initarg <i>db</i> can be used to initialize a parser with an existing
+<a href="rdf-data.html#databases">triple
+database</a>; otherwise the parser will create an empty database.
+<h3>
+<a NAME="close-rdf-element-Condition-class"></a>close-rdf-element [Condition
+class]</h3>
+The parser will signal this condition when encountering a closing <tt>rdf:RDF</tt>
+tag. By handling this condition and not continuing, one can stop the parser
+after the first <tt>&lt;rdf:RDF>...&lt;/rdf:RDF></tt> element has been
+parsed (this is useful, for example, when scanning metadata from XHTML
+files, otherwise the parser will keep reading until the end of the file
+is reached).
+<h3>
+<a NAME="task-Class"></a>task [Structure class]</h3>
+Instances of this structure class represent deferred tasks inside the parser.
+Tasks have a <i>type</i> (typically some keyword symbol), an associated
+<i>node</i>
+(thought of as being the target of the task when executed) and <i>parameters</i>
+(these are task-dependent, and are identified using keyword symbols). Instances
+of <tt>task</tt> are created by calling <tt><a href="#defer-task-Generic-function">defer-task</a></tt>.
+<h3>
+<a NAME="task-type-Function"></a>task-type (<i>task</i>) [Structure accessor]</h3>
+Accesses the <i>type</i> component of a task.
+<h3>
+<a NAME="task-node-Function"></a>task-node (<i>task</i>) [Structure accessor]</h3>
+Accesses the <i>node</i> component of a task.
+<h3>
+<a NAME="task-parameters-Function"></a>task-parameter (<i>task parameter</i>)
+[Macro]</h3>
+Accesses a parameter of a task, with <i>parameter</i> as the name of the
+parameter, typically a keyword symbol. Although this is a macro it is intended
+to be used just like an access function.
+<h3>
+<a NAME="parser-node-Function"></a>parser-node (<i>parser</i>) [Function]</h3>
+Accesses the current node of the parser (i.e., the target node of the current
+state of the parser).
+<h3>
+<a NAME="parser-property-Function"></a>parser-property (<i>parser</i>)
+[Function]</h3>
+Accesses the current property of the parser (i.e., the target property
+of the current state of the parser). For example, this function is useful
+in any implementation of <tt><a href="#attach-to-parent-Generic-function">attach-to-parent</a></tt>.
+<h3>
+<a NAME="rdf-syntax-normalizer-Class"></a>rdf-syntax-normalizer [Class]</h3>
+This class, a subclass of <tt><a href="xml-parser.html#sax-consumer-Class">nox:sax-consumer</a></tt>
+and <tt><a href="xml-parser.html#sax-producer-Class">nox:sax-producer</a></tt>,
+will normalize RDF syntax by "opening" the abbreviated syntax to full syntax.
+<h2>
+<a NAME="conditions"></a>3. Condition Classes</h2>
+The class hierarchy of RDF condition classes is shown in <a href="xml-parser.html#conditions">a
+figure in the XML Parser manual</a>.
+<h3>
+<a NAME="rdf-error-Condition-class"></a>rdf-error [Condition class]</h3>
+Subclass of <tt><a href="xml-parser.html#xml-error-Class">nox:xml-error</a></tt>,
+abstract base class of all RDF-related errors. All concrete subclasses
+of this class are used to signal continuable errors (using <tt>cerror</tt>).
+<h3>
+<a NAME="feature-not-supported-Condition-class"></a>feature-not-supported
+[Condition class]</h3>
+Subclass of <tt><a href="#rdf-error-Condition-class">rdf-error</a></tt>.
+Signals a condition where an unsupported feature is encountered during
+parsing. The function <tt><a href="xml-parser.html#error-thing-Generic-function">nox:error-thing</a></tt>
+accesses the missing feature. Note that this is not the same class as <tt><a href="xml-parser.html#feature-not-supported-Class">nox:feature-not-supported</a></tt>.
+<h3>
+<a NAME="about-and-id-both-present-Condition-class"></a>about-and-id-both-present
+[Condition class]</h3>
+Subclass of <tt><a href="#rdf-error-Condition-class">rdf-error</a></tt>.
+Signals a condition where a description element is encountered which has
+both the <tt>rdf:ID</tt> and <tt>rdf:about</tt> attributes. Continuing
+from this error causes the value of <tt>rdf:about</tt> to be used.
+<h3>
+<a NAME="unknown-parsetype-Condition-class"></a>unknown-parsetype [Condition
+class]</h3>
+Subclass of <tt><a href="#rdf-error-Condition-class">rdf-error</a></tt>.
+Signals a condition where an unknown value of the <tt>rdf:parsetype</tt>
+attribute is encountered. Continuing means ignoring the existence of any
+parsetype declaration. The function <tt><a href="xml-parser.html#error-thing-Generic-function">nox:error-thing</a></tt>
+accesses the unknown parsetype.
+<h3>
+<a NAME="illegal-character-content-Condition-class"></a>illegal-character-content
+[Condition class]</h3>
+Subclass of <tt><a href="#rdf-error-Condition-class">rdf-error</a></tt>.
+Signals a condition where XML character content is encountered where according
+to RDF syntax rules there shouldn't be any (such as in the presence of
+<tt>rdf:resource</tt>
+attribute). The function <tt><a href="xml-parser.html#error-thing-Generic-function">nox:error-thing</a></tt>
+accesses the illegal content string.
+<h3>
+<a NAME="container-required-Condition-class"></a>container-required [Condition
+class]</h3>
+Subclass of <tt><a href="#rdf-error-Condition-class">rdf-error</a></tt>.
+Signaled by the function <tt><a href="rdf-data.html#is-container-p-Generic-function">is-container-p</a></tt>;
+continuing causes this function to return false. The function <tt><a href="xml-parser.html#error-thing-Generic-function">nox:error-thing</a></tt>
+accesses the tested node.
+<h3>
+<a NAME="out-of-sequence-index-Condition-class"></a>out-of-sequence-index
+[Condition class]</h3>
+Subclass of <tt><a href="#rdf-error-Condition-class">rdf-error</a></tt>.
+Signals a condition where an attempt was made to create index URIs out
+of sequence (using function <tt><a href="rdf-data.html#index-uri-Function">index-uri</a></tt>).
+Continuing causes <tt><a href="rdf-data.html#index-uri-Function">index-uri</a></tt>
+to return <tt>nil</tt>.
+<h3>
+<a NAME="duplicate-namespace-prefix-Condition-class"></a>duplicate-namespace-prefix
+[Condition class]</h3>
+Subclass of <tt><a href="#rdf-error-Condition-class">rdf-error</a></tt>.
+Signals a condition where an attempt was made to rename a namespace prefix
+to one that already exists (using the function <tt><a href="rdf-data.html#dictionary-rename-namespace-Generic-function">dictionary-rename-namespace</a></tt>).
+Continuing causes rename attempt to be ignored. The function <tt><a href="xml-parser.html#error-thing-Generic-function">nox:error-thing</a></tt>
+accesses the new prefix.
+<h3>
+<a NAME="cannot-merge-Condition-class"></a>cannot-merge [Condition class]</h3>
+Subclass of <tt><a href="#rdf-error-Condition-class">rdf-error</a></tt>.
+Signals a condition where an attempt was made to merge two databases but
+the function <tt><a href="file:///Pumpkin/work/Wilbur/wilbur/docs/rdf-data.html#db-allow-merge-p-Generic-function">db-allow-merge-p</a></tt>
+returned false. The function <tt><a href="xml-parser.html#error-thing-Generic-function">nox:error-thing</a></tt>
+accesses a string which gives the reason of the failure.
+<h2>
+<a NAME="constants"></a>4. URI Constants</h2>
+The system defines a set of constants for all useful RDF URIs (strings).
+In the following table, the prefix <tt>rdf</tt> is assumed to denote the
+value of <tt>-rdf-uri-</tt> and the prefix <tt>rdfs</tt> to denote the
+value of <tt>-rdfs-uri-</tt>. Note that the URI constants are defined by
+the XML parser, exported (from the package <tt>"NOX"</tt>), imported into
+the package <tt>"WILBUR"</tt> and then re-exported.
+<br>&nbsp;
+<center><table CELLPADDING=2 >
+<tr>
+<th>Constant</th>
+
+<th>Value</th>
+</tr>
+
+<tr>
+<td><tt>-rdf-uri-</tt></td>
+
+<td><tt>"http://www.w3.org/1999/02/22-rdf-syntax-ns#"</tt> (in the current
+implementation)</td>
+</tr>
+
+<tr>
+<td><tt>-rdfs-uri-</tt></td>
+
+<td><tt>"http://www.w3.org/2000/01/rdf-schema#"</tt> (in the current implementation)</td>
+</tr>
+
+<tr>
+<td><tt>-rdf-id-uri-</tt></td>
+
+<td><tt>rdf:ID</tt></td>
+</tr>
+
+<tr>
+<td><tt>-rdf-resource-uri-</tt></td>
+
+<td><tt>rdf:resource</tt></td>
+</tr>
+
+<tr>
+<td><tt>-rdf-about-uri-</tt></td>
+
+<td><tt>rdf:about</tt></td>
+</tr>
+
+<tr>
+<td><tt>-rdf-abouteach-uri-</tt></td>
+
+<td><tt>rdf:aboutEach</tt></td>
+</tr>
+
+<tr>
+<td><tt>-rdf-abouteachprefix-uri-</tt></td>
+
+<td><tt>rdf:aboutEachPrefix</tt></td>
+</tr>
+
+<tr>
+<td><tt>-rdf-bagid-uri-</tt></td>
+
+<td><tt>rdf:bagID</tt></td>
+</tr>
+
+<tr>
+<td><tt>-rdf-parsetype-uri-</tt></td>
+
+<td><tt>rdf:parseType</tt></td>
+</tr>
+
+<tr>
+<td><tt>-rdf-description-uri-</tt></td>
+
+<td><tt>rdf:Description</tt></td>
+</tr>
+
+<tr>
+<td><tt>-rdf-type-uri-</tt></td>
+
+<td><tt>rdf:type</tt></td>
+</tr>
+
+<tr>
+<td><tt>-rdf-rdf-uri-</tt></td>
+
+<td><tt>rdf:RDF</tt></td>
+</tr>
+
+<tr>
+<td><tt>-rdf-li-uri-</tt></td>
+
+<td><tt>rdf:li</tt></td>
+</tr>
+
+<tr>
+<td><tt>-rdf-statement-uri-</tt></td>
+
+<td><tt>rdf:Statement</tt></td>
+</tr>
+
+<tr>
+<td><tt>-rdf-subject-uri-</tt></td>
+
+<td><tt>rdf:subject</tt></td>
+</tr>
+
+<tr>
+<td><tt>-rdf-predicate-uri-</tt></td>
+
+<td><tt>rdf:predicate</tt></td>
+</tr>
+
+<tr>
+<td><tt>-rdf-object-uri-</tt></td>
+
+<td><tt>rdf:object</tt></td>
+</tr>
+
+<tr>
+<td><tt>-rdf-bag-uri-</tt></td>
+
+<td><tt>rdf:Bag</tt></td>
+</tr>
+
+<tr>
+<td><tt>-rdf-seq-uri-</tt></td>
+
+<td><tt>rdf:Seq</tt></td>
+</tr>
+
+<tr>
+<td><tt>-rdf-alt-uri-</tt></td>
+
+<td><tt>rdf:Alt</tt></td>
+</tr>
+
+<tr>
+<td><tt>-rdfs-resource-uri-</tt></td>
+
+<td><tt>rdfs:Resource</tt></td>
+</tr>
+
+<tr>
+<td><tt>-rdfs-class-uri-</tt></td>
+
+<td><tt>rdfs:Class</tt></td>
+</tr>
+
+<tr>
+<td><tt>-rdfs-subclassof-uri-</tt></td>
+
+<td><tt>rdfs:subClassOf</tt></td>
+</tr>
+
+<tr>
+<td><tt>-rdfs-subpropertyof-uri-</tt></td>
+
+<td><tt>rdfs:subPropertyOf</tt></td>
+</tr>
+
+<tr>
+<td><tt>-rdfs-seealso-uri-</tt></td>
+
+<td><tt>rdfs:seeAlso</tt></td>
+</tr>
+
+<tr>
+<td><tt>-rdfs-isdefinedby-uri-</tt></td>
+
+<td><tt>rdfs:isDefinedBy</tt></td>
+</tr>
+
+<tr>
+<td><tt>-rdfs-constraintresource-uri-</tt></td>
+
+<td><tt>rdfs:ConstraintResource</tt></td>
+</tr>
+
+<tr>
+<td><tt>-rdfs-constraintproperty-uri-</tt></td>
+
+<td><tt>rdfs:ConstraintProperty</tt></td>
+</tr>
+
+<tr>
+<td><tt>-rdfs-range-uri-</tt></td>
+
+<td><tt>rdfs:range</tt></td>
+</tr>
+
+<tr>
+<td><tt>-rdfs-domain-uri-</tt></td>
+
+<td><tt>rdfs:domain</tt></td>
+</tr>
+
+<tr>
+<td><tt>-rdfs-comment-uri-</tt></td>
+
+<td><tt>rdfs:comment</tt></td>
+</tr>
+
+<tr>
+<td><tt>-rdfs-label-uri-</tt></td>
+
+<td><tt>rdfs:labl</tt></td>
+</tr>
+
+<tr>
+<td><tt>-rdfs-literal-uri-</tt></td>
+
+<td><tt>rdfs:Literal</tt></td>
+</tr>
+
+<tr>
+<td><tt>-rdfs-container-uri-</tt></td>
+
+<td><tt>rdfs:Container</tt></td>
+</tr>
+</table></center>
+
+<p>
+<hr>
+
+<p class="EndMatter">Copyright &copy; 2001 Nokia. All Rights Reserved.
+<br>Subject to the <a href="LICENSE-NOKOS.html">NOKOS License version 1.0</a>
+<br>Author: Ora Lassila (<a href="mailto:ora.lassila@nokia.com">ora.lassila@nokia.com</a>)
+</body>
+</html>

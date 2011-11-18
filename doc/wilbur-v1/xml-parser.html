@@ -1,0 +1,654 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="GENERATOR" content="Mozilla/4.75 (Macintosh; U; PPC) [Netscape]">
+   <title>Wilbur -- XML Parser</title>
+<link rel="STYLESHEET" href="wilbur.css" type="text/css" />
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+            xmlns:dc = "http://purl.org/dc/elements/1.1/">
+<rdf:Description rdf:about=""
+       dc:title="Wilbur: XML Parser"
+       dc:creator="Ora Lassila"
+       dc:description="Documentation of the Wilbur XML Parser"
+       dc:date="2001-03-12"
+       dc:format="text/html"
+       dc:language="en"/>
+<dc:publisher rdf:resource="http://www.nokia.com/"/>
+<dc:relation rdf:resource="index.html"/>
+<dc:rights rdf:resource="LICENSE-NOKOS.html"/>
+</rdf:RDF>
+</head>
+<body>
+
+<h1>
+Wilbur: XML Parser</h1>
+
+<ol>
+<li>
+<a href="#usage">Using the XML Parser</a></li>
+
+<li>
+<a href="#parser-api">XML Parser API</a></li>
+
+<li>
+<a href="#sax">Producer/Consumer API ("SAX-like")</a></li>
+
+<li>
+<a href="#tokens">Token Classes</a></li>
+
+<li>
+<a href="#conditions">Condition Classes</a></li>
+
+<li>
+<a href="#auxiliary">Auxiliary Parser Functionality</a></li>
+
+<li>
+<a href="#string-dict">Simple String Dictionaries</a></li>
+</ol>
+
+<h2>
+<a NAME="usage"></a>1. Using the XML Parser</h2>
+Invoking the XML parser is done using either the function <tt><a href="#parse-from-file-Function">parse-from-file</a></tt>
+or the function <tt><a href="#parse-from-stream-Function">parse-from-stream</a></tt>.
+Underneath, the parser itself is implemented by an instance of the class
+<tt><a href="#xml-parser-Class">xml-parser</a></tt>.
+The parser uses a "SAX-like" <a href="#sax">consumer/producer API</a>.
+During parsing, the parser may signal various <a href="#conditions">conditions</a>
+to indicate that something unexpected has happened (such as some syntax
+error, for example). These errors can be caught, but are typically not
+continuable. Certain warnings are signaled using the class <tt><a href="#xml-warning-Class">xml-warning</a></tt>.
+<h3>
+<a NAME="parse-from-file-Function"></a>parse-from-file (<i>file parser-class</i>
+&amp;rest <i>options</i>) [Function]</h3>
+This function will read a file and parse its contents. Parsing is done
+using a parser instantiated from the class <i>parser-class</i>, with <i>options</i>
+passed to <tt>make-instance</tt>. Parsing is done by calling <tt><a href="#parse-from-stream-Function">parse-from-stream</a></tt>
+for the open file stream. The parameter <i>file</i> will have to be anything
+accepted by the Common Lisp function <tt>open</tt>.
+<h3>
+<a NAME="parse-from-stream-Function"></a>parse-from-stream (<i>stream locator
+parser-class</i> &amp;rest <i>options</i>) [Function]</h3>
+This function will read a document from an open stream and parse its contents,
+using a parser created by passing <i>parser-class</i> and <i>options</i>
+to <tt>make-instance</tt>. The parameter <i>locator</i> is the URL of the
+source of the stream (if applicable, or <tt>nil</tt> otherwise).
+<h2>
+<a NAME="parser-api"></a>2. XML Parser API</h2>
+
+<h3>
+<a NAME="xml-parser-Class"></a>xml-parser [Class]<br>
+<i>:expand-namespaces-p</i> [Initarg]</h3>
+This is the base class of XML parsers. The initarg <i>expand-namespaces-p</i>,
+when true (the default), will cause all namespaces references to be expanded
+(by concatenating the namespace URI with the name in question); if false,
+names are left unexpanded. This class is a subclass of <tt>sax-producer</tt>.
+<h3>
+<a NAME="get-entity-Generic-function"></a>get-entity (<i>parser name</i>)
+[Generic function]</h3>
+This function will return the definition of an entity named <i>name</i>,
+or <tt>nil</tt> if the entity has not been defined. It is called by the
+parser when it encounters entity references.
+<h3>
+<a NAME="setf-get-entity-Generic-function"></a>(setf get-entity) (<i>definition
+parser name</i>) [Generic function]</h3>
+This function will assign the string <i>definition</i> as the definition
+of the entity named <i>name</i>. It is called by the parser when it encounter
+entity deifnitions.
+<h3>
+<a NAME="get-canonical-uri-Generic-function"></a>get-canonical-uri (<i>parser
+uri</i>) [Generic function]</h3>
+This function will return the "canonical" form or the URI <i>uri</i>. It
+can be used to map old or alternate namespace URIs (for example) to new
+or canonical ones.
+<h3>
+<a NAME="setf-get-canonical-uri-Generic-function"></a>(setf get-canonical-uri)
+(<i>canonical-uri parser uri</i>) [Generic function]</h3>
+This function will assign <i>canonical-uri</i> (a string) as the "canonical"
+version of the URI <i>uri</i> (a string). See the definition of the function
+<tt>get-canonical-uri</tt>
+for a discussion of "canonical" URIs.
+<h3>
+<a NAME="parse-Generic-function"></a>parse (<i>parser stream locator</i>)
+[Generic function]</h3>
+This function will initiate the parsing process, reading from the open
+input stream <i>stream</i>. The parameter <i>locator</i> is the URL of
+the source of the stream.
+<h3>
+<a NAME="expand-name-with-namespace-Function"></a>expand-name-with-namespace
+(<i>string namespaces</i>) [Function]</h3>
+This function will expand string (of the format <i>prefix:name</i>) into
+a full URI, using the a-list <i>namespaces</i> of prefix-to-URI mappings.
+<h3>
+<a NAME="reverse-expand-name-Function"></a>reverse-expand-name (<i>string
+namespaces</i>) [Function]</h3>
+This functions will perform the opposite of <tt>expand-name-with-namespace</tt>,
+taking the URI <i>string</i> and returning it into the <i>prefix:name</i>
+format.
+<h3>
+<a NAME="xml-formatter-Class"></a>xml-formatter [Class]<br>
+<i>:stream</i> [Initarg]</h3>
+This class, a subclass of <tt>sax-consumer</tt>, will take a stream of
+consumer/producer events and create a textual representation of the XML
+document represented by the events. The XML text is written into the output
+stream initialized using the initarg <i>stream</i>.
+<h3>
+<a NAME="replay-Generic-function"></a>replay (<i>formatter events</i>)
+[Generic function]</h3>
+This function will take a list of events (<tt>token</tt> subclasses) and
+use an <tt>xml-formatter</tt> instance formatter to create a textual representation
+of the XML document represented by the events.
+<h2>
+<a NAME="sax"></a>3. Producer/Consumer API ("SAX-like")</h2>
+The Producer/Consumer API is a bit like the SAX API for Java. The general
+idea is that an XML parser, as the "producer", generates "events" during
+parsing which are communicated to a "consumer" of these events. The events
+form a stream, and this stream can pass through "filters" (objects which
+are both consumers and producers). In the implementation, the events are
+communicated using function (method) calls, passing "tokens" to the consumer(s).
+The token classes are described in <a href="#tokens">a later section</a>
+of this document. The figure below shows entire class hierarchy of the
+consumer and producer classes.
+<center>
+<p><img SRC="images/sax.jpg" ALT="consumer/producer class hierarchy" BORDER=0 height=112 width=392></center>
+
+<h3>
+<a NAME="sax-producer-Class"></a>sax-producer [Class]<br>
+<i>:consumer</i> [Initarg]</h3>
+Base class for event producers. The initarg <i>consumer</i> initializes
+the consumer of the producer.
+<h3>
+<a NAME="sax-producer-consumer-Generic-function"></a>sax-producer-consumer
+(<i>producer</i>) [Generic function]</h3>
+Accesses the consumer of the producer.
+<h3>
+<a NAME="setf-sax-producer-consumer-Generic-function"></a>(setf sax-producer-consumer)
+(<i>consumer producer</i>) [Generic function]</h3>
+Assigns the <i>consumer</i> of the <i>producer</i>. The method implementation
+of this generic function will also set the "inverse" relation, i.e., assign
+the producer of the consumer.
+<h3>
+<a NAME="sax-consumer-Class"></a>sax-consumer [Class]<br>
+<i>:producer</i> [Initarg]</h3>
+Base class for event consumers. The initarg <i>producer</i> initializes
+the producer of the consumer.
+<h3>
+<a NAME="sax-consumer-producer-Generic-function"></a>sax-consumer-producer
+(<i>consumer</i>) [Generic function]</h3>
+Accesses the producer of the <i>consumer</i>.
+<h3>
+<a NAME="start-document-Generic-function"></a>start-document (<i>consumer
+locator</i>) [Generic function]</h3>
+This event is generated when the parsing of a document begins. The parameter
+<i>locator</i>
+is the URL of the document.
+<h3>
+<a NAME="end-document-Generic-function"></a>end-document (<i>consumer mode</i>)
+[Generic function]</h3>
+This event is generated when the parsing of a document has been completed.
+See the function <tt><a href="#sax-consumer-mode-Generic-function">sax-consumer-mode</a></tt>
+for a discussion of parser modes and the parameter <i>mode</i>.
+<h3>
+<a NAME="start-element-Generic-function"></a>start-element (<i>consumer
+tag mode</i>) [Generic function]</h3>
+This event is generated for every start tag in an XML document. The parameter
+<i>tag</i>
+is an <tt><a href="#open-tag-Class">open-tag</a></tt> instance. See the
+function <tt><a href="#sax-consumer-mode-Generic-function">sax-consumer-mode</a></tt>
+for a discussion of parser modes and the parameter <i>mode</i>.
+<h3>
+<a NAME="end-element-Generic-function"></a>end-element (<i>consumer tag
+mode</i>) [Generic function]</h3>
+This event is generated for every end tag in an XML document. The parameter
+<i>tag</i>
+is the corresponding <tt><a href="#open-tag-Class">open-tag</a></tt> instance
+(not the <tt><a href="#close-tag-Class">close-tag</a></tt> instance which
+you might have expected). See the function <tt><a href="#sax-consumer-mode-Generic-function">sax-consumer-mode</a></tt>
+for a discussion of parser modes and the parameter <i>mode</i>.
+<h3>
+<a NAME="char-content-Generic-function"></a>char-content (<i>consumer content
+mode</i>) [Generic function]</h3>
+This event is generated for all every occurrence of character content in
+an XML document (in simple terms, the stuff between start and end tags
+that is not another tag). The parameter <i>content</i> is a string. See
+the function <tt><a href="#sax-consumer-mode-Generic-function">sax-consumer-mode</a></tt>
+for a discussion of parser modes and the parameter <i>mode</i>.
+<h3>
+<a NAME="proc-instruction-Generic-function"></a>proc-instruction (<i>consumer
+instruction mode</i>) [Generic function]</h3>
+This event is generated for every processing instruction in an XML document.
+The parameter <i>instruction</i> is an instance of <tt><a href="#proc-instruction-Class">proc-instruction</a></tt>.
+See the function <tt><a href="#sax-consumer-mode-Generic-function">sax-consumer-mode</a></tt>
+for a discussion of parser modes and the parameter <i>mode</i>.
+<h3>
+<a NAME="find-first-producer-Generic-function"></a>find-first-producer
+(<i>consumer</i>) [Generic function]</h3>
+Given a chain of producers and consumers, this method will return the first
+producer of the chain (the source of events, that is).
+<h3>
+<a NAME="sax-consumer-mode-Generic-function"></a>sax-consumer-mode (<i>parser</i>)
+[Generic function]</h3>
+Every event method (except <tt><a href="#start-document-Generic-function">start-document</a></tt>)
+will accept a <i>mode</i> parameter. The value of this parameter is calculated
+by calling the <tt>sax-consumer-mode</tt> method of the consumer in question.
+In other words, a call (in the parser implementation) to, say, <tt><a href="#start-element-Generic-function">start-element</a></tt>,
+might look like this:
+<blockquote class="CodeExample">(start-element consumer tag (sax-consumer-mode
+consumer))</blockquote>
+The idea is that any consumer can specialize the event methods on this
+parameter (typically using <tt>eql</tt> specializers) and thus easily implement
+a state machine, for example. The implementation (i.e., any method) for
+<tt>sax-consumer-mode</tt>
+is <tt><a href="#sax-consumer-Class">sax-consumer</a></tt> subclass-dependent.
+The default method returns <tt>nil</tt>.
+<h2>
+<a NAME="tokens"></a>4. Token Classes</h2>
+The XML parser passes instances of various subclasses of <tt>token</tt>
+to the "event" methods of the producer/consumer interface. Below is a table
+showing the class hierarchy of these classes, and indicates what kind of
+processing (if any) the parser takes with each type of token (remember,
+this is an XML parser built to enable RDF parsing, it is not a general
+XML parser).
+<p>Note that <tt>char-content</tt> is shown as a subclass of <tt><a href="#token-Class">token</a></tt>;
+this is true only conceptually, in the implementation the char-content
+"tokens" are Common Lisp <tt>string</tt>s.
+<p>The figure below shows the hierarchy of token classes.
+<center>
+<p><img SRC="images/token.jpg" ALT="token class hierarchy" BORDER=0 height=186 width=303></center>
+
+<p>The following table describes the classes in terms of their processing
+and whether they are instantiable.
+<br>&nbsp;
+<center><table CELLPADDING=2 >
+<tr>
+<th>Class</th>
+
+<th>Class Type</th>
+
+<th>Processing</th>
+
+<th>External?</th>
+</tr>
+
+<tr>
+<td><tt><a href="#token-Class">token</a></tt></td>
+
+<td>abstract</td>
+
+<td>n/a</td>
+
+<td>yes</td>
+</tr>
+
+<tr>
+<td><tt>tag</tt></td>
+
+<td>abstract</td>
+
+<td>n/a</td>
+
+<td>no</td>
+</tr>
+
+<tr>
+<td><tt><a href="#open-tag-Class">open-tag</a></tt></td>
+
+<td>concrete</td>
+
+<td>processed</td>
+
+<td>yes</td>
+</tr>
+
+<tr>
+<td><tt><a href="#close-tag-Class">close-tag</a></tt></td>
+
+<td>concrete</td>
+
+<td>processed</td>
+
+<td>yes</td>
+</tr>
+
+<tr>
+<td><tt><a href="#proc-instruction-Class">proc-instruction</a></tt></td>
+
+<td>concrete</td>
+
+<td>ignored</td>
+
+<td>yes</td>
+</tr>
+
+<tr>
+<td><tt>declaration</tt></td>
+
+<td>abstract</td>
+
+<td>n/a</td>
+
+<td>no</td>
+</tr>
+
+<tr>
+<td><tt><a href="#entity-declaration-Class">entity-declaration</a></tt></td>
+
+<td>concrete</td>
+
+<td>processed</td>
+
+<td>yes</td>
+</tr>
+
+<tr>
+<td><tt>element-declaration</tt></td>
+
+<td>concrete</td>
+
+<td>ignored (<tt><a href="#xml-warning-Class">xml-warning</a></tt> signaled)</td>
+
+<td>no</td>
+</tr>
+
+<tr>
+<td><tt>attlist-declaration</tt></td>
+
+<td>concrete</td>
+
+<td>ignored (<tt><a href="#xml-warning-Class">xml-warning</a></tt> signaled)</td>
+
+<td>no</td>
+</tr>
+
+<tr>
+<td><tt><a href="#comment-Class">comment</a></tt></td>
+
+<td>concrete</td>
+
+<td>ignored</td>
+
+<td>yes</td>
+</tr>
+
+<tr>
+<td>(char-content)</td>
+
+<td>(Common Lisp <tt>string</tt>)</td>
+
+<td>processed</td>
+
+<td>yes</td>
+</tr>
+
+<tr>
+<td><tt>dtd-bracket</tt></td>
+
+<td>abstract</td>
+
+<td>n/a</td>
+
+<td>no</td>
+</tr>
+
+<tr>
+<td><tt>dtd-start</tt></td>
+
+<td>concrete</td>
+
+<td>ignored (<tt><a href="#xml-warning-Class">xml-warning</a></tt> signaled
+if external DTD)</td>
+
+<td>no</td>
+</tr>
+
+<tr>
+<td><tt>dtd-end</tt></td>
+
+<td>concrete</td>
+
+<td>ignored</td>
+
+<td>no</td>
+</tr>
+</table></center>
+
+<h3>
+<a NAME="token-Class"></a>token [Class]</h3>
+This is the abstract base class of all tokens.
+<h3>
+<a NAME="token-string-Generic-function"></a>token-string (<i>token</i>)
+[Generic function]</h3>
+Accesses a string which names the token (for tags, it is the tag name;
+for others, some descriptive, useful representation of the token).
+<h3>
+<a NAME="open-tag-Class"></a>open-tag [Class]</h3>
+Class of start tags.
+<h3>
+<a NAME="close-tag-Class"></a>close-tag [Class]</h3>
+Class of end tags.
+<h3>
+<a NAME="tag-counterpart-Generic-function"></a>tag-counterpart (<i>tag</i>)
+[Generic function]</h3>
+Accesses the corresponding <tt><a href="#open-tag-Class">open-tag</a></tt>
+instance of a <tt><a href="#close-tag-Class">close-tag</a></tt> instance.
+<h3>
+<a NAME="tag-empty-p-Generic-function"></a>tag-empty-p (<i>open-tag</i>)
+[Generic function]</h3>
+True if an <tt><a href="#open-tag-Class">open-tag</a></tt> instance has
+no content (i.e., there is no end tag).
+<h3>
+<a NAME="tag-attribute-Generic-function"></a>tag-attribute (<i>open-tag
+attribute</i>) [Generic function]</h3>
+Accesses the attribute (named using <i>attribute</i>) of an <tt><a href="#open-tag-Class">open-tag</a></tt>
+instance.
+<h3>
+<a NAME="tag-namespaces-Generic-function"></a>tag-namespaces (<i>open-tag</i>)
+[Generic function]</h3>
+Accesses the list (an a-list) of all namespace definitions for the element
+in which the <tt><a href="#open-tag-Class">open-tag</a></tt> instance belongs
+(this includes all namespaces declared with this particular tag, as well
+as all namespaces of enclosing elements).
+<h3>
+<a NAME="proc-instruction-Class"></a>proc-instruction [Class]</h3>
+Class of processing instructions (<tt><a href="#token-string-Generic-function">token-string</a></tt>
+accesses the name of the processing instruction). Current implementation
+generates these but then ignores them.
+<h3>
+<a NAME="entity-declaration-Class"></a>entity-declaration [Class]</h3>
+Class of entity declarations. Note that <tt><a href="#token-string-Generic-function">token-string</a></tt>
+accesses the definition of the entity (the "expanded" form, that is).
+<h3>
+<a NAME="entity-name-Generic-function"></a>entity-name (<i>entity-declaration</i>)
+[Generic function]</h3>
+Accesses the name of the entity declaration (the "unexpanded" form, that
+is, minus the ampersand and semicolon).
+<h3>
+<a NAME="comment-Class"></a>comment [Class]</h3>
+Class of comments (<tt><a href="#token-string-Generic-function">token-string</a></tt>
+accesses the entire text of the comment).
+<h2>
+<a NAME="conditions"></a>5. Condition Classes</h2>
+All condition classes (except <tt><a href="#xml-warning-Class">xml-warning</a></tt>)
+are subclasses of xml-error. The figure below shows the hierarchy of condition
+classes, including the <a href="rdf-parser.html#conditions">RDF conditions</a>.
+<center>
+<p><img SRC="images/xml-error.jpg" ALT="xml-error condition class hierarchy" BORDER=0 height=313 width=450></center>
+
+<h3>
+<a NAME="xml-error-Class"></a>xml-error [Condition class]<br>
+<i>:thing</i> [Initarg]</h3>
+This is the abstract base class of all XML parser condition classes. The
+initarg <i>thing</i> is an error-dependent object useful for the processing
+of the error.
+<h3>
+<a NAME="error-thing-Generic-function"></a>error-thing (<i>error</i>) [Generic
+function]</h3>
+Accesses the <i>thing</i> object of the error (its semantics are subclass-dependent).
+<h3>
+<a NAME="syntax-error-Class"></a>syntax-error [Condition class]</h3>
+This is the class of all syntax errors. The function <tt><a href="#error-thing-Generic-function">error-thing</a></tt>
+accesses some descriptive object useful in characterizing the error.
+<h3>
+<a NAME="pi-termination-problem-Class"></a>pi-termination-problem [Condition
+class]</h3>
+Signaled for unterminated or improperly terminated processing instructions
+(<tt><a href="#error-thing-Generic-function">error-thing</a></tt> accesses
+the name of the PI).
+<h3>
+<a NAME="dtd-termination-problem-Class"></a>dtd-termination-problem [Condition
+class]</h3>
+Signaled for improperly terminated DTDs.
+<h3>
+<a NAME="unexpected-end-tag-Class"></a>unexpected-end-tag [Condition class]<br>
+<i>:expectation</i> [Initarg]</h3>
+Signaled for those end tags which we did not expect (i.e., the current
+corresponding start tag has some other name). The function <tt><a href="#error-thing-Generic-function">error-thing</a></tt>
+accesses the end tag, and the function <tt><a href="#error-expectation-Generic-function">error-expectation</a></tt>
+(initialized using the initarg <i>expectation</i>) accesses the expected
+corresponding start tag.
+<h3>
+<a NAME="error-expectation-Generic-function"></a>error-expectation (<i>unexpected-end-tag</i>)
+[Generic function]</h3>
+Accesses the corresponding start tag of the expected end tag.
+<h3>
+<a NAME="unknown-declaration-Class"></a>unknown-declaration [Condition
+class]</h3>
+Signaled for any unrecognized declaration.
+<h3>
+<a NAME="unknown-character-reference-Class"></a>unknown-character-reference
+[Condition class]</h3>
+Signaled when an unrecognized character reference is encountered. The function
+<tt><a href="#error-thing-Generic-function">error-thing</a></tt>
+accesses the reference.
+<h3>
+<a NAME="malformed-url-Class"></a>malformed-url [Condition class]</h3>
+Signaled when the parsing of a URL string fails. The function <tt><a href="#error-thing-Generic-function">error-thing</a></tt>
+accesses the ill-formed URI string.
+<h3>
+<a NAME="feature-not-supported-Class"></a>feature-not-supported [Condition
+class]</h3>
+Signaled when some feature not supported by the current implementation
+is encountered. The function <tt><a href="#error-thing-Generic-function">error-thing</a></tt>
+accesses some descriptive representation of the feature.
+<h3>
+<a NAME="missing-definition-Class"></a>missing-definition [Condition class]<br>
+<i>:type</i> [Initarg]</h3>
+This abstract condition class represents the situation where a reference
+is made to something which has not been defined yet. The concrete subclasses
+of this class are used with missing entity and namespace definitions. The
+initarg <i>type</i> initializes the definition type.
+<h3>
+<a NAME="error-definition-type-Generic-function"></a>error-definition-type
+(<i>missing-definition</i>) [Generic function]</h3>
+Accesses the definition type of a <tt><a href="#missing-definition-Class">missing-definition</a></tt>
+instance.
+<h3>
+<a NAME="missing-entity-definition-Class"></a>missing-entity-definition
+[Condition class]</h3>
+Signaled when a reference is made to an entity which has not been defined.
+Continuing from this error will cause the "unexpanded" form to be used
+instead. The function <tt><a href="#error-thing-Generic-function">error-thing</a></tt>
+accesses the unknown entity name.
+<h3>
+<a NAME="missing-namespace-definition-Class"></a>missing-namespace-definition
+[Condition class]</h3>
+Signaled when a reference is made to a namespace which has not been defined.
+Continuing from this error will cause the "unexpanded" form to be used
+instead. The function <tt><a href="#error-thing-Generic-function">error-thing</a></tt>
+accesses the unknown namespace prefix.
+<h3>
+<a NAME="xml-warning-Class"></a>xml-warning [Condition class]</h3>
+This condition class is used whenever the system need to issue a warning.
+<h3>
+<a NAME="xml-warning-Macro"></a>xml-warning (<i>message</i> &amp;rest <i>args</i>)
+[Macro]</h3>
+This macro is used in place of <tt>warn</tt> to issue warnings of the type
+<tt><a href="#xml-warning-Class">xml-warning</a></tt>.
+<h2>
+<a NAME="auxiliary"></a>6. Auxiliary Parser Functionality</h2>
+
+<h3>
+<a NAME="*current-parser*-Variable"></a>*current-parser* [Variable]</h3>
+This variable is bound to the current XML parser instance during parsing.
+The purpose of this variable is to provide access to the parser instance
+from reader-macro functions (which are not methods).
+<h3>
+<a NAME="read-using-Function"></a>read-using (<i>readtable stream</i> &amp;optional
+<i>recursivep</i>)
+[Function]</h3>
+This function will bind the readtable passed in <i>readtable</i> to <tt>*readtable*</tt>
+and call <tt>read</tt> in the following manner:
+<blockquote class="CodeExample">(read <i>stream</i> t nil <i>recursivep</i>)</blockquote>
+This function is useful when used with the XML name readtable (bound to
+variable <tt><a href="#*name-reader*-Variable">*name-reader*</a></tt>)
+when XML-style names have to be read outside the parser.
+<h3>
+<a NAME="*name-reader*-Variable"></a>*name-reader* [Variable]</h3>
+This variable is bound to the XML name readtable, and can be used to read
+in XML-style names.
+<h3>
+<a NAME="make-file-url-Function"></a>make-file-url (<i>pathname</i>) [Function]</h3>
+This function will turn a Common Lisp pathname (or a string) into a file-URL
+string.
+<h3>
+<a NAME="make-http-url-Function"></a>make-http-url (<i>host port path</i>)
+[Function]</h3>
+This function will construct an http-URL from a <i>host</i>, a <i>port</i>
+and a <i>path</i> (all strings, except that <i>port</i> can also be an
+integer).
+<h3>
+<a NAME="parse-url-Function"></a>parse-url (<i>url</i>) [Function]</h3>
+This function will parse an URL string, and return two values: the URL
+type (either <tt>:file</tt> or <tt>:http</tt>) and a property list of URL
+components (these are <tt>:host</tt> for the host name, <tt>:port</tt>
+for the TCP port, and <tt>:path</tt> for the path component of the URL;
+file-URLs only have the path component). If the URL string can not be parser,
+<tt><a href="#malformed-url-Class">malformed-url</a></tt>
+condition is signaled.
+<h3>
+<a NAME="-whitespace-chars--Variable"></a>-whitespace-chars- [Variable]</h3>
+This constant is a string containing all those characters which the parser
+considers to be whitespace.
+<h2>
+<a NAME="string-dict"></a>7. Simple String Dictionaries</h2>
+String dictionaries are an abstraction which allows string keys to be mapped
+to string values. They are used, for example, in the implementation of
+tag attributes and namespace mappings. String comparisons are case-sensitive
+(they use <tt>string=</tt>).
+<h3>
+<a NAME="string-dict-get-Function"></a>string-dict-get (<i>keys&amp;values
+key</i>) [Function]</h3>
+Get the value from the string dictionary <i>keys&amp;values</i> corresponding
+to <i>key</i>, or <tt>nil</tt> if not found.
+<h3>
+<a NAME="string-dict-get-by-value-Function"></a>string-dict-get-by-value
+(<i>keys&amp;values value</i>) [Function]</h3>
+Get the first key from the string dictionary <i>keys&amp;values</i> corresponding
+to <i>value</i>, or <tt>nil</tt> if not found.
+<h3>
+<a NAME="string-dict-add-Function"></a>string-dict-add (<i>keys&amp;values
+key value</i>) [Function]</h3>
+Return a list where an association from <i>key</i> to <i>value</i> has
+been added to the string dictionary <i>keys&amp;values</i>. This function
+will not destructively modify <i>keys&amp;values</i>.
+<h3>
+<a NAME="string-dict-del-Function"></a>string-dict-del (<i>keys&amp;values
+key</i>) [Function]</h3>
+Return a list where the association from <i>key</i> (to its corresponding
+value) in the string dictionary <i>keys&amp;values</i> has been deleted.
+This function destructively modifies <i>keys&amp;values</i>.
+<h3>
+<a NAME="do-string-dict-Macro"></a>do-string-dict ((<i>key value dict</i>)
+&amp;body <i>body</i>) [Macro]</h3>
+This macro will execute the forms in body in a loop where, in turn, variables
+<i>key</i>
+and <i>value</i> are bound to the consecutive mappings of the string dictionary
+<i>dict</i>.
+<p>
+<hr>
+
+<p class="EndMatter">Copyright &copy; 2001 Nokia. All Rights Reserved.
+<br>Subject to the <a href="LICENSE-NOKOS.html">NOKOS License version 1.0</a>
+<br>Author: Ora Lassila (<a href="mailto:ora.lassila@nokia.com">ora.lassila@nokia.com</a>)
+</body>
+</html>

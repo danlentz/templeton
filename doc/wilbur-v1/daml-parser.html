@@ -1,0 +1,140 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="GENERATOR" content="Mozilla/4.75 (Macintosh; U; PPC) [Netscape]">
+   <meta name="Author" content="Ora Lassila">
+   <title>Wilbur -- DAML</title>
+   <link HREF="wilbur.css" / TYPE="text/css" REL="STYLESHEET">
+   <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+            xmlns:dc = "http://purl.org/dc/elements/1.1/">
+     <rdf:Description rdf:about=""
+       dc:title="Wilbur: DAML"
+       dc:creator="Ora Lassila"
+       dc:description="Documentation of the DAML+OIL support in Wilbur"
+       dc:date="2001-03-12"
+       dc:format="text/html"
+       dc:language="en"/>
+      <dc:publisher rdf:resource="http://www.nokia.com/"/>
+      <dc:relation rdf:resource="index.html"/>
+      <dc:relation rdf:resource="http://www.daml.org/2000/12/daml+oil-index.html"/>
+      <dc:rights rdf:resource="LICENSE-NOKOS.html"/>
+     </rdf:RDF>
+</head>
+<body>
+
+<h1>
+Wilbur: DAML</h1>
+
+<ol>
+<li>
+<a href="#parser">DAML Parser as an Extension of the RDF Parser</a></li>
+
+<li>
+<a href="#functions">Constructing DAML Lists</a></li>
+
+<li>
+<a href="#constants">URI Constants</a></li>
+</ol>
+<a href="http://www.daml.org/"><img SRC="images/HotDAML_Medium.jpg" ALT="HotDAML" BORDER=0 height=121 width=161 align=RIGHT></a>
+<h2>
+<a NAME="parser"></a>1. DAML Parser as an Extension of the RDF Parser</h2>
+
+<h3>
+<a NAME="daml-parser-Class"></a>daml-parser [Class]</h3>
+This class implements a DAML parser (technically a <a href="http://www.daml.org/2000/12/daml+oil-index.html">DAML+OIL
+December 2000</a> parser), as an extension (i.e., a subclass) of the Wilbur
+RDF parser (class <tt><a href="rdf-parser.html#rdf-parser-Class">rdf-parser</a></tt>).
+The extension basically consists of a new state (<tt>:daml-collection</tt>)
+in the parser's state machine to handle the <tt>"daml:collection"</tt>
+parse type, and specializations of four methods: <tt><a href="rdf-parser.html#parse-using-parsetype-Generic-function">parse-using-parsetype</a></tt>
+(which forces the the parser's state machine into the <tt>:daml-collection</tt>
+state), <tt><a href="rdf-parser.html#attach-to-parent-Generic-function">attach-to-parent</a></tt>
+(which "grows" a DAML-list from the end when the parser is in the <tt>:daml-collection</tt>
+state), as well as <tt><a href="xml-parser.html#start-element-Generic-function">nox:start-element</a></tt>
+and <tt><a href="xml-parser.html#end-element-Generic-function">nox:end-element</a></tt>
+(which handle the transitions to and from the <tt>:daml-collection</tt>
+state; <tt><a href="xml-parser.html#end-element-Generic-function">nox:end-element</a></tt>
+also terminates the DAML list by replacing the last, incomplete node with
+a reference to <tt><a href="#constants">daml:nil</a></tt>).
+<p>The <tt>daml-parser</tt> class can be used in place of the <tt>rdf-parser</tt>
+class in all functions which accept this class (namely <tt><a href="rdf-parser.html#parse-db-from-file-Function">parse-db-from-file</a></tt>
+and <tt><a href="rdf-parser.html#parse-db-from-stream-Function">parse-db-from-stream</a></tt>).
+<h2>
+<a NAME="functions"></a>2. Constructing DAML Lists</h2>
+DAML lists are essentially similar in structure to Common Lisp lists as
+they consist of dotted pairs (nodes with properties <tt><a href="#constants">daml:first</a></tt>
+and <tt><a href="#constants">daml:rest</a></tt>). Consequently we have
+defined two functions, <tt><a href="#daml-list-Function">daml-list</a></tt>
+and <tt><a href="#daml-cons-Function">daml-cons</a></tt>, that are equivalent
+to the Common Lisp functions
+<tt>list</tt> and <tt>cons</tt>. Converting
+<h3>
+<a NAME="daml-list-Function"></a>daml-list (&amp;rest <i>items</i>) [Function]</h3>
+This function takes an arbitrary number of (Common Lisp) objects and constructs
+a DAML list. The head of this list (a <tt><a href="rdf-data.html#node-Class">node</a></tt>
+instance) is returned. Lists are terminated with a reference to <tt><a href="#constants">-daml-nil-</a></tt>.
+If you want to turn an existing (Common Lisp) <i>list</i> into a DAML list,
+use
+<blockquote class="CodeExample">(apply #'daml-list <i>list</i>)</blockquote>
+
+<h3>
+<a NAME="daml-cons-Function"></a>daml-cons (<i>first rest</i> &amp;optional
+<i>uri</i>)
+[Function]</h3>
+This function takes two Common Lisp objects, <i>first</i> and <i>rest</i>
+(in practice, <i>rest</i> should be a <tt>node</tt> instance) and constructs
+a DAML "dotted pair" (a <tt><a href="rdf-data.html#node-Class">node</a></tt>
+instance, which is returned).
+<h2>
+<a NAME="constants"></a>3. URI Constants</h2>
+The system defines a set of constants for useful DAML URIs (strings). In
+the following table, the prefix <tt>"daml"</tt> is assumed to denote the
+value of <tt>-daml+oil-uri-</tt>.
+<br>&nbsp;
+<center><table BORDER >
+<tr>
+<th>Constant</th>
+
+<th>Value</th>
+</tr>
+
+<tr>
+<td><tt>-daml+oil-uri-</tt></td>
+
+<td><tt>"http://www.daml.org/2000/12/daml+oil#"</tt></td>
+</tr>
+
+<tr>
+<td><tt>-daml-list-uri-</tt></td>
+
+<td><tt>daml:List</tt></td>
+</tr>
+
+<tr>
+<td><tt>-daml-first-uri-</tt></td>
+
+<td><tt>daml:first</tt></td>
+</tr>
+
+<tr>
+<td><tt>-daml-rest-uri-</tt></td>
+
+<td><tt>daml:rest</tt></td>
+</tr>
+
+<tr>
+<td><tt>-daml-nil-uri-</tt></td>
+
+<td><tt>daml:nil</tt></td>
+</tr>
+</table></center>
+
+<p>
+<hr>
+
+<p class="EndMatter">Copyright &copy; 2001 Nokia. All Rights Reserved.
+<br>Subject to the <a href="LICENSE-NOKOS.html">NOKOS License version 1.0</a>
+<br>Author: Ora Lassila (<a href="mailto:ora.lassila@nokia.com">ora.lassila@nokia.com</a>)
+</body>
+</html>
