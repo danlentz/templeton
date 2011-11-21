@@ -214,10 +214,15 @@
                                     (:file "pp-histogram")
                                     (:file "pp-barchart")
                                     (:file "pp-columnar")
+                                    (:file "pp-string")
+                                    (:file "wrap-string")
                                     (:file "clos")))
                     
                     (:module :index :serial t
-                      :components ((:file "tries")))
+                      :components ((:file "scanners")
+                                    (:file "collectors")
+                                    (:file "mappers")
+                                    (:file "tries")))
 
                     (:module :db    :serial t
                       :components ((:file "db-protocol")

@@ -105,4 +105,26 @@
     #:DROP-ALL-NAMED-GRAPHS
     #:DROP-GRAPH
     #:STORABLE-NODE
-    #:STORABLE-NODE-DICTIONARY))
+    #:STORABLE-NODE-DICTIONARY
+
+    :make-string-builder
+    :with-string-builder
+    :with-string-builder-output
+    :make-reducer
+    :with-reducer
+    :make-collector
+    :make-appender
+    :make-pusher
+    :with-appender
+    :with-collector
+    :with-collectors
+    :with-mapping-collector
+    :with-mapping-appender
+
+    :null-mapper
+    :compose-mappers
+    :concatente-mappers
+    :curry-mapper
+    :make-mapper
+    :encode-mapper
+    :map-lines))
