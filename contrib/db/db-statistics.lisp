@@ -1,34 +1,10 @@
-;;; -*- package: WILBUR; Syntax: Common-lisp; Base: 10 -*-
-
+;;; -*- mode: common-lisp;   common-lisp-style: modern;    coding: utf-8; -*-
 ;;;
-;;;;  testing.lisp
-;;;
-;;;
-;;; --------------------------------------------------------------------------------------
-;;;
-;;;   The contents of this file are subject to the NOKOS License Version 1.0a (the
-;;;   "License"); you may not use this file except in compliance with the License. 
-;;;
-;;;   Software distributed under the License is distributed on an "AS IS" basis, WITHOUT
-;;;   WARRANTY OF ANY KIND, either express or implied. See the License for the specific
-;;;   language governing rights and limitations under the License. 
-;;;
-;;;   The Original Software is 
-;;;     WILBUR2: Nokia Semantic Web Toolkit for CLOS
-;;;
-;;;   Copyright (c) 2001-2005 Nokia and others. All Rights Reserved.
 ;;;   Portions Copyright (c) 1989-1992 Ora Lassila. All Rights Reserved.
-;;;
-;;;   Contributor(s): Ora Lassila (mailto:ora.lassila@nokia.com)
-;;;
 ;;; --------------------------------------------------------------------------------------
-;;;
-;;;
-;;;
-;;;
 
 
-(in-package "WILBUR")
+(in-package :templeton)
 
 (export '(db-access-counter-mixin db-reset-counters db-access-stats db-index-stats))
 
@@ -132,10 +108,10 @@
 			    (declare (ignore key))
 			    (add-index sub-index))
 			i)))
-      (add-index (db-index-s db))
-      (add-index (db-index-p db))
-      (add-index (db-index-o db))
-      (add-sub-indices (db-index-sp db))
-      (add-sub-indices (db-index-po db))
-      (add-index (db-by-source db))
+      (add-index (w::db-index-s db))
+      (add-index (w::db-index-p db))
+      (add-index (w::db-index-o db))
+      (add-sub-indices (w::db-index-sp db))
+      (add-sub-indices (w::db-index-po db))
+      (add-index (w::db-by-source db))
       (list :n n-hashtables :count size-hashtables :size total-size-hashtables))))

@@ -15,3 +15,5 @@ bin/
 Icon?
 .DS_Store
 xml-grammar.lisp
+
+attic

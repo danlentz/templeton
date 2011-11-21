@@ -167,6 +167,7 @@
                 :yacc
                 :unicly
                 :swank
+                :cl-ppcre
                 :hu.dwim.def
                 :hu.dwim.defclass-star
                 :hu.dwim.stefil)
@@ -205,14 +206,17 @@
                     (:file "suite")
 
                     (:module :misc  :serial t
-                      :components ((:file "printv")
-                                    (:file "uptime")
+                      :components ((:file "uptime")
+                                    (:file "printv")
+                                    (:file "break")
+                                    (:file "dribble")
                                     (:file "pp")
                                     (:file "pp-histogram")
+                                    (:file "pp-barchart")
                                     (:file "pp-columnar")
                                     (:file "clos")))
                     
-                    (:module :tries :serial t
+                    (:module :index :serial t
                       :components ((:file "tries")))
 
                     (:module :db    :serial t
