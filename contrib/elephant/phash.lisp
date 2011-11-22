@@ -15,19 +15,19 @@
 (def (function e) make-phash (&optional (name (unicly:make-v4-uuid)))
   (let ((btree (ele:get-from-root name)))
     (if btree
-      (make-instance 'phash :map btree)
+      (make-instance 'phash :btree btree)
       (let ((phash (make-instance 'phash)))
         (ele:add-to-root name (phash-btree phash))
         phash))))
 
 (def (class* eas) pindex (phash)
   ((btree :accessor pindex-btree))
-  (:default-initargs :map (ele:make-indexed-btree)))
+  (:default-initargs :btree (ele:make-indexed-btree)))
 
 (def (function e) make-pindex (&optional (name (unicly:make-v4-uuid)))
   (let ((btree (ele:get-from-root name)))
     (if btree
-      (make-instance 'pindex :map btree)
+      (make-instance 'pindex :btree btree)
       (let ((pindex (make-instance 'pindex)))
         (ele:add-to-root name (pindex-btree pindex))
         pindex))))
@@ -71,9 +71,9 @@
   (map-drop phash key))
 
 (def method map-size ((phash phash))
-  (let (count)
+  (let ((count 0))
     (ele:ensure-transaction ()
-      (map-btree (lambda (k v)
+      (map-btree #'(lambda (k v)
                    (declare (ignore k v))
                    (incf count))
         (phash-btree phash))
@@ -106,30 +106,59 @@
 ;; Testing
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(def suite* (test :in root-suite))
+(def suite* (elephant :in test))
+(in-suite elephant)
 
 (def special-variable *phash*)
 
 (def fixture |phash|
-  (unwind-protect
-    (let ((*phash*  (make-phash 'test-phash)))
-      (-body-))
-    (ele:drop-btree (phash-btree (make-phash 'test-phash)))))
+  (elephant:ensure-transaction ()
+    (unwind-protect (let ((*phash*  (make-phash 'test-phash)))
+                      (-body-))
+      (progn 
+        (ele:drop-btree (phash-btree (make-phash 'test-phash)))
+        (setf *phash* nil)))))
 
-(def test object-identity ()
+
+(def test phash-representational-identity.0 ()
   (with-fixture |phash|
-    (is (not (eq (make-phash 'test-phash) (make-phash 'test-phash))))
-    (is (eq (phash-btree (make-phash 'test-phash)) (phash-btree (make-phash 'test-phash))))
-    (ele:drop-btree (phash-btree (make-phash 'test-phash)))))
+    (is (not (eq
+               (make-phash 'test-phash)
+               (make-phash 'test-phash))))
+    (is (eq
+          (phash-btree (make-phash 'test-phash))
+          (phash-btree (make-phash 'test-phash))))))
 
-(def test table-primitives ()
+
+(def test phash-table-primitives.0 (&optional (iterations 100))
   (ele:ensure-transaction ()
     (with-fixture |phash|
-      (dotimes (i 10)
-        (map-put *phash* i (* 2 i))
-        (is (eql (map-get *phash* i) (* 2 i)))))))
+      (dotimes (i iterations)
+        (phash-put i (* 2 i) *phash*))
+      (dotimes (i iterations)
+        (is (eql (phash-get i *phash*) (* 2 i)))))))
 
 
-
-;; (object-identity)
-;; (table-primitives)
+(def test phash-operational-persistence.0 (&optional test-subject-population &aux (count 0))
+  (if test-subject-population (setf count (length test-subject-population))
+    (do-external-symbols (sym (find-package :common-lisp))
+      (unless (eq sym 'nil) ;; exclude nil
+        (incf count)
+        (push sym test-subject-population))))  
+  (unless (every #'identity test-subject-population)
+    (break/inspect test-subject-population))
+  (with-fixture |phash|
+    (map nil #'(lambda (subject) (phash-put (write-to-string subject) subject *phash*))
+      test-subject-population)
+    (is (equal (phash-size *phash*) count))
+    (setf *phash* nil)    
+    (is (setf *phash* (make-phash 'test-phash)))
+    (is (equal (phash-size *phash*) count))
+    (is (null  (set-difference test-subject-population 
+                 (mapcar
+                   #'(lambda (subject &aux restored-original-value)
+                       (setf restored-original-value (phash-get (write-to-string subject) *phash*))
+                       (is restored-original-value)
+                       (is (find restored-original-value test-subject-population)) ;; :test #'eq))
+                       restored-original-value)
+                   test-subject-population))))))
