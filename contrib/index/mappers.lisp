@@ -1,4 +1,4 @@
-;;; -*- mode: common-lisp;   common-lisp-style: modern;    coding: utf-8; -*-
+;;; -*- mode: common-lisp;   common-lisp-style: modern;    coding: utf-8; Dan Lentz
 ;;;;
 ;;;; This interface is adapted from Gabor Mellis' Latent-Semantic-Indexing
 ;;;; project and all credit is entirely due to him, any blame to me...
@@ -17,10 +17,10 @@
 ;; General mappers
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defun null-mapper (&rest args)
+(def (function e) null-mapper (&rest args)
   (declare (ignore args)))
 
-(defun compose-mappers (&rest mappers)
+(def (function e) compose-mappers (&rest mappers)
   "Return a mapper that maps from the same set as the first of MAPPERS
 maps from and maps to what the last of MAPPERS maps to, composing them
 in a chain. If MAPPERS is NIL #'FUNCALL, the identity mapper, is
@@ -35,25 +35,25 @@ returned."
           (t (compose2 (first mappers)
                        (apply #'compose-mappers (rest mappers)))))))
 
-(defun concatente-mappers (&rest mappers)
+(def (function e) concatente-mappers (&rest mappers)
   "Return a mapper that is the concatention of MAPPERS."
   (lambda (function &rest args)
     (dolist (mapper mappers)
       (apply mapper function args))))
 
-(defun curry-mapper (mapper &rest curried-args)
+(def (function e) curry-mapper (mapper &rest curried-args)
   "What makes a mapper is that the first is a function that is somehow
 applied to arguments. Currying a mapper leaves the function parameter
 alone and curries the rest of the parameters."
   (lambda (function &rest args)
     (apply mapper function (append curried-args args))))
 
-(defun make-mapper (&rest sequences)
+(def (function e) make-mapper (&rest sequences)
   "Return a mapper that maps from SEQUENCES to elements of SEQUENCES."
   (lambda (function)
     (apply #'map nil function sequences)))
 
-
+#+()
 (defun encode-mapper (mapper encoder &key allocate-new-index-p)
   "Translate MAPPER by encoding its sole argument with ENCODER."
   (compose-mappers mapper
@@ -81,11 +81,16 @@ alone and curries the rest of the parameters."
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; test
+;; test  (this needs work)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(def test test-collecting-mapper.0 ()
+    )
 
 (def test  test-compose-mappers.0 ()
-  (funcall (make-mapper '(0 1 2 3 4 5)) #'print)
+  (let ((things (list 0 1 2 3 4 5)))
+    (is (equal things
+          (with-collector (all-of)
+            (funcall (make-mapper '(0 1 2 3 4 5)) #'all-of) (all-of)))))
   (funcall (compose-mappers (make-mapper '(0 1 2 3 4 5))) #'print)
   (funcall (compose-mappers (make-mapper '(0 1 2 3 4 5)) #'funcall) #'print))

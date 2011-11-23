@@ -10,7 +10,7 @@
 ;;;;
 
 (defpackage :templeton.lset
-  (:nickname :lset)
+  (:nicknames :lset)
   (:use :cl :sb-ext)
   (:export :make-lset 
 

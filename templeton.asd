@@ -222,12 +222,13 @@
                       :components ((:file "scanners")
                                     (:file "collectors")
                                     (:file "mappers")
+                                    (:file "lset")
                                     (:file "tries")))
 
                     (:module :db    :serial t
                       :components ((:file "db-protocol")
                                     (:file "db-statistics")
-                                    (:file "hashset-db")))
+                              #+()      (:file "hashset-db")))
 
                     (:module :owl
                       :serial t

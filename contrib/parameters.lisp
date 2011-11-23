@@ -7,7 +7,7 @@
 (defvar *INSTANCE-URI*                (format nil "~A~A" (short-site-name) "resource/"))
 (defvar *DEFAULT-VANN-STORAGE-GRAPH*  (format nil "~A~A" *INSTANCE-URI* "vann#"))
 
-(defvar +null-namespace+              (unicly:make-null-uuid)
+(defvar +null-namespace+              (unicly:make-null-uuid))
 (defvar +node-namespace+              unicly:*UUID-NAMESPACE-URL*)
 (defvar +dns-namespace+               unicly:*UUID-NAMESPACE-DNS*)
 (defvar +oid-namespace+               unicly:*UUID-NAMESPACE-OID*)
