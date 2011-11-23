@@ -12,8 +12,9 @@
 (defpackage :templeton.lset
   (:nicknames :lset)
   (:use :cl :sb-ext)
-  (:export :make-lset 
-
+  (:export
+    :make-lset :lset-put :lset-find :lset-drop :lset-size :lset-list :lset-map
+;; notyet  :lset-clear :lset-union :lset-intersection 
     ))
 
 ;; "MAKE-LSET"
