@@ -33,7 +33,7 @@
   marked
   lock)
 
-(defstruct (lset (:constructor make-lset (&key lessp (test #'eql)
+(defstruct (lset (:constructor %make-lset (&key lessp (test #'eql)
                                                &aux (tail (make-entry))
                                                (head (make-entry :next tail)))))
   head
@@ -41,6 +41,10 @@
   (lessp (sb-int:missing-arg) :type function)
   (test (sb-int:missing-arg) :type function))
 
+(defun make-lset (&key (lessp 'string-lessp) (test 'equal))
+  (%make-lset :lessp (symbol-function lessp) :test (symbol-function test)))
+  
+  
 (setf (documentation 'make-lset 'function)
       "Creates an empty LSET object, representing a set. LESSP function must provide total
 ordering over the set, whereas TEST function is used to test for equivalance.
