@@ -1,7 +1,8 @@
 
 (in-package :cl-user)
 
-(defpackage :TRIES
+(defpackage :templeton.tries
+  (:nicknames :tries)
   (:use #+Lucid :LCL
 	#+Logical-Pathname :Logical-Pathname
 	#+(or LCL4.0 ALLEGRO-V3.1 ALLEGRO-V3.2 TI) "LISP" 
@@ -393,6 +394,7 @@
 	    append (substitute-all-within-sexpression
 		    news-and-olds body))))
 )
+
 ;==============================================================================
  ;;; START OF SUBSTITUTION GROUP !!!!!!
 ;------------------------------------------------------------------------------
