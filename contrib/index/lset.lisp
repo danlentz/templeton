@@ -10,15 +10,19 @@
 ;;;;
 
 (defpackage :templeton.lset
+  (:nickname :lset)
   (:use :cl :sb-ext)
-  (:export
-   "MAKE-LSET"
-   "ADD-ENTRY"
-   "REMOVE-ENTRY"
-   "CONTAINS-ENTRY-P"
-   "MAP-ENTRIES"
-   "LIST-ENTRIES"
-   "COUNT-ENTRIES"))
+  (:export :make-lset 
+
+    ))
+
+;; "MAKE-LSET"
+;; "ADD-ENTRY"
+;; "REMOVE-ENTRY"
+;; "CONTAINS-ENTRY-P"
+;; "MAP-ENTRIES"
+;; "LIST-ENTRIES"
+;; "COUNT-ENTRIES"
 
 (in-package :templeton.lset)
 
