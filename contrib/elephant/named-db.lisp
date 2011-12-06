@@ -26,17 +26,17 @@
   (print (db-index-stats o) (or stream t))
   (terpri))
 
-(defclass graph-container (w:node)
+(defclass graph-container (identified-node)
   ())
 
-(defclass named-graph-db (indexed-db db-access-counter-mixin)
-  ((started :initform (local-time:now) :reader db-started-at))
+(defclass named-db (graph-container snapshot-set indexed-db db-access-counter-mixin)
+  ((started :initform (local-time:now) :reader db-started-at)
+    (wilbur::uri :indext)
+    
   (:default-initargs :emptyp t))
 
-;; :blank-node-uri-prefix "_:"))
-
-(defgeneric find-graph (identifier &optional errorp))
-(defgeneric put-graph (container identifier))
+(defgeneric find-db (context identifier &optional errorp))
+;; (defgeneric put-graph (container identifier))
 
 (defclass storable-graph (graph-container snapshot-set)
   ((wilbur::uri :index t))

@@ -1,28 +1,27 @@
 ;;;;; -*- mode: common-lisp;   common-lisp-style: modern;    coding: utf-8; -*-
 ;;;;;
 
-
 (in-package :templeton)
 
+(unexport 'w::db-triple-lock :wilbur)
+(unexport 'w::db-transform-literal :wilbur)
 
 (let ((db-api '(w::db-add-namespace w::db-node-resolved w::db-triples w::db-add-triple 
                  w::db-find-triple w::db-make-triple w::db-count-triples w::db-path-fsas w::db-clear
                  w::db-merge w::db-query w::db-query-by-source w::db-sources w::db-source-descs
                  w::db-del-source w::db-literal-class w::db-new-container-membership-property
-                 w::db-make-literal w::owl-list w::owl-parser w::owl-cons w::db-access-stats
-                 w::db-index-stats w::db-del-triple w::db-find-cbd
-                 )))
+                 w::db-make-literal w::db-del-triple w::db-find-cbd)))
   (mapc #'import db-api)
   (export db-api *package*))
 
 (defmethod w::db-find-cbd ((db node) node)
   (w::db-find-cbd (named-graph-db db) node))
 
-(defmethod w::db-access-stats ((db node))
-  (w::db-access-stats (named-graph-db db)))
+(defmethod db-access-stats ((db node))
+  (db-access-stats (named-graph-db db)))
 
-(defmethod w::db-index-stats ((db node))
-  (w::db-index-stats (named-graph-db db)))
+(defmethod db-index-stats ((db node))
+  (db-index-stats (named-graph-db db)))
 
 (defmethod w::db-add-namespace ((db node) prefix uri)
   (w::db-add-namespace (named-graph-db db) prefix uri))
@@ -89,13 +88,10 @@
     (append (list (named-graph-db db) string) 
       (list :property property :datatype datatype :language language))))
 
-
-
 (defun db-ntriples (graph-designator &optional stream)
   (let ((out  (with-output-to-string (s)
                 (w::dump-as-ntriples (db-triples graph-designator) (or stream s)))))
     (unless stream out)))
-
 
 (defun db-rdfxml (graph-designator &optional stream)
   (let ((out  (with-output-to-string (s)
@@ -103,4 +99,10 @@
     (unless stream out)))
 
 
-    
+
+(defun global-triples-count ()
+  (reduce #'+ (mapcar #'length (mapcar #'db-triples (mapcar #'ngdb (mapcar #'cdr (ang)))))))
+
+
+(defun global-triples-size ()
+  (reduce #'+ (mapcar #'length (mapcar #'ntriples (mapcar #'ngdb (mapcar #'cdr (ang)))))))
