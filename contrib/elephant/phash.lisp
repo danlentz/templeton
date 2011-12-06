@@ -7,32 +7,107 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; PHASH / PINDEX
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
- 
-(def (class* eas) phash ()
+
+(defvar *context* nil)
+
+(defun context (&optional uuid)
+  (or *context*
+    (if uuid (setf *context* uuid)
+      (setf *context* (unicly:make-v4-uuid)))))
+  
+(defun arc (uuid)
+  (unicly:uuid-bit-vector-to-byte-array
+    (unicly:uuid-to-bit-vector (id:contextual-identity-uuid uuid))))
+
+
+(define-symbol-macro |<>| (context))
+
+
+(def (class* eas) phash (simple-print-object-mixin)
   ((btree :initarg :btree :accessor phash-btree))
   (:default-initargs :btree (ele:make-btree)))
 
-(def (function e) make-phash (&optional (name (unicly:make-v4-uuid)))
-  (let ((btree (ele:get-from-root name)))
+(def (function e) make-phash (&optional (uuid (unicly:make-v4-uuid)))
+  (let ((btree (ele:get-from-root (princ-to-string uuid))))
     (if btree
       (make-instance 'phash :btree btree)
       (let ((phash (make-instance 'phash)))
-        (ele:add-to-root name (phash-btree phash))
+        (ele:add-to-root (princ-to-string uuid) (phash-btree phash))
         phash))))
 
-(def (class* eas) pindex (phash)
+(def (class* eas) pindex (phash simple-print-object-mixin)
   ((btree :accessor pindex-btree))
   (:default-initargs :btree (ele:make-indexed-btree)))
 
-(def (function e) make-pindex (&optional (name (unicly:make-v4-uuid)))
-  (let ((btree (ele:get-from-root name)))
-    (if btree
-      (make-instance 'pindex :btree btree)
+(def (function e) make-pindex (&optional (uuid (unicly:make-v4-uuid)))
+  (let ((btree (ele:get-from-root (princ-to-string uuid))))
+    (if btree (make-instance 'pindex :btree btree)
       (let ((pindex (make-instance 'pindex)))
-        (ele:add-to-root name (pindex-btree pindex))
+        (ele:add-to-root (princ-to-string uuid) (pindex-btree pindex))
         pindex))))
 
+(def (class* eas) ptrie (pindex layered-node)
+  ((trie :initarg :trie  :accessor ptrie-trie :initform (make-trie))))
 
+
+
+(def (function e) make-ptrie (&optional (uuid (context)))
+  (make-instance 'ptrie :btree (pindex-btree (make-pindex uuid))
+    :uri (unicly:uuid-as-urn-string nil uuid)))
+
+(def (function e) ptrie (context identifier)
+  (typecase identifier
+    (w:node
+      (ptrie context (w:node-uri identifier)))
+    (string
+      (let ((ptrie (make-instance 'ptrie :btree (pindex-btree (make-pindex (unicly:make-v5-uuid context identifier))) :uri identifier)))
+        (set-trie-value (ptrie-trie ptrie) (node identifier))
+        (setf (get-trie (arc (make-null-uuid)) (ptrie-trie ptrie)) context)
+        ptrie))
+    (null (make-ptrie (or context (context))))))
+
+(defmethod print-object ((ptrie ptrie) stream)
+  (print-object (w:node (w:node-uri ptrie)) stream))
+
+
+(defun make-context (&optional (node *context*))
+  (let ((*context* node)
+         (*root* (make-trie)))
+    (lambda (property &optional value)
+      (cond
+        ((and (not property) (not value)) *root*)
+        ((and (eql property t) (eql value t))
+          (maptrie #'(lambda (x y) (:printv x y)) *root*))
+        ((and (eql property t) (not value)) *context*)
+        ((and (eql property t) (typep value 'w:node))
+          (setf
+            *context* (id:contextual-identity-uuid value)
+            *root*    (make-trie)))
+        ((and property (not value)) (get-trie (arc property) *root*))
+        ((and property value) (setf (get-trie (arc property) *root*) value))
+        (t nil)))))
+
+(defun contextv ()
+  (maptrie #'(lambda (x y) (:printv x y))  (funcall x nil)))
+
+(describe
+(make-context))
+;;(defmacro defcontext 
+  ;; (typecase control-id
+  ;;   (w:node (make-ptrie base-namespace (w:node-uri control-id)))
+  ;;   (t
+  ;;     (let* (#+()(uuid (id:make-context-object-uuid
+  ;;                    :base-namespace base-namespace
+  ;;                    :control-id control-id))
+  ;;             (phash (make-phash (unicly:make-v5-uuid base-namespace control-id)))
+  ;;             (trie (new-root-hybrid-trie nil nil))
+  ;;             (ptrie (make-instance 'ptrie  :trie trie :btree (phash-btree phash) )))
+  ;;       (setf (ptrie-uuid ptrie)  (unicly:make-v5-uuid base-namespace control-id))
+  ;;       (setf (root-trie-purpose trie) control-id)
+  ;;       (setf (node-uri ptrie) control-id)
+  ;;       (setf (root-trie-up trie) base-namespace)
+  ;;       ptrie))))
+    
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Indexer Protocol: PHASH
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

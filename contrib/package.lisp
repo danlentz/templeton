@@ -3,11 +3,18 @@
 
 (in-package :cl-user)
 
-(macrolet ((ensure-package (name) `(unless (find-package ,name) (make-package ,name))))
-  (ensure-package "_")
-  (ensure-package (short-site-name))
-  (ensure-package (format nil "~A~A" (short-site-name) "resource/"))
-  (ensure-package (format nil "~A~A" (short-site-name) "ns/")))
+(macrolet ((ensure-package (name &rest nicknames)
+             `(or (find-package ,name) (make-package ,name :nicknames ,@nicknames))))
+  (let* ((lexical-space (short-site-name))
+          (node-space-identifier (unicly:make-v5-uuid unicly:*uuid-namespace-dns* lexical-space))
+          (node-space (ensure-package lexical-space
+                        (list (princ-to-string node-space-identifier) "_" "urn:uuid"))))
+    ;; (define-symbol-macro :_ (find-package "_"))
+    (define-symbol-macro _ (find-package "_"))
+    (shadowing-import 'screamer::defun node-space)
+    (use-package :screamer node-space)))
+
+
 
 
 
