@@ -1,0 +1,137 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [elephant-devel] Class definition vs. store schema conflicts
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:elephant-devel%40common-lisp.net?Subject=%5Belephant-devel%5D%20Class%20definition%20vs.%20store%20schema%20conflicts&In-Reply-To=62395.88.73.201.137.1204663297.squirrel%40mail.stardawn.org">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003767.html">
+   <LINK REL="Next"  HREF="003770.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[elephant-devel] Class definition vs. store schema conflicts</H1>
+    <B>Ian Eslick</B> 
+    <A HREF="mailto:elephant-devel%40common-lisp.net?Subject=%5Belephant-devel%5D%20Class%20definition%20vs.%20store%20schema%20conflicts&In-Reply-To=62395.88.73.201.137.1204663297.squirrel%40mail.stardawn.org"
+       TITLE="[elephant-devel] Class definition vs. store schema conflicts">eslick at media.mit.edu
+       </A><BR>
+    <I>Tue Mar  4 22:18:18 UTC 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003767.html">[elephant-devel] Manual interfaces to indexing
+</A></li>
+        <LI>Next message: <A HREF="003770.html">[elephant-devel] Class definition vs. store schema conflicts
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3768">[ date ]</a>
+              <a href="thread.html#3768">[ thread ]</a>
+              <a href="subject.html#3768">[ subject ]</a>
+              <a href="author.html#3768">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>My fellow Elephants,
+
+I've recently added support for a full schema evolution infrastructure  
+on my local development branch.  Every persistent class now has a  
+schema object associated with it and each store that has one or more  
+instances of that class has a corresponding database-specific schema  
+that includes, among other things, a unique schema id for that class  
+version and that store.  The schema in the database is sufficient to  
+reproduce a basic defclass form (slot names and types, not accessors,  
+initargs, initforms).
+
+The prior version of class indexing had a sophisticated mechanism for  
+synchronizing between the in-memory class definition and the in-store  
+index list.  This doesn't seem to be used, and is too complicated to  
+be useful so I have nixed it.  For the new schema-based notion of  
+synchronization, I have made some simplifying assumptions:
+
+MASTER SCHEMA:
+    The in-memory class definition is always the master schema for all  
+open stores that contain instances
+    of that class.
+
+A class redefinition or connecting to a store with a stale schema may  
+mean that the master and the store schemas are now different.  This  
+means we need to upgrade the store schema and potentially store  
+instances to the new master schema.
+
+IN-PLACE EVOLUTION:
+    If only the indexed slots differ, then we simply add/delete  
+indices to accommodate.
+    This means that we have to keep track of the hierarchy so we can  
+remove subclasses,
+    or merge a set of subclass schemas if we move the index to a base  
+class.  In-place
+    is fine because no data becomes irrecoverable and all changes are  
+at the class level.
+
+FULL SCHEMA EVOLUTION:
+    We have add/deleted slots or changed the type of a slot  
+(persistent-&gt;transient)
+    - We compute a diff function that adds/deletes the slot storage  
+from the store
+    - Any in-memory instances are upgraded
+    - Store instances are upgraded:
+      1) A scan function is provided to upgrade all instances in the  
+store and delete the old schema versions
+      2) Instances of prior schema versions still in the store can be  
+lazily upgraded on load
+
+SOME DESIGN CHOICES:
+
+- Do we delete data (dropped slots, indices) by default during a  
+schema evolution, or do we keep it around just in case?
+
+- What kind of warning/error conditions do we want to provide and when?
+   - When we load a new class def, connect to a store, and need to  
+make schema changes on the store?
+   - Class redefinition with one or more open stores
+   - etc...
+
+- How do we enable users to specify an upgrade function to move from  
+schema to schema; do we provide a way to specify a schema version and  
+an upgrade function and allow non-specified versions to just upgrade  
+automatically?
+
+- What happens when two lisp images are attached to the same store and  
+one updates its class definition?  (Maybe you just get what you  
+deserve?)
+
+- What happens if a store has a schema for a class for which there is  
+no in-memory class object?
+
+- Do we want the database schema to store initforms, initargs, and  
+accessor/reader/writer names?
+
+- Given class schemas we could probably add persistent class slots...
+
+Thanks,
+Ian
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003767.html">[elephant-devel] Manual interfaces to indexing
+</A></li>
+	<LI>Next message: <A HREF="003770.html">[elephant-devel] Class definition vs. store schema conflicts
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3768">[ date ]</a>
+              <a href="thread.html#3768">[ thread ]</a>
+              <a href="subject.html#3768">[ subject ]</a>
+              <a href="author.html#3768">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://common-lisp.net/cgi-bin/mailman/listinfo/elephant-devel">More information about the elephant-devel
+mailing list</a><br>
+</body></html>

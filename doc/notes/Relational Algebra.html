@@ -1,0 +1,765 @@
+<HTML>
+  <HEAD>
+  <TITLE>Relational Algebra</TITLE>
+  </HEAD>
+  
+  <BODY BGcolor="FFFFFF">
+  
+  <H2>Relational Algebra</H2>
+  
+  <P>
+  An algebra is a formal structure consisting
+  of <EM>sets</EM> and <EM>operations</EM> on those sets.
+  
+  <P>
+  Relational algebra is a formal system for manipulating relations.
+  
+  <UL>
+  <LI>
+  Operands of this algebra are relations.
+  <P>
+  <LI>
+  Operations of this algebra
+  include the usual set operations
+  (since relations are sets of tuples),
+  and special operations defined for relations
+  <UL>
+  <P>
+  <LI> selection
+  <P>
+  <LI> projection
+  <P>
+  <LI> join
+  </UL>
+  </UL>
+  
+  <HR>
+  <H3>Set Operations on Relations</H3>
+  
+  <P>
+  For the set operations on relations,
+  both operands must have the same scheme, and the result has that same scheme.
+  <UL>
+  <LI> R1 U R2 (union)
+  is the relation containing all tuples that appear in R1, R2, or both.
+  <P>
+  <LI> R1 n R2 (intersection)
+  is the relation containing all tuples that appear in both R1 and R2.
+  <P>
+  <LI> R1 - R2 (set difference)
+  is the relation containing all tuples of R1 that do not appear in R2.
+  </UL>
+  
+  <HR>
+  <H3>Selection</H3>
+  <P>
+  Selects tuples from a relation
+  whose attributes meet the selection criteria,
+  which is normally expressed as a predicate.
+  <PRE>
+  <B>
+      R2 = select(R1,P)
+  </B>
+  </PRE>
+  
+  <P>
+  That is, from R1 we create a new relation R2 containing
+  those tuples from R1 that satisfy (make true) the predicate P.
+  
+  <P>
+  A <em>predicate</em> is a boolean expression whose operators are
+  the logical connectives (and, or, not)
+  and arithmetic comparisons (LT, LE, GT, GE, EQ, NE),
+  and whose operands are either domain names or domain constants.
+  
+  <P>
+  select(Workstation,Room=633) = 
+  <PRE>
+  <B>
+  Name    Room    Mem   Proc  Monitor
+  ====================================
+  coke     633   16384  SP4   color17
+  bass     633    8124  SP2   color19
+  bashful  633    8124  SP1   b/w
+  </B>
+  </PRE>
+  
+  <P>
+  select(User,Status=UG and Idle<1:00) = 
+  <PRE>
+  <B>
+  Login    Name        Status   Idle  Shell  Sever
+  ================================================
+  jli      J. Inka     UG       0:00  bsh    UG
+  </B>
+  </PRE>
+  
+  
+  <HR>
+  <H3>Projection</H3>
+  
+  <P>
+  Chooses a subset of the columns in a relation,
+  and discards the rest.
+  <PRE>
+  <B>
+      R2 = project(R1,D1,D2,...Dn)
+  </B>
+  </PRE>
+  
+  <P>
+  That is, from the tuples in R1 we create
+  a new relation R2 containing only the domains D1,D2,..Dn.
+  
+  <P>
+  project(Server,Name,Status) =
+  
+  <PRE>
+  <B>
+  Name    Status
+  ==============
+  diamond   up
+  emerald   up
+  graphite  down
+  ruby      up
+  frito     up
+  </B>
+  </PRE>
+  
+  <P>
+  project(select(User,Status=UG),Name,Status) =
+  <PRE>
+  <B>
+  Name        Status
+  ==================
+  A. Cohn       UG
+  J. Inka       UG
+  R. Kemp       UG
+  </B>
+  </PRE>
+  
+  <HR>
+  <H3>Join</H3>
+  <P>
+  Combines attributes of two relations into one.
+  <PRE>
+  <B>
+      R3 = join(R1,D1,R2,D2)
+  </B>
+  </PRE>
+  
+  <P>
+  Given a domain from each relation, <em>join</em>
+  considers all possible pairs
+  of tuples from the two relations, 
+  and if their values for the chosen domains are equal,
+  it adds a tuple to the result containing all
+  the attributes of both tuples
+  (discarding the duplicate domain D2).
+  
+  <P>
+  <B>Natural join</B>:
+  If the two relations being joined have exactly one attribute (domain)
+  name in common, then we assume that the single attribute in common
+  is the one being compared to see if a new tuple will be inserted in
+  the result.
+  
+  <P>
+  Assuming that we've augmented the domain names in our lab database
+  so that we use MachineName, PrinterName, ServerName, and UserName
+  in place of the generic domain "Name", then
+  <PRE>
+  <B>
+      join(Workstations,Printers)
+  </B>
+  </PRE>
+  is a natural join, on the shared attribute name Room.
+  The result is a relation of all workstation/printer attribute
+  pairs that are in the same room.
+  
+  <HR>
+  <H3>Example Use of Project and Join</H3>
+  
+  <P>
+  Find all workstations in a room with a printer.
+  <UL>
+  <LI>R1 = project(Workstation,Name,Room)
+  <P>
+  <LI>R2 = project(Printer,Name,Room)
+  <P>
+  <LI>R3 = join(R1,R2)
+  </UL>
+  
+  <PRE>
+  <B>
+  R1              R2              R3
+  Name    Room    Name    Room    WName   Pname   Room
+  ============    ============    ====================
+  coke     633    chaucer  737    coke    uglab   633
+  bass     633    keats    706    bass    uglab   633
+  bashful  633    poe      707    bashful uglab   633
+  tab      628    dali     737
+  crush    628    uglab    633
+  </B>
+  </PRE>
+  
+  <HR>
+  <H3>Implementing Set Operations</H3>
+  
+  <P>
+  To implement R1 U R2 (while eliminating duplicates) we can
+  <UL>
+      <LI> sort R1 in O(N log N) 
+      <LI> sort R2 in O(M log M)
+      <LI> merge R1 and R2 in O(N+M)
+  </UL>
+  
+  <P>
+  If we allow duplicates in union (and remove them later) we can
+  <UL>
+      <LI> copy R1 to R3 in O(N)
+      <LI> insert R2 in R3 in O(M)
+  </UL>
+  
+  <P>
+  If we have an index and don't want duplicates we can
+  <UL>
+      <LI> copy R1 to R3 in O(N)
+      <LI> for each tuple in R2 (which is O(M))
+      <UL>
+  	<LI> use index to lookup tuples in R1
+  	with the same index value O(1)
+  	<LI> if R2 tuple equals some such R1 tuple,
+  	don't add R2 tuple to R3
+      </UL>
+  </UL>
+  
+  <P>
+  Intersection and set difference have corresponding implementations.
+  
+  <HR>
+  <H3>Implementing Projection</H3>
+  
+  <P>
+  To implement projection we must
+  <UL>
+  <LI> process every tuple in the relation
+  <P>
+  <LI> remove any duplicates that result
+  </UL>
+  
+  To avoid duplicates we can
+  <UL>
+      <LI> sort the result and remove consecutive tuples that are equal
+  	<UL>
+  	    <P>
+  	    <LI> requires time O(N log N)
+  	    where N is the size of the original relation
+  	</UL>
+      <P>
+      <LI> implement the result as a set
+  	<UL>
+  	    <P>
+  	    <LI> set insertion guarantees no duplicates
+  	    <P>
+  	    <LI> by using a hash table, insertion is O(1),
+  	    so projection is O(N)
+  	</UL>
+  </UL>
+  
+  <HR>
+  <H3>Implementing Selection</H3>
+  
+  <P>
+  In the absence of an index we
+  <UL>
+      <LI> apply the predicate to every tuple in the relation
+      <P>
+      <LI> insert matches in the resulting relation 
+  	<UL>
+  	    <LI> duplicates can't occur
+  	</UL>
+      <P>
+      <LI> take O(N) time
+  </UL>
+  
+  <P>
+  Given an index, and a predicate that uses the index key,  we
+  <UL>
+      <P>
+      <LI> Lookup tuples using the key
+      <P>
+      <LI> evaluate only those tuples with the predicate 
+      <P>
+      <LI> take O(K) time, where K tuples match the key
+  </UL>
+  
+  <HR>
+  <H3>Implementing Join with Nested Loops</H3>
+  
+  <P>
+  A <em>nested loop join</em>
+  on relations R1 (with N domains)
+  and R2 (with M domains),
+  considers all |R1| x |R2| pairs of tuples.
+  <PRE>
+  <B>
+  R3= join(R1,Ai,R2,Bj)
+  
+  for each tuple t in R1 do
+    for each tuple s in R2 do
+      if t.Ai = s.Bj then
+        insert(R3, t.A1, t.A2, ..., t.AN,
+          s.B1, ..., s.B(j-1), s.B(j+1), ..., s.BM)
+  </B>
+  </PRE>
+  
+  <P>
+  This implementation takes time O(|R1|*|R2|).
+  
+  <HR>
+  <H3>Index Join</H3>
+  
+  <P>
+  An <em>index join</em> exploits the existence of an index
+  for one of the domains used in the join to find matching
+  tuples more quickly. 
+  
+  <PRE>
+  <B>
+  R3= join(R1,Ai,R2,Bj)
+  
+  for each tuple t in R1 do
+     for each tuple s in R2 at index(t.Ai) do
+        insert(R3, t.A1, t.A2, ..., t.AN,
+          s.B1, ..., s.B(j-1), s.B(j+1), ..., s.BM)
+  </B>
+  </PRE>
+  
+  <P>
+  We could choose to use an index for R2, and reverse
+  the order of the loops.
+  
+  <P>
+  The decision on which index to use depends on the number
+  of tuples in each relation.
+  
+  <HR>
+  <H3>Sort Join</H3>
+  
+  <P>
+  If we don't have an index for a domain in the join,
+  we can still improve on the nested-loop join using
+  <em>sort join</em>.
+  
+  <PRE>
+  <B>
+  R3= join(R1,Ai,R2,Bj)
+  </B>
+  </PRE>
+  
+  <P>
+  <UL>
+  <LI> Merge the tuples of both relations into a single list
+      <UL>
+  	<P>
+  	<LI> list elements must identify the original relation
+      </UL>
+  <P>
+  <LI> Sort the list based on the value in the join domains Ai and Bj
+      <UL>
+      <P>
+      <LI> all tuples on the sorted list with a common value
+      for the join domains are consecutive
+      </UL>
+  <P>
+  <LI> Pair all (consecutive) tuples from the two relations
+  with the same value in the join domains 
+  </UL>
+  
+  <HR>
+  <H3>Comparison of Join Implementations</H3>
+  
+  Assumptions
+  <UL>
+  <LI> Join R1 and R2 (on domain D) producing R3
+  <P>
+  <LI> R1 has i tuples, R2 has j tuples
+  <P>
+  <LI> |R3| = m, 0 <= m <= i * j
+  <P>
+  <LI> Every implementation takes at least time O(m)
+  </UL>
+  
+  <P>
+  Comparison
+  <UL>
+  <LI> Nested-loop join takes time O(i * j)
+  <P>
+  <LI> Index join (using R2 index) takes time O(i+m)
+      <UL>
+  	<P>
+  	<LI> lookup is O(1) for each tuple in R1
+  	<P>
+  	<LI> at most O(m) tuples match
+      </UL>
+  <P>
+  <LI> Sort join takes time O(m +(i+j)log(i+j)) 
+      <UL>
+  	<P>
+  	<LI> O(i+j) to merge the tuples in R1 and R2
+  	<P>
+  	<LI> O((i+j) log (i+j)) to sort the list
+  	<P>
+  	<LI> O(m) to produce the output (0 <= m <= i*j)
+      </UL>
+  </UL>
+  
+  <HR>
+  <H3>Expressing Queries in Relational Algebra</H3>
+  
+  <P>
+  Relational algebra is an unambiguous notation (or formalism)
+  for expressing queries.
+  
+  <P>
+  Queries are simply expressions in relational algebra.
+  
+  <P>
+  Expressions can be manipulated symbolically
+  to produce simpler expressions
+  according to the laws of relational algebra. 
+  
+  <P>
+  Expression simplification is an important query optimization
+  technique, which can affect the running time of queries
+  by an order of magnitude or more.
+  <UL>
+      <LI> early "selection" reduces the number of tuples
+      <P>
+      <LI> early "projection" reduces the number of domains
+  </UL>
+  
+  <HR>
+  <H3>Algebraic Laws for Join</H3>
+  
+  <P>
+  Commutativity (assuming order of columns doesn't matter)
+  <P>
+  <B>
+  <UL>
+  join(R1, Ai, R2, Bj) = join(R2, Bj, R1, Ai)
+  </UL>
+  </B>
+  
+  <P>
+  Nonassociativity
+  <P>
+  <B>
+  <UL>
+  join (join(R1, Ai, R2, Bj),Bj,R3,Ck)
+  </B>
+  </UL>
+  <UL>
+  is not the same as
+  </UL>
+  <B>
+  <UL>
+  join (R1,Ai,join(R2, Bj, R3, Ck),Bj)
+  </UL>
+  </B>
+  
+  <HR>
+  <H3>Algebraic Laws for Selection</H3>
+  
+  <P>
+  Commutativity
+  <P>
+  <B>
+  <UL>
+  select(select(R1,P1),P2) = select(select(R1,P2),P1)
+  </UL>
+  </B>
+  
+  <P>
+  Selection pushing
+  <UL>
+  <LI> if P contains attributes of R
+      <P>
+      <UL>
+      <B>
+      select(join(R,Ai,S,Bj),P) = join(select(R,P),Ai,S,Bj)
+      </B>
+      </UL>
+  <P>
+  <LI> if P contains attributes of S
+      <P>
+      <UL>
+      <B>
+      select(join(R,Ai,S,Bj),P) = join(R,Ai,select(S,P),Bj)
+      </B>
+      </UL>
+  </UL>
+  
+  <P>
+  Selection Splitting (where P = A and B)
+  <UL>
+  <B>
+  select(R,P) = select(select(R,A),B)
+  <P>
+  select(R,P) = select(select(R,B),A)
+  </B>
+  </UL>
+  
+  <HR>
+  <H3>Example: Selection Pushing and Splitting</H3>
+  
+  <P>
+  Consider the following 4 relation database
+  <UL>
+  <LI> CSG: Course-StudentID-Grade
+  <LI> SNAP: StudentID-Name-Address-Phone
+  <LI> CDH: Course-Day-Hour
+  <LI> CR: Course-Room
+  </UL>
+  
+  <P>
+  Implement the query "Where is Amy at Noon on Monday?"
+  
+  <P>
+  Let P be (Name="Amy" and Day="Monday" and Hour="Noon")
+  
+  <P>
+  We can use a brute-force approach that <em>joins</em>
+  all the data in the relations
+  into a single large relation, <em>selects</em> those tuples
+  that meet the query criteria,
+  and then isolates the answer field using <em>projection</em>.
+  <UL>
+      <LI> R1 = join(CSG,SNAP)
+      <LI> R2 = join(R1,CDH)
+      <LI> R3 = join(R2,CR)
+      <LI> R4 = select(R3,P)
+      <LI> R5 = project(R4,Room)
+  </UL>
+  
+  <PRE>
+  <B>
+  project(select(join(join(join(CSG,SNAP),CDH),CR),P),Room)
+  </B>
+  </PRE>
+  
+  <HR>
+  <H3>Selection Pushing and Splitting (cont)</H3>
+  
+  <P>
+  The selection uses only Name, Day, and Hour attributes
+  (and not Course or Room), so we can push the selection
+  inside the outermost join.
+  <UL>
+      <LI> R1 = join(CSG,SNAP)
+      <LI> R2 = join(R1,CDH)
+      <LI> R3 = select(R2,P)
+      <LI> R4 = join(R3,CR)
+      <LI> R5 = project(R4,Room)
+  </UL>
+  
+  <P>
+  We cannot push selection further, because the predicate involves
+  attributes from both operands of the next innermost join (R1,CDH).
+  
+  <P>
+  We can split the selection into two, one based on Name, and the
+  other based on Day-Hour.
+  <UL>
+      <LI> R1 = join(CSG,SNAP)
+      <LI> R2 = join(R1,CDH)
+      <LI> R3 = select(R2,Day="Monday" and Hour="Noon")
+      <LI> R4 = select(R3,Name="Amy")
+      <LI> R5 = join(R4,CR)
+      <LI> R6 = project(R5,Room)
+  </UL>
+  
+  <HR>
+  <H3>Selection Pushing and Splitting (cont 2)</H3>
+  
+  <P>
+  Now we can push the first selection inside the join, since it
+  involves only attributes from the CDH relation.
+  <UL>
+      <LI> R1 = join(CSG,SNAP)
+      <LI> R2 = select(CDH,Day="Monday" and Hour="Noon")
+      <LI> R3 = join(R1,R2)
+      <LI> R4 = select(R3,Name="Amy")
+      <LI> R5 = join(R4,CR)
+      <LI> R6 = project(R5,Room)
+  </UL>
+  
+  <P>
+  Similarly we can push the second selection inside the preceding join,
+  since it involves only attributes from R1 (ie, Name).
+  <UL>
+      <LI> R1 = join(CSG,SNAP)
+      <LI> R2 = select(CDH,Day="Monday" and Hour="Noon")
+      <LI> R3 = select(R1,Name="Amy")
+      <LI> R4 = join(R2,R3)
+      <LI> R5 = join(R4,CR)
+      <LI> R6 = project(R5,Room)
+  </UL>
+  
+  <P>
+  Continuing to push the second select inside the first join
+  <UL>
+      <LI> R1 = select(SNAP,Name="Amy")
+      <LI> R2 = join(CSG,R1)
+      <LI> R3 = select(CDH,Day="Monday" and Hour="Noon")
+      <LI> R4 = join(R2,R3)
+      <LI> R5 = join(R4,CR)
+      <LI> R6 = project(R5,Room)
+  </UL>
+  
+  <HR>
+  <H3>Algebraic Laws for Projection</H3>
+  
+  <B>
+  Projection pushing
+  </B>
+  <P>
+  To push a projection operation inside a join requires that the
+  result of the projection contain the attributes used in the join.
+  <DL>
+      <DD>
+  	<B>
+  	project(join(R,Ai,S,Bj),D1,D2,...Dn)
+  	</B>
+  </DL>
+  <P>
+  In this case, we know that the domains in the projection will
+  exist in the relation that results from the join.
+  <P>
+  In performing projection first (on the two join relations)
+  <UL>
+      <P>
+      <LI> we should only project on those domains that exist
+      in each of the two relations
+      <P>
+      <LI> we must ensure that the join domains Ai and Bj exist in
+      the resulting two relations
+  </UL>
+  <P>
+  Let PDR = {D|D domain in R, D in {D1...Dn}} U Ai
+  <P>
+  Let PDS = {D|D domain in S, D in {D1...Dn}} U Bi
+  <DL>
+      <P>
+      <DD>
+  	<B>
+  	R1 = project(R,PDR)
+  	</B>
+      <P>
+      <DD>
+  	<B>
+  	R2 = project(S,PDS)
+  	</B>
+      <P>
+      <DD>
+  	<B>
+  	R3 = join(R1,Ai,R2,Bj) = project(join(R,Ai,S,Bj),D1,D2,...Dn)
+  	</B>
+      </DT>
+  </DL>
+  
+  <HR>
+  <H3>Example: Projection Pushing</H3>
+  
+  <P>
+  Implement the query "Where is Amy at Noon on Monday?"
+  
+  <UL>
+      <LI> R1 = select(SNAP,Name="Amy")
+      <LI> R2 = join(CSG,R1)
+      <LI> R3 = select(CDH,Day="Monday" and Hour="Noon")
+      <LI> R4 = join(R2,R3)
+      <LI> R5 = join(R4,CR)
+      <LI> R6 = project(R5,Room)
+  </UL>
+  
+  <P>
+  This approach carries along unnecessary attributes every step of
+  the way.
+  <UL>
+      <LI> R1 carries Address and Phone attributes
+      <LI> R4 carries Grade attribute
+  </UL>
+  
+  <P>
+  We use projection pushing to eliminate unnecessary attributes
+  early in the implementation.
+  
+  <UL>
+      <LI> R1 = select(SNAP,Name="Amy")
+      <LI> R2 = join(CSG,R1)
+      <LI> R3 = select(CDH,Day="Monday" and Hour="Noon")
+      <LI> R4 = join(R2,R3)
+      <LI> R5 = project(CR, Course, Room)
+      <LI> R6 = project(R4, Course)
+      <LI> R7 = join(R5,R6)
+      <LI> R8 = project(R7,Room)
+  </UL>
+  
+  <P>
+  Note that R5 is unnecessary, since the domains in the projection
+  are all the domains of CR.
+  
+  <HR>
+  <H3>Projection Pushing (cont)</H3>
+  
+  <P>
+  Implement the query "Where is Amy at Noon on Monday?"
+  
+  <UL>
+      <LI> R1 = select(SNAP,Name="Amy")
+      <LI> R2 = join(CSG,R1)
+      <LI> R3 = select(CDH,Day="Monday" and Hour="Noon")
+      <LI> R4 = join(R2,R3)
+      <LI> R5 = project(R4, Course)
+      <LI> R6 = join(CR,R5)
+      <LI> R7 = project(R6,Room)
+  </UL>
+  
+  <P>
+  We can continue pushing the projection on Course below the
+  join for R4.
+  
+  <UL>
+      <LI> R1 = select(SNAP,Name="Amy")
+      <LI> R2 = join(CSG,R1)
+      <LI> R3 = select(CDH,Day="Monday" and Hour="Noon")
+      <LI> R4 = project(R2,Course)
+      <LI> R5 = project(R3,Course)
+      <LI> R6 = join(R4,R5)
+      <LI> R7 = join(CR,R6)
+      <LI> R8 = project(R7,Room)
+  </UL>
+  
+  <HR>
+  <H3>Projection Pushing (cont2)</H3>
+  
+  <P>
+  We can continue pushing the projection on Course for R4
+  below the join for R2.
+  <UL>
+      <LI> R1 = select(SNAP,Name="Amy")
+      <LI> R2 = project(CSG,Course,StudentID)
+      <LI> R3 = project(R1,StudentID)
+      <LI> R4 = join(R2,R3)
+      <LI> R5 = project(R4,Course)
+      <LI> R6 = select(CDH,Day="Monday" and Hour="Noon")
+      <LI> R7 = project(R6,Course)
+      <LI> R8 = join(R6,R7)
+      <LI> R9 = join(CR,R8)
+      <LI> R10 = project(R9,Room)
+  </UL>
+  
+  </BODY>
+  </HTML>

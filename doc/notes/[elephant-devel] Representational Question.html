@@ -1,0 +1,149 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [elephant-devel] Representational Question
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:elephant-devel%40common-lisp.net?Subject=%5Belephant-devel%5D%20Representational%20Question&In-Reply-To=1204858944.26992.366.camel%40penguin.yourdomain.com">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003788.html">
+   <LINK REL="Next"  HREF="003753.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[elephant-devel] Representational Question</H1>
+    <B>Ian Eslick</B> 
+    <A HREF="mailto:elephant-devel%40common-lisp.net?Subject=%5Belephant-devel%5D%20Representational%20Question&In-Reply-To=1204858944.26992.366.camel%40penguin.yourdomain.com"
+       TITLE="[elephant-devel] Representational Question">eslick at media.mit.edu
+       </A><BR>
+    <I>Fri Mar  7 03:32:03 UTC 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003788.html">[elephant-devel] Representational Question
+</A></li>
+        <LI>Next message: <A HREF="003753.html">[elephant-devel] Converting MIGRATE to BACKUP
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3789">[ date ]</a>
+              <a href="thread.html#3789">[ thread ]</a>
+              <a href="subject.html#3789">[ subject ]</a>
+              <a href="author.html#3789">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Robert makes an excellent point.  For datasets that fit in memory,  
+caching objects and slot values in memory makes the use of lisp as a  
+query language really easy.
+
+Another (unreleased) prevalence-like facility in Elephant:
+
+In src/contrib/eslick/snapshot-set.lisp is a simple object caching  
+model that works for non-persistent object.  It allows you to register  
+objects with a special hash as 'root' objects.  This hash can be saved  
+and restored and it stores the root objects and all objects  
+'reachable' from the root set.  The notion of reachable can be  
+overloaded but now it's defined recursively for any standard object or  
+hash in a slot of a reachable object.  The whole snapshot-set concept  
+is about 300 lines of code, so pretty easy to read as an example.
+
+A potential proposal:
+
+It's also fairly easy to add a special cached-persistent-slot which  
+caches its values and implements a write-through policy.  This allows  
+you to keep all your slot-accesses in memory (making object-based  
+search very efficient) but still exploit on-disk BTrees for indexing  
+when you need to.
+
+You'd have to think through the implications of this strategy,  
+though.  It works great if your data is read-only or only operated on  
+in one thread.  If you can handle some in-coherence (the slot value  
+can be changed at any time) in your read-oriented algorithms then you  
+can ignore threading issues.
+
+(Hmmmm...one hack might be to force a database read of cached slots  
+when you are in a transaction so you can guarantee that any writes to  
+that page in a parallel transaction result in a restart.  If you are  
+just doing auto-commit, the read is to the cached value).
+
+Ian
+
+On Mar 6, 2008, at 10:02 PM, Robert L. Read wrote:
+
+&gt;<i> On Thu, 2008-03-06 at 10:10 -0500, Ian Eslick wrote:
+</I>&gt;&gt;<i> I agree with Robert.  The best way to start is to use lisp as a
+</I>&gt;&gt;<i> query
+</I>&gt;&gt;<i> language and essential do a search/match over the object graph.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> The rub comes when you start looking at performance.  A linear scan
+</I>&gt;&gt;<i> of
+</I>&gt;<i>
+</I>&gt;<i> I neglected to mention that in my use of Elephant, when I was  
+</I>&gt;<i> attempting
+</I>&gt;<i> to run a commercial website, I was using the Data Collection  
+</I>&gt;<i> Management
+</I>&gt;<i> (DCM) stuff that you can find in the contrib/rread directory of the
+</I>&gt;<i> project.
+</I>&gt;<i>
+</I>&gt;<i> This system provides strategy-based directors.  That is, there is a
+</I>&gt;<i> basic factory object for each collection of objects that implements
+</I>&gt;<i> basic Create, Read, Update, Delete operations.
+</I>&gt;<i>
+</I>&gt;<i> When you initialize a director, you specify a storage strategy:
+</I>&gt;<i>
+</I>&gt;<i> *) In-memory hash, (no persistence, for transient objects)
+</I>&gt;<i> *) Elephant (no caching)
+</I>&gt;<i> *) Cache backed by Elephant (read in memory, with writes immediately
+</I>&gt;<i> flushed to the store)
+</I>&gt;<i> *) Generational system, in which each generation can have its own
+</I>&gt;<i> storage strategy.
+</I>&gt;<i>
+</I>&gt;<i> Everything Ian wrote in the last email about scanning and locality of
+</I>&gt;<i> reference makes perfect sense, but is assuming that you don't have  
+</I>&gt;<i> every
+</I>&gt;<i> object cached.  That approach is therefore not very &quot;Prevalence&quot;- 
+</I>&gt;<i> like in
+</I>&gt;<i> its performance, but is very &quot;Prevalence&quot;-like in its convenience.
+</I>&gt;<i> Using DCM, or any other caching where most of the object are cached,
+</I>&gt;<i> tends to you go the performance described in the IBM article on
+</I>&gt;<i> Prevalence that I referenced.
+</I>&gt;<i>
+</I>&gt;<i> However, DCM was written BEFORE Ian got the class indexing and
+</I>&gt;<i> persistence working.  DCM is not nearly as pretty and clean as the
+</I>&gt;<i> persistent classes.  You end up having to make storage decisions
+</I>&gt;<i> yourself.
+</I>&gt;<i>
+</I>&gt;<i> A perfect system might be persistent classes with really excellent
+</I>&gt;<i> control over the caching/write-updating policy.
+</I>&gt;<i>
+</I>&gt;<i> For any application, I a would recommend using Ian's persistent  
+</I>&gt;<i> classes
+</I>&gt;<i> at the beginning project stages, and then when your performance tests
+</I>&gt;<i> reveal you have a problem, consider at that point whether to add
+</I>&gt;<i> indexes, move to explicitly keeping a class in memory, or some other
+</I>&gt;<i> solution.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003788.html">[elephant-devel] Representational Question
+</A></li>
+	<LI>Next message: <A HREF="003753.html">[elephant-devel] Converting MIGRATE to BACKUP
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3789">[ date ]</a>
+              <a href="thread.html#3789">[ thread ]</a>
+              <a href="subject.html#3789">[ subject ]</a>
+              <a href="author.html#3789">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://common-lisp.net/cgi-bin/mailman/listinfo/elephant-devel">More information about the elephant-devel
+mailing list</a><br>
+</body></html>
