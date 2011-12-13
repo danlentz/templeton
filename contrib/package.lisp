@@ -1,24 +1,91 @@
-;;; -*- mode: common-lisp;   common-lisp-style: modern;    coding: utf-8; -*-
-;;;
+;;;;; -*- mode: common-lisp;   common-lisp-style: modern;    coding: utf-8; -*-
+;;;;;
 
 (in-package :cl-user)
 
-(macrolet ((ensure-package (name &rest nicknames)
-             `(or (find-package ,name) (make-package ,name :nicknames ,@nicknames))))
-  (let* ((lexical-space (short-site-name))
-          (node-space-identifier (unicly:make-v5-uuid unicly:*uuid-namespace-dns* lexical-space))
-          (node-space (ensure-package lexical-space
-                        (list (princ-to-string node-space-identifier) "_" "urn:uuid"))))
-    ;; (define-symbol-macro :_ (find-package "_"))
-    (define-symbol-macro _ (find-package "_"))
-    (shadowing-import 'screamer::defun node-space)
-    (export 'screamer::defun node-space)
-    (use-package :screamer node-space)
-    (do-external-symbols (s (find-package :screamer))
-      (export s node-space))
-    ))
+(defun ensure-nodespace ()
+  (macrolet ((ensure-package (name &rest nicknames)
+               `(or (find-package ,name) (make-package ,name :nicknames ,@nicknames))))
+    (let* ((lexical-space (short-site-name))
+            (node-space-identifier (unicly:make-v5-uuid unicly:*uuid-namespace-url* lexical-space))
+            (node-space (ensure-package lexical-space
+                          (list (princ-to-string node-space-identifier) "_" "urn:uuid"))))
+      ;; (define-symbol-macro :_ (find-package "_"))
+      (defun _ () (find-package "_"))
+      (defparameter _ (_))
+      (export '_)
+      (import 'cl-user::_ (_))
+      (export 'cl-user::_ (_))
+      (shadowing-import 'screamer::defun node-space)
+      (export 'screamer::defun node-space)
+      (use-package :screamer node-space)
+      (do-external-symbols (s (find-package :screamer))
+        (export s node-space))
+      _:_)))
 
+(eval-when (:load-toplevel :compile-toplevel :execute)
+  (describe (ensure-nodespace)))
 
+#|
+
+;;
+;; ===============================================================================================
+;;   (DESCRIBE (_:_)) =>
+;; #<PACKAGE "http://ebu.gs/">
+;;   [package]
+;;
+;; Nicknames: 7c7de744-9eea-5a23-ab56-ae806c69bb0a, _, urn:uuid
+;; Use-list: SCREAMER
+;; Shadows: DEFUN
+;; Exports: *DYNAMIC-EXTENT?*, *ISCREAM?*, *MAXIMUM-DISCRETIZATION-RANGE*, *MINIMUM-SHRINK-RATIO*,
+;;          *SCREAMER-VERSION*, *STRATEGY*, *V, +V, -V, /=V, /V, <=V, <V, =V, >=V, >V, A-BOOLEAN,
+;;          A-BOOLEANV, A-MEMBER-OF, A-MEMBER-OFV, A-NUMBERV, A-REAL-ABOVEV, A-REAL-BELOWV,
+;;          A-REAL-BETWEENV, A-REALV, ALL-VALUES, AN-INTEGER, AN-INTEGER-ABOVE, AN-INTEGER-ABOVEV,
+;;          AN-INTEGER-BELOW, AN-INTEGER-BELOWV, AN-INTEGER-BETWEEN, AN-INTEGER-BETWEENV, 
+;;          AN-INTEGERV, ANDV, APPLY-NONDETERMINISTIC, APPLY-SUBSTITUTION, APPLYV, ASSERT!, 
+;;          BEST-VALUE, BOOLEAN, BOOLEANP, BOOLEANPV, BOUND?, COUNT-FAILURES, COUNT-TRUES, 
+;;          COUNT-TRUESV, DECIDE, DEFINE-SCREAMER-PACKAGE, DEFUN, DIVIDE-AND-CONQUER-FORCE, 
+;;          DOMAIN-SIZE, EITHER, EQUALV, FAIL, FOR-EFFECTS, FUNCALL-NONDETERMINISTIC, FUNCALLV, 
+;;          GLOBAL, GROUND?, INTEGERPV, ITH-VALUE, KNOWN?, LINEAR-FORCE, LOCAL, LOCAL-OUTPUT, 
+;;          MAKE-VARIABLE, MAXV, MEMBERV,  MINV, MULTIPLE-VALUE-CALL-NONDETERMINISTIC, 
+;;          NECESSARILY?, NONDETERMINISTIC-FUNCTION?, NOTV, NUMBERPV, ONE-VALUE, ORV, POSSIBLY?, 
+;;          PRINT-VALUES, PURGE, RANGE-SIZE, REALPV, REORDER, SOLUTION, STATIC-ORDERING, TEMPLATE, 
+;;          TRAIL, UNWEDGE-SCREAMER, UNWIND-TRAIL, VALUE-OF, WHEN-FAILING, _
+;; 0 internal symbols.
+;;  [returned 0 values]
+;;
+;; ===============================================================================================
+;;
+;;   (find-package :_)       => #<PACKAGE "http://ebu.gs/">
+;;   (_:_)                   => #<PACKAGE "http://ebu.gs/">
+;;    _:_                    => #<PACKAGE "http://ebu.gs/">
+;; 
+;; ===============================================================================================
+;;
+;;   (_:DEFUN _::TRUE () T)                 => |http://ebu.gs/|::TRUE
+;;   (defvar _::TRUE (_:make-variable))     => |http://ebu.gs/|::TRUE 
+;;   (export '_::TRUE _:_)                  => T
+;;   (_:assert! (_:equalv _:true (_:true))) => NIL
+;;
+;;   _:TRUE                  => T
+;;   (_:TRUE)                => T
+;;
+;; -----------------------------------------------------------------------------------------------
+;;
+;;   (describe '|http://ebu.gs/|:TRUE)
+;;
+;; |http://ebu.gs/|:TRUE
+;;   [symbol]
+;;
+;; TRUE names a special variable:
+;;   Value: T
+;;
+;; TRUE names a compiled function:
+;;   Lambda-list: ()
+;;   Derived type: (FUNCTION NIL (VALUES (MEMBER T) &OPTIONAL))
+;;
+
+|#
 
 
 
