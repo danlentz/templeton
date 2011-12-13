@@ -14,8 +14,12 @@
       (defun _ () (find-package "_"))
       (defparameter _ (_))
       (export '_)
-      (import 'cl-user::_ (_))
-      (export 'cl-user::_ (_))
+      (let ((ns-symbol  (intern (princ-to-string node-space-identifier) _)))
+        (set ns-symbol _)
+        (export ns-symbol _)
+        (describe ns-symbol))      
+      (import 'cl-user::_ _)
+      (export 'cl-user::_ _)
       (shadowing-import 'screamer::defun node-space)
       (export 'screamer::defun node-space)
       (use-package :screamer node-space)
@@ -50,22 +54,24 @@
 ;;          MAKE-VARIABLE, MAXV, MEMBERV,  MINV, MULTIPLE-VALUE-CALL-NONDETERMINISTIC, 
 ;;          NECESSARILY?, NONDETERMINISTIC-FUNCTION?, NOTV, NUMBERPV, ONE-VALUE, ORV, POSSIBLY?, 
 ;;          PRINT-VALUES, PURGE, RANGE-SIZE, REALPV, REORDER, SOLUTION, STATIC-ORDERING, TEMPLATE, 
-;;          TRAIL, UNWEDGE-SCREAMER, UNWIND-TRAIL, VALUE-OF, WHEN-FAILING, _
+;;          TRAIL, UNWEDGE-SCREAMER, UNWIND-TRAIL, VALUE-OF, WHEN-FAILING, _,
+;;          7c7de744-9eea-5a23-ab56-ae806c69bb0a
 ;; 0 internal symbols.
 ;;  [returned 0 values]
 ;;
 ;; ===============================================================================================
 ;;
-;;   (find-package :_)       => #<PACKAGE "http://ebu.gs/">
-;;   (_:_)                   => #<PACKAGE "http://ebu.gs/">
-;;    _:_                    => #<PACKAGE "http://ebu.gs/">
+;;   _:|7c7de744-9eea-5a23-ab56-ae806c69bb0a|   => #<PACKAGE "http://ebu.gs/">
+;;   (find-package :_)                          => #<PACKAGE "http://ebu.gs/">
+;;   (_:_)                                      => #<PACKAGE "http://ebu.gs/">
+;;    _:_                                       => #<PACKAGE "http://ebu.gs/">
 ;; 
 ;; ===============================================================================================
 ;;
-;;   (_:DEFUN _::TRUE () T)                 => |http://ebu.gs/|::TRUE
-;;   (defvar _::TRUE (_:make-variable))     => |http://ebu.gs/|::TRUE 
-;;   (export '_::TRUE _:_)                  => T
-;;   (_:assert! (_:equalv _:true (_:true))) => NIL
+;;   (_:defun _::TRUE () T)                      => |http://ebu.gs/|::TRUE
+;;   (defparameter _::TRUE (_:make-variable))    => |http://ebu.gs/|::TRUE 
+;;   (export '_::TRUE _:_)                       => T
+;;   (_:assert! (_:equalv _:TRUE (_:TRUE)))      => NIL
 ;;
 ;;   _:TRUE                  => T
 ;;   (_:TRUE)                => T
@@ -89,7 +95,7 @@
 
 
 
-(DEFPACKAGE #:TEMPLETON  (:NICKNAMES #:TTON)
+(DEFPACKAGE #:TEMPLETON  (:NICKNAMES #:TT)
   
   (:USE #:ELEPHANT #:HU.DWIM.STEFIL #:COMMON-LISP #:CLOSER-MOP #:WILBUR #:HU.DWIM.DEF
     #:NAMED-READTABLES)
