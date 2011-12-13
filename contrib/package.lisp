@@ -12,7 +12,11 @@
     ;; (define-symbol-macro :_ (find-package "_"))
     (define-symbol-macro _ (find-package "_"))
     (shadowing-import 'screamer::defun node-space)
-    (use-package :screamer node-space)))
+    (export 'screamer::defun node-space)
+    (use-package :screamer node-space)
+    (do-external-symbols (s (find-package :screamer))
+      (export s node-space))
+    ))
 
 
 
