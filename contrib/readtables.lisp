@@ -27,3 +27,8 @@
 (defreadtable :|preserve|
   (:merge :|standard|)
   (:case :preserve))
+
+(defreadtable :|_|
+  (:merge :|wilbur|)
+  (:merge :|preserve|)
+  (:case :preserve))
