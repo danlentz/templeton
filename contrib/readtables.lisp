@@ -7,4 +7,21 @@
 (in-package :templeton)
 
 (defreadtable :|standard|
-  (:merge :common-lisp))
+  (:merge :standard))
+
+(defreadtable :|node|
+  (:macro-char #\! #'wilbur::inline-node-reader t))
+
+(defreadtable :|literal|
+  (:macro-char #\# :dispatch)
+  (:dispatch-macro-char #\# #\" #'wilbur::inline-literal-reader))
+
+(defreadtable :|wilbur|
+  (:merge :|standard|)
+  (:merge :|node|)
+  (:merge :|literal|))
+
+(defreadtable :|templeton|
+  (:merge :|wilbur|))
+
+
