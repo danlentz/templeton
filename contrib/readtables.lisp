@@ -24,4 +24,6 @@
 (defreadtable :|templeton|
   (:merge :|wilbur|))
 
-
+(defreadtable :|preserve|
+  (:merge :|standard|)
+  (:case :preserve))
